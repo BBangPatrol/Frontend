@@ -1,68 +1,49 @@
 // handlers/commonHandlers.ts
 
 import { http, HttpResponse } from "msw";
+import { matchPath } from "react-router";
 
 // data
-import {
-  internalServerError,
-  methodNotAllowed,
-  notFound,
-} from "../data/common";
+import { methodNotAllowed, notFound } from "../data/common";
 
-const apiVersion = "v1";
-
-type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-
-interface ApiRoute {
-  pathname: RegExp;
-  methods: HttpMethod[];
-}
-
-const apiRoutes: ApiRoute[] = [
-  {
-    pathname: new RegExp(`^/api/${apiVersion}/collectibles/?$`),
-    methods: ["GET"],
-  },
-  {
-    pathname: new RegExp(`^/api/${apiVersion}/collectibles/draw/?$`),
-    methods: ["POST"],
-  },
+// 405 응답을 위한 path 배열
+const apiPaths = [
+    "/api/:v/auth/login",
+    "/api/:v/auth/logout",
+    "/api/:v/auth/me",
+    "/api/:v/auth/reissue",
+    "/api/:v/users/me/bread-collections",
+    "/api/:v/users/me",
+    "/api/:v/users/me/edit",
+    "/api/:v/users/me/profile-image",
+    "/api/:v/users/me/points",
+    "/api/:v/users/me/reviews",
+    "/api/:v/stores/search",
+    "/api/:v/stores/:storeId/detail",
+    "/api/:v/stores/:storeId/near",
+    "/api/:v/stores/:storeId/favorites",
+    "/api/:v/stores/:storeId/visit-verifications",
+    "/api/:v/stores/:storeId/visits",
+    "/api/:v/stores/:storeId/reviews",
+    "/api/:v/stores/:storeId/reviews/:reviewId",
+    "/api/:v/stores/:storeId/reviews/:reviewId/like",
+    "/api/:v/missions",
+    "/api/:v/missions/:missionId",
+    "/api/:v/collectibles",
+    "/api/:v/collectibles/draw",
 ];
 
-function findApiRoute(pathname: string) {
-  return apiRoutes.find(({ pathname: pattern }) => pattern.test(pathname));
-}
-
+// 명세서 상 존재하는 path 이지만 메서드가 없을경우 405 응답
+// 명세서 상 존재하지 않는 path인 경우 404 응답
 export const commonHandlers = [
-  http.all(`*/api/${apiVersion}/*`, ({ request }) => {
-    try {
-      const { pathname } = new URL(request.url);
-      const route = findApiRoute(pathname);
+    http.all(`*/api/*`, ({ request }) => {
+        const { pathname } = new URL(request.url);
+        const isApiPath = apiPaths.some((path) => matchPath(path, pathname));
 
-      // 404 Not Found (잘못된 API 주소)
-      if (!route) {
-        return HttpResponse.json(notFound, {
-          status: 404,
-        });
-      }
+        if (isApiPath) {
+            return HttpResponse.json(methodNotAllowed, { status: 405 });
+        }
 
-      // 405 Method Not Allowed (잘못된 메서드)
-      if (!route.methods.includes(request.method as HttpMethod)) {
-        return HttpResponse.json(methodNotAllowed, {
-          status: 405,
-          headers: {
-            Allow: route.methods.join(", "),
-          },
-        });
-      }
-
-      return HttpResponse.json(internalServerError, {
-        status: 500,
-      });
-    } catch {
-      return HttpResponse.json(internalServerError, {
-        status: 500,
-      });
-    }
-  }),
+        return HttpResponse.json(notFound, { status: 404 });
+    }),
 ];

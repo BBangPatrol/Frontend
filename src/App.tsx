@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import "./App.css";
 import ApiTestPage from "./pages/ApiTestPage";
 import MainPage from "./pages/MainPage";
 
