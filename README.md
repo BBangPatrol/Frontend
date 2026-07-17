@@ -5,17 +5,44 @@
 ---
 
 ```
-- 의미 없는 변수명 X
-	⇒ 유지보수 힘들고, 알아보기 힘드니 반드시 지양! ex) text1, test2
+- 의미 없는 변수명은 사용하지 않기
+  ex) text1, test2
 
-- 메서드 이름은 소문자로 시작하고, 동사로 지으면 좋다! ex) getName()
+- 변수명과 함수명은 카멜 케이스
+  ex) userName, getUserData()
 
-- 변수명, 메서드 이름은 카멜케이스로 지어주세요
+- 컴포넌트 이름은 파스칼 케이스
+  ex) LoginForm, UserProfile
 
-- 클래스 이름은 대문자로 시작합니다
+- 상수는 대문자 스네이크 케이스
+  ex) API_URL, MAX_RETRY_COUNT
+
+- 함수명은 동사로 시작, 이벤트 함수는 handle로 시작
+  ex) getUser(), handleSubmit(), fetchPosts()
+
+- 컴포넌트 파일명과 컴포넌트 이름을 동일하게 작성
+  ex) LoginForm.jsx → LoginForm
+
+- props 이름은 전달되는 값의 역할이 드러나도록 작성
 ```
 
-해당 [Code Convention 가이드](https://udacity.github.io/git-styleguide/), [네이밍 규칙](https://tyboss.tistory.com/entry/Java-자바-네이밍-관습-java-naming-convention)
+### 파일, 폴더 네이밍 규칙
+
+---
+
+```
+- 컴포넌트 파일은 파스칼 케이스
+  ex) UserCard.jsx, LoginForm.jsx
+
+- 일반 JavaScript 파일은 카멜 케이스
+  ex) formatDate.js, fetchUserData.js
+
+- 폴더 이름은 소문자
+  ex) components, hooks, utils
+
+- Custom Hook은 use로 시작
+  ex) useUser.js, useModal.js
+```
 
 ### Git 컨벤션
 
