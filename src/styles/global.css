@@ -1,1 +1,192 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "NanumSquare Neo";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff")
+    format("woff");
+}
+
+@font-face {
+  font-family: "NanumSquare Neo";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff")
+    format("woff");
+}
+
+@font-face {
+  font-family: "NanumSquare Neo";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff")
+    format("woff");
+}
+
+/* Figma 디자인 시스템 (node 2370:1227) 기준 Color·Typography 토큰 */
+@theme {
+  /* KUMSUNI 1-5 */
+  --color-KUMSUNI-01: #ff6b8b; /* KUMSUNI 1 */
+  --color-KUMSUNI-02: #ff7c9b; /* KUMSUNI 2 */
+  --color-KUMSUNI-03: #ff8daa; /* KUMSUNI 3 */
+  --color-KUMSUNI-04: #ff9dba; /* KUMSUNI 4 */
+  --color-KUMSUNI-05: #ffaec9; /* KUMSUNI 5 */
+
+  /* KUMDORI 1-5 */
+  --color-KUMDORI-01: #ffb200; /* KUMDORI 1 */
+  --color-KUMDORI-02: #ffbc1a; /* KUMDORI 2 */
+  --color-KUMDORI-03: #ffc633; /* KUMDORI 3 */
+  --color-KUMDORI-04: #ffcf4d; /* KUMDORI 4 */
+  --color-KUMDORI-05: #ffd966; /* KUMDORI 5 */
+
+  /* main 1-5 */
+  --color-main-01: #cdbba7; /* main 1 */
+  --color-main-02: #d7c7b5; /* main 2 */
+  --color-main-03: #e1d3c4; /* main 3 */
+  --color-main-04: #ebdfd2; /* main 4 */
+  --color-main-05: #f5ebe0; /* main 5 */
+
+  /* sub 1-5 */
+  --color-sub-01: #c68b59; /* sub 1 */
+  --color-sub-02: #ce9768; /* sub 2 */
+  --color-sub-03: #d6a377; /* sub 3 */
+  --color-sub-04: #deae86; /* sub 4 */
+  --color-sub-05: #e6ba95; /* sub 5 */
+
+  /* gray 1-5 */
+  --color-gray-01: #364153; /* gray 1 */
+  --color-gray-02: #6a7282; /* gray 2 */
+  --color-gray-03: #e5e7eb; /* gray 3 */
+  --color-gray-04: #f3f3f3; /* gray 4 */
+  --color-gray-05: #f9fafb; /* gray 5 */
+
+  /* yellow 1-2 */
+  --color-yellow-01: #f5ebe080; /* yellow 1 */
+  --color-yellow-02: #fff7ed80; /* yellow 2 */
+
+  /* default */
+  --color-black-01: #333333; /* black 1 */
+  --color-black-02: #33333380; /* black 2 */
+  --color-white: #ffffff; /* white 1 */
+  --color-red: #cc0b15; /* red 1 */
+  --color-green: #00c950; /* green 1 */
+
+  /* label-bg 1-4 */
+  --color-label-bg-01: #f1f2f4; /* label-bg 1 */
+  --color-label-bg-02: #e8f5ff; /* label-bg 2 */
+  --color-label-bg-03: #f3ecff; /* label-bg 3 */
+  --color-label-bg-04: #fff3d6; /* label-bg 4 */
+
+  /* label-text 1-4 */
+  --color-label-text-01: #666b73; /* label-text 1 */
+  --color-label-text-02: #2475a8; /* label-text 2 */
+  --color-label-text-03: #7a4db3; /* label-text 3 */
+  --color-label-text-04: #a15c00; /* label-text 4 */
+
+  --font-sans: "NanumSquare Neo", system-ui, "Apple SD Gothic Neo", sans-serif;
+}
+
+/* Figma Typography: Head, Body, Sub */
+.typo-head-01 {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 32px;
+}
+
+.typo-head-02 {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 22px;
+}
+
+.typo-head-03 {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 20px;
+}
+
+.typo-head-04 {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 18px;
+}
+
+.typo-head-05 {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 18px;
+}
+
+.typo-body-01 {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 19px;
+}
+
+.typo-body-02 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.typo-body-03 {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.typo-body-04 {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.typo-body-05 {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 11px;
+}
+
+.typo-sub-01 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.typo-sub-02 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.typo-sub-03 {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.typo-sub-04 {
+  font-size: 7px;
+  font-weight: 400;
+  line-height: 11px;
+}
+
+/* 가로 스크롤 영역의 스크롤바 숨김 (칩·카드 행이 위아래 선처럼 보이는 것 방지) */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-gray-6);
+  background: #fff;
+}
