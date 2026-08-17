@@ -73,21 +73,19 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 - Git Flow model을 사용하고, Git 기본 명령어 사용한다.
 
 - Git Flow 사용 브랜치
-    - feature - 기능
-    - develop - 개발
-    - master - 배포
-    - hotfix - 급한 에러 수정
+  - feature - 기능
+  - develop - 개발
+  - main - 배포
+  - hotfix - 급한 에러 수정
 
 - Git Flow 진행 방식
-    1. feature 브랜치가 완성되면 develop 브랜치로 pull request를 통해 merge한다.
+  1. feature 브랜치가 완성되면 develop 브랜치로 pull request를 통해 merge한다.
 
-        ⇒ pull request가 요청되면, 모든 팀원들이 코드 리뷰를 하여 안전하게 merge한다.
+     ⇒ pull request가 요청되면, 모든 팀원들이 코드 리뷰를 하여 안전하게 merge한다.
 
-    2. 매 주마다 develop 브랜치를 master 브랜치로 병합하여 배포를 진행한다.
+  2. 매 주마다 develop 브랜치를 main 브랜치로 병합하여 배포를 진행한다.
 
 - feature 브랜치 이름 명명 규칙
-    - feature/[front or back]/[기능 이름]
+  - feature/[front or back]/[기능 이름]
 
-        ex) feature/front/login
-
-        ex) feature/webrtc
+    ex) feature/front/login
