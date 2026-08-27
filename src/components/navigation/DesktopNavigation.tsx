@@ -22,25 +22,59 @@ const navigationItems = [
 
 export default function DesktopNavigation() {
   return (
-    <header className="desktop-navigation">
-      <div className="desktop-navigation__inner">
-        <NavLink to="/" className="desktop-navigation__logo">
+    <header
+      className="
+        sticky top-0 z-[100]
+        h-[72px] w-full
+        border-b border-black/5
+        bg-white/95
+        backdrop-blur-md
+      "
+    >
+      <div
+        className="
+          mx-auto
+          flex h-full w-full
+          max-w-[1280px]
+          items-center justify-between
+          px-8
+        "
+      >
+        {/* Logo */}
+        <NavLink
+          to="/"
+          className="
+            text-xl
+            font-bold
+            text-[#191919]
+            no-underline
+          "
+        >
           LOGO
         </NavLink>
 
-        <nav className="desktop-navigation__menu">
+        {/* Navigation */}
+        <nav className="flex items-center gap-10">
           {navigationItems.map(({ label, path, end }) => (
             <NavLink
               key={path}
               to={path}
               end={end}
               className={({ isActive }) =>
-                [
-                  "desktop-navigation__item",
-                  isActive ? "desktop-navigation__item--active" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")
+                `
+                  relative
+                  py-2
+                  text-[15px]
+                  no-underline
+                  transition-colors
+                  duration-200
+
+                  ${
+                    isActive
+                      ? "font-semibold text-[#191919]"
+                      : "font-medium text-[#8a8a8a] hover:text-[#191919]"
+                  }
+                `
               }
             >
               {label}
