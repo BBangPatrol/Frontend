@@ -5,6 +5,7 @@ import { matchPath } from "react-router";
 
 // data
 import { methodNotAllowed, notFound } from "../data/common";
+import { apiUrl } from "../../../api/config";
 
 // 405 응답을 위한 path 배열
 const apiPaths = [
@@ -36,7 +37,7 @@ const apiPaths = [
 // 명세서 상 존재하는 path 이지만 메서드가 없을경우 405 응답
 // 명세서 상 존재하지 않는 path인 경우 404 응답
 export const commonHandlers = [
-    http.all(`*/api/*`, ({ request }) => {
+    http.all(apiUrl("*"), ({ request }) => {
         const { pathname } = new URL(request.url);
         const isApiPath = apiPaths.some((path) => matchPath(path, pathname));
 

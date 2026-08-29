@@ -13,8 +13,8 @@ import {
     storeDetailResponse,
     visitVerificationResponse,
 } from "../data/stores";
+import { apiUrl } from "../../../api/config";
 
-const API_VERSION = "v1";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
 type visitVerificationRequestBody = {
@@ -33,7 +33,7 @@ async function readJsonBody<T>(request: Request): Promise<T | null> {
 export const storesHandlers = [
     // [get] 지도 검색
     // Query String은 적용되어 있지 않음 (Cursor기반 페이지네이션만 가능)
-    http.get(`*/api/${API_VERSION}/stores/search`, ({ request }) => {
+    http.get(apiUrl("stores/search"), ({ request }) => {
         const url = new URL(request.url);
         const cursor = Number(url.searchParams.get("cursor") ?? 0);
 
@@ -59,7 +59,7 @@ export const storesHandlers = [
     // [post] 즐겨찾기 추가
     // storeId = 999 로 존재하지 않는 가게(404) 테스트
     // storeId = 789 로 요청 충돌(409) 테스트
-    http.post(`*/api/${API_VERSION}/stores/:storeId/favorites`, ({ request, params }) => {
+    http.post(apiUrl("stores/:storeId/favorites"), ({ request, params }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -93,7 +93,7 @@ export const storesHandlers = [
 
     // [get] 가게 상세 조회
     // storeId : 999로 존재하지 않는 가게 테스트
-    http.get(`*/api/${API_VERSION}/stores/:storeId/detail`, ({ params }) => {
+    http.get(apiUrl("stores/:storeId/detail"), ({ params }) => {
         const { storeId } = params;
         const id = Number(storeId);
 
@@ -114,11 +114,11 @@ export const storesHandlers = [
     }),
 
     // [GET] 근처 관광지 조회
-    http.get(`*/api/${API_VERSION}/stores/:storeId/near`, () => {}),
+    http.get(apiUrl("stores/:storeId/near"), () => {}),
 
     // [POST] 영수증 OCR 분석
     // storeId = 999 로 존재하지 않는 가게(404) 테스트
-    http.post(`*/api/${API_VERSION}/stores/:storeId/visit-verifications`, async ({ params, request }) => {
+    http.post(apiUrl("stores/:storeId/visit-verifications"), async ({ params, request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -169,7 +169,7 @@ export const storesHandlers = [
     // [post] 방문 인증
     // storeId = 999 로 존재하지 않는 가게(404) 테스트
     // totalAmount = 99999 로 영수증 해쉬값 중복(409) 테스트
-    http.post(`*/api/${API_VERSION}/stores/:storeId/visits`, async ({ request, params }) => {
+    http.post(apiUrl("stores/:storeId/visits"), async ({ request, params }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -218,7 +218,7 @@ export const storesHandlers = [
     // [get] 리뷰 조회 (특정 가게 리뷰 조회)
     // storeId = 999 로 존재하지 않는 가게(404) 테스트
     // nextCursor로 2페이지까지 조회가능, hasNext로 2페이지에서 페이지네이션 중단하기
-    http.get(`*/api/${API_VERSION}/stores/:storeId/reviews`, ({ request, params }) => {
+    http.get(apiUrl("stores/:storeId/reviews"), ({ request, params }) => {
         const url = new URL(request.url);
         const cursor = Number(url.searchParams.get("cursor") ?? 0);
 
@@ -257,7 +257,7 @@ export const storesHandlers = [
     // [post] 리뷰 작성 (특정 가게 리뷰 작성)
     // storeId = 999로 존재하지 않는 가게(404) 테스트
     // content = "too-many"로 요청 과다(429) 테스트
-    http.post(`*/api/${API_VERSION}/stores/:storeId/reviews`, async ({ request, params }) => {
+    http.post(apiUrl("stores/:storeId/reviews"), async ({ request, params }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -355,7 +355,7 @@ export const storesHandlers = [
     // [patch] 리뷰 수정
     // storeId 또는 reviewId = 999로 존재하지 않는 가게/리뷰(404) 테스트
     // content = "too-many"로 요청 과다(429) 테스트
-    http.patch(`*/api/${API_VERSION}/stores/:storeId/reviews/:reviewId`, async ({ request, params }) => {
+    http.patch(apiUrl("stores/:storeId/reviews/:reviewId"), async ({ request, params }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -450,7 +450,7 @@ export const storesHandlers = [
 
     // [delete] 리뷰 삭제
     // storeId 또는 reviewId = 999로 존재하지 않는 가게/리뷰(404) 테스트
-    http.delete(`*/api/${API_VERSION}/stores/:storeId/reviews/:reviewId`, ({ request, params }) => {
+    http.delete(apiUrl("stores/:storeId/reviews/:reviewId"), ({ request, params }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -474,7 +474,7 @@ export const storesHandlers = [
     }),
 
     // [post] 리뷰 좋아요 추가/삭제
-    http.post(`*/api/${API_VERSION}/stores/:storeId/reviews/:reviewId/like`, ({ request, params }) => {
+    http.post(apiUrl("stores/:storeId/reviews/:reviewId/like"), ({ request, params }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }

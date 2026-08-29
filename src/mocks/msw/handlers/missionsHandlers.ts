@@ -4,13 +4,13 @@ import { getMockAuthState } from "../utils/auth";
 // data
 import { unauthorized } from "../data/common";
 import { missionFirstResponse, missionRewardResponse, missionSecondResponse } from "../data/missions";
+import { apiUrl } from "../../../api/config";
 
-const API_VERSION = "v1";
 
 export const missionsHandlers = [
     // [get] 미션 조회
     // QueryString filter 기능은 제외, cursor 기반 페이지네이션만 가능
-    http.get(`*/api/${API_VERSION}/missions`, ({ request }) => {
+    http.get(apiUrl("missions"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -39,7 +39,7 @@ export const missionsHandlers = [
     // [post] 미션 보상 수집
     // missionId = 99999 로 내부적인 미션 미완료(400) 테스트
     // missionId = 12345 로 요청 충돌(409) 테스트
-    http.post(`*/api/${API_VERSION}/missions/:missionId`, ({ request, params }) => {
+    http.post(apiUrl("missions/:missionId"), ({ request, params }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }

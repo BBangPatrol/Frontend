@@ -2,8 +2,8 @@ import { http, HttpResponse } from "msw";
 import { unauthorized } from "../data/common";
 import { getMockAuthState } from "../utils/auth";
 import { MOCK_ACCESS_TOKEN, MOCK_REFRESH_TOKEN, reissue, userInfo } from "../data/auth";
+import { apiUrl } from "../../../api/config";
 
-const API_VERSION = "v1";
 const REFRESH_TOKEN_MAX_AGE = 60 * 60 * 24 * 7;
 const REFRESH_TOKEN_COOKIE = `refreshToken=${MOCK_REFRESH_TOKEN}; Path=/; Max-Age=${REFRESH_TOKEN_MAX_AGE}; HttpOnly; SameSite=Lax`;
 const EXPIRED_REFRESH_TOKEN_COOKIE = "refreshToken=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax";
@@ -19,7 +19,7 @@ export const authHandlers = [
     // [401] code가 "401"인 경우
     // [502] code가 "502"인 경우
     // [200] 이외의 요청은 200응답
-    http.post(`*/api/${API_VERSION}/auth/login`, async ({ request }) => {
+    http.post(apiUrl("auth/login"), async ({ request }) => {
         const body = (await request.json().catch(() => null)) as LoginRequestBody | null;
         const code = body?.code?.trim();
 
@@ -95,7 +95,7 @@ export const authHandlers = [
     }),
 
     // [POST] 로그아웃
-    http.post(`*/api/${API_VERSION}/auth/logout`, ({ request }) => {
+    http.post(apiUrl("auth/logout"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(
                 {
@@ -129,7 +129,7 @@ export const authHandlers = [
     }),
 
     // [GET] 회원정보 조회
-    http.get(`*/api/${API_VERSION}/auth/me`, ({ request }) => {
+    http.get(apiUrl("auth/me"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -138,7 +138,7 @@ export const authHandlers = [
     }),
 
     // [POST] accessToken 재발급
-    http.post(`*/api/${API_VERSION}/auth/reissue`, ({ cookies }) => {
+    http.post(apiUrl("auth/reissue"), ({ cookies }) => {
         const refreshToken = cookies.refreshToken;
 
         if (!refreshToken) {

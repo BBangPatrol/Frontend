@@ -5,26 +5,31 @@ import App from "./App.tsx";
 import { QueryProvider } from "./providers/QueryProvider.tsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
+import { isServiceApiRequest } from "./api/config.ts";
 
 // 서비스워커(MSW) 설정
 async function enableMocking() {
-    if (import.meta.env.MODE !== "development") return;
+  if (import.meta.env.MODE !== "development") return;
 
-    const { worker } = await import("./mocks/msw/browser");
+  const { worker } = await import("./mocks/msw/browser");
 
-    return worker.start({
-        onUnhandledRequest: "error",
-    });
+  return worker.start({
+    onUnhandledRequest(request, print) {
+      if (isServiceApiRequest(request)) {
+        print.error();
+      }
+    },
+  });
 }
 
 enableMocking().then(() => {
-    createRoot(document.getElementById("root")!).render(
-        <StrictMode>
-            <Provider store={store}>
-                <QueryProvider>
-                    <App />
-                </QueryProvider>
-            </Provider>
-        </StrictMode>,
-    );
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <Provider store={store}>
+        <QueryProvider>
+          <App />
+        </QueryProvider>
+      </Provider>
+    </StrictMode>,
+  );
 });
