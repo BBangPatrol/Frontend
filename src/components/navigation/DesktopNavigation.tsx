@@ -1,9 +1,11 @@
 import { NavLink } from "react-router";
 import { useEffect, useRef, useState } from "react";
+import { useResponsive } from "../../contexts/ResponsiveContext";
 
 import logo from "../../assets/icon/logo.svg";
 
 import ProfileModal from "../modal/ProfileModal";
+import LoginModal from "../modal/LoginModal";
 
 const navigationItems = [
   {
@@ -26,9 +28,12 @@ const navigationItems = [
 ];
 
 export default function DesktopNavigation() {
+  const { isMobile } = useResponsive();
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -130,7 +135,7 @@ export default function DesktopNavigation() {
         ) : (
           <button
             className="typo-body-03 rounded-[36px] bg-sub-01 px-6 py-2 text-white transition-colors duration-200 hover:bg-sub-02"
-            onClick={() => setIsLoggedIn(true)}
+            onClick={() => setIsLoginModalOpen(true)}
           >
             로그인
           </button>
@@ -138,12 +143,22 @@ export default function DesktopNavigation() {
       </div>
       {isProfileModalOpen && (
         <ProfileModal
-          isPhone={false}
+          isMobile={isMobile}
           nickname="빵순이"
           profileImageUrl={tempProfileImageUrl}
           onClose={() => setIsProfileModalOpen(false)}
           onChangeNickname={() => {}}
           onSubmit={() => setIsProfileModalOpen(false)}
+        />
+      )}
+      {isLoginModalOpen && (
+        <LoginModal
+          isMobile={isMobile}
+          onClick={() => {
+            setIsLoginModalOpen(false);
+            setIsLoggedIn(true);
+          }}
+          onClose={() => setIsLoginModalOpen(false)}
         />
       )}
     </header>
