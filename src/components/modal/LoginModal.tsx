@@ -5,12 +5,14 @@ import kakao from "../../assets/kakao-login.svg";
 
 interface LoginModalProps {
   isMobile?: boolean;
+  description?: string;
   onClick: () => void;
   onClose?: () => void;
 }
 
 export default function LoginModal({
   isMobile = false,
+  description,
   onClick,
   onClose,
 }: LoginModalProps) {
@@ -29,11 +31,22 @@ export default function LoginModal({
           <img src={X} alt="Close" className="w-5 h-5" />
         </button>
         {/* Header */}
-        <h2
-          className={` text-black-01 ${isMobile ? "typo-head-02" : "typo-head-01"}`}
+        <div
+          className={`flex flex-col items-center ${isMobile ? "gap-2" : "gap-3"}`}
         >
-          로그인
-        </h2>
+          <h2
+            className={` text-black-01 ${isMobile ? "typo-head-02" : "typo-head-01"}`}
+          >
+            {description ? "로그인이 필요해요" : "로그인"}
+          </h2>
+          {description && (
+            <p
+              className={`text-gray-02 ${isMobile ? "typo-body-04" : "typo-body-03"}`}
+            >
+              {description}
+            </p>
+          )}
+        </div>
 
         <div className={`flex flex-col gap-2`}>
           <button
