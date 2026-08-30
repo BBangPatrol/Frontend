@@ -1,6 +1,6 @@
 // - React Query 전역 설정 제공
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 
 type QueryProviderProps = {
