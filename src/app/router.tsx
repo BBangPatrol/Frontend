@@ -18,14 +18,15 @@ export const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       {/* Footer가 필요한 페이지 */}
       <Route element={<FooterLayout />}>
-        <Route path="map" element={<MapPage />} />
+        <Route index element={<HomePage />} />
+        <Route path="collection" element={<CollectionPage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="api-test" element={<ApiTestPage />} />
       </Route>
 
       {/* Footer가 필요 없는 페이지 */}
-      <Route index element={<HomePage />} />
-      <Route path="collection" element={<CollectionPage />} />
-      <Route path="dashboard" element={<DashboardPage />} />
-      <Route path="api-test" element={<ApiTestPage />} />
+
+      <Route path="map" element={<MapPage />} />
     </Route>,
   ),
 );
