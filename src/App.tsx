@@ -12,6 +12,7 @@ import MapPage from "./pages/map/MapPage";
 import RootLayout from "./layouts/RootLayout";
 import HomePage from "./pages/home/HomePage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
+import LoginTestPage from "./pages/LoginTestPage";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/api-test" element={<ApiTestPage />} />
-          <Route path="/detail" element={<DetailPage />} />
+          <Route path="/login-test" element={<LoginTestPage />} />
+          <Route path="/detail/:storeId" element={<DetailPage />} />
           <Route path="/detail/review" element={<ReviewDetailPage />} />
           <Route path="/detail/review/new" element={<AddReviewPage />} />
           <Route path="/receipt/verify" element={<ReceiptVerificationPage />} />

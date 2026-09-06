@@ -9,7 +9,7 @@ import { isServiceApiRequest } from "./api/config.ts";
 
 // 서비스워커(MSW) 설정
 async function enableMocking() {
-  if (import.meta.env.MODE !== "development") return;
+  if (import.meta.env.VITE_ENABLE_MSW !== "true") return;
 
   const { worker } = await import("./mocks/msw/browser");
 

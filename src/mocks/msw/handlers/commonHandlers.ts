@@ -21,7 +21,7 @@ const apiPaths = [
     "/api/:v/users/me/reviews",
     "/api/:v/stores/search",
     "/api/:v/stores/:storeId/detail",
-    "/api/:v/stores/:storeId/near",
+    "/api/:v/stores/:storeId/attractions",
     "/api/:v/stores/:storeId/favorites",
     "/api/:v/stores/:storeId/visit-verifications",
     "/api/:v/stores/:storeId/visits",

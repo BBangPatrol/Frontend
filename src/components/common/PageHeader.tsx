@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import type { ReactNode } from "react";
 
 // images
@@ -17,12 +17,13 @@ export default function PageHeader(props: PageHeaderProps) {
 }
 
 function MobilePageHeader({ title, subTitle, icon }: PageHeaderProps) {
+  const navigate = useNavigate();
   return (
     <section className="flex flex-col gap-3">
-      <Link to={"/detail"} className="flex gap-1 items-center">
+      <button onClick={() => navigate(-1)} className="flex gap-1 items-center">
         <img src={leftArrowIcon} className="size-3" />
         <p className=" text-gray-02 typo-body-04">돌아가기</p>
-      </Link>
+      </button>
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           {icon && <img src={icon} alt="" />}
@@ -35,12 +36,13 @@ function MobilePageHeader({ title, subTitle, icon }: PageHeaderProps) {
 }
 
 function DesktopPageHeader({ title, subTitle, icon }: PageHeaderProps) {
+  const navigate = useNavigate();
   return (
     <section className="flex flex-col gap-4">
-      <Link to={"/detail"} className="flex gap-1">
+      <button onClick={() => navigate(-1)} className="flex gap-1">
         <img src={leftArrowIcon} />
         <p className=" text-gray-02 typo-body-03">돌아가기</p>
-      </Link>
+      </button>
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           {icon && <img src={icon} alt="" />}

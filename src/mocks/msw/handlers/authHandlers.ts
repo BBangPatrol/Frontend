@@ -27,13 +27,9 @@ export const authHandlers = [
             return HttpResponse.json(
                 {
                     isSuccess: false,
-                    code: "400",
+                    code: "AUTH400",
                     message: "로그인 요청이 올바르지 않습니다.",
                     data: null,
-                    errors: {
-                        field: "code",
-                        message: "카카오 인가 코드가 필요합니다.",
-                    },
                 },
                 { status: 400 },
             );
@@ -80,7 +76,6 @@ export const authHandlers = [
                 message: isNewUser ? "회원가입에 성공했습니다." : "로그인에 성공했습니다.",
                 data: {
                     accessToken: MOCK_ACCESS_TOKEN,
-                    refreshToken: MOCK_REFRESH_TOKEN,
                     isNewUser,
                 },
                 errors: null,
