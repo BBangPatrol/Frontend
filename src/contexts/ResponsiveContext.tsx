@@ -17,7 +17,9 @@ const ResponsiveContext = createContext<ResponsiveContextType | null>(null);
 
 export function ResponsiveProvider({ children }: { children: ReactNode }) {
   const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") return false;
+    if (typeof window === "undefined") {
+      return false;
+    }
 
     return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches;
   });
@@ -61,5 +63,3 @@ export function useResponsive() {
 
   return context;
 }
-
-// const { isMobile } = useResponsive();
