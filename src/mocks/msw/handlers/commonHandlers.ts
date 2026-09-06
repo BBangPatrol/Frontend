@@ -1,10 +1,11 @@
 // handlers/commonHandlers.ts
 
 import { http, HttpResponse } from "msw";
-import { matchPath } from "react-router";
+import { matchPath } from "react-router-dom";
 
 // data
 import { methodNotAllowed, notFound } from "../data/common";
+import { apiUrl } from "../../../api/config";
 
 // 405 응답을 위한 path 배열
 const apiPaths = [
@@ -20,7 +21,7 @@ const apiPaths = [
     "/api/:v/users/me/reviews",
     "/api/:v/stores/search",
     "/api/:v/stores/:storeId/detail",
-    "/api/:v/stores/:storeId/near",
+    "/api/:v/stores/:storeId/attractions",
     "/api/:v/stores/:storeId/favorites",
     "/api/:v/stores/:storeId/visit-verifications",
     "/api/:v/stores/:storeId/visits",
@@ -36,7 +37,7 @@ const apiPaths = [
 // 명세서 상 존재하는 path 이지만 메서드가 없을경우 405 응답
 // 명세서 상 존재하지 않는 path인 경우 404 응답
 export const commonHandlers = [
-    http.all(`*/api/*`, ({ request }) => {
+    http.all(apiUrl("*"), ({ request }) => {
         const { pathname } = new URL(request.url);
         const isApiPath = apiPaths.some((path) => matchPath(path, pathname));
 
