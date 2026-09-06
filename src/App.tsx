@@ -1,17 +1,7 @@
-import { BrowserRouter, Route, Routes } from "react-router";
-import ApiTestPage from "./pages/ApiTestPage";
-import MainPage from "./pages/MainPage";
+import { RouterProvider } from "react-router-dom";
 
-// 라우팅
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/api-test" element={<ApiTestPage />} />
-      </Routes>
-    </BrowserRouter>
-  );
+import { router } from "./app/router";
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
-
-export default App;
