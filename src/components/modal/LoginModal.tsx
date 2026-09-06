@@ -26,7 +26,7 @@ export default function LoginModal({
         <button
           type="button"
           onClick={onClose}
-          className={`absolute flex ${isMobile ? " top-4 right-4  h-3 w-3" : " top-5 right-5  h-8 w-8"}`}
+          className={`absolute flex ${isMobile ? " top-4 right-4  h-5 w-5" : " top-5 right-5  h-8 w-8"}`}
         >
           <img src={X} alt="Close" className="w-5 h-5" />
         </button>
@@ -62,7 +62,7 @@ export default function LoginModal({
           </button>
           <button
             type="button"
-            className={`flex w-full items-center justify-center text-gray-02 underline underline-offset-3 underline-gray-02 ${isMobile ? "typo-head-05" : "typo-sub-01 "}`}
+            className={`flex w-full items-center justify-center text-gray-02 underline underline-offset-3 underline-gray-02 ${isMobile ? "typo-sub-03" : "typo-sub-01 "}`}
             onClick={onClose}
           >
             개스트로 둘러보기

@@ -58,7 +58,7 @@ export default function DesktopNavigation() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-100 h-18 w-full border-b border-black/5 bg-white/95 backdrop-blur-md">
+    <header className="sticky top-0 z-100 h-18 w-full border-b border-black/5 bg-white/95 backdrop-blur-md border-b-1 border-main-04">
       <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-8">
         {/* Logo */}
         <NavLink
@@ -149,6 +149,10 @@ export default function DesktopNavigation() {
           onClose={() => setIsProfileModalOpen(false)}
           onChangeNickname={() => {}}
           onSubmit={() => setIsProfileModalOpen(false)}
+          onLogout={() => {
+            setIsLoggedIn(false);
+            setIsProfileModalOpen(false);
+          }}
         />
       )}
       {isLoginModalOpen && (

@@ -10,6 +10,7 @@ interface ProfileModalProps {
   onClose?: () => void;
   onChangeNickname?: (value: string) => void;
   onSubmit?: () => void;
+  onLogout?: () => void;
 }
 
 export default function ProfileModal({
@@ -19,6 +20,7 @@ export default function ProfileModal({
   onClose,
   onChangeNickname,
   onSubmit,
+  onLogout,
 }: ProfileModalProps) {
   return createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
@@ -90,13 +92,22 @@ export default function ProfileModal({
         </div>
 
         {/* Submit Button */}
-        <button
-          type="button"
-          onClick={onSubmit}
-          className={`w-full rounded-xl bg-[#CB8E57] font-semibold text-white shadow-btn ${isMobile ? "typo-head-05 py-3" : "typo-head-04 py-4"}`}
-        >
-          수정 완료
-        </button>
+        <div className="flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={onSubmit}
+            className={`flex-1 rounded-xl bg-sub-01 font-semibold text-white shadow-btn ${isMobile ? "typo-head-05 py-3" : "typo-head-04 py-4"}`}
+          >
+            수정 완료
+          </button>
+          <button
+            type="button"
+            onClick={onLogout}
+            className={`flex-1 rounded-xl bg-red font-semibold text-white shadow-btn ${isMobile ? "typo-head-05 py-3" : "typo-head-04 py-4"}`}
+          >
+            로그아웃
+          </button>
+        </div>
       </div>
     </div>,
     document.body,
