@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router";
+import { NavLink, useLocation } from "react-router-dom";
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // assets
 import logo from "../../assets/icon/logo.svg";

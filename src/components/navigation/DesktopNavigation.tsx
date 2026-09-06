@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useResponsive } from "../../contexts/ResponsiveContext";
 
