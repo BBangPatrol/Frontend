@@ -1,7 +1,7 @@
 // handlers/commonHandlers.ts
 
 import { http, HttpResponse } from "msw";
-import { matchPath } from "react-router";
+import { matchPath } from "react-router-dom";
 
 // data
 import { methodNotAllowed, notFound } from "../data/common";

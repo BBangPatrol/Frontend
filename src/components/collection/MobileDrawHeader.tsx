@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import DrawPoint from "./DrawPoint";
 import leftArrowIcon from "@/assets/images/reviewDetailPage/left-arrow.svg";
 import headerIcon from "@/assets/images/drawPage/header-star.svg";

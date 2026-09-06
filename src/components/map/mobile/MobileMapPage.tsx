@@ -8,7 +8,7 @@ import bakeryImage from "@/assets/images/detailPage/temp_1.jpeg";
 import type { StoreSearchResult, StoreSearchSort } from "../../../api/stores";
 import { useStoreSearch } from "../../../hooks/useStoreSearch";
 import { useRef, useState, type ChangeEvent, type FormEvent, type PointerEvent } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { CustomOverlayMap, Map, useKakaoLoader } from "react-kakao-maps-sdk";
 
 const KAKAO_MAP_API_KEY = import.meta.env.VITE_KAKAO_MAP_API_KEY?.trim() ?? "";

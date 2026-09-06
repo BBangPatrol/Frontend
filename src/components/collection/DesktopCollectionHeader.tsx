@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import DrawLink from "./DrawLink";
 import collectibleHeaderIcon from "@/assets/images/collectiblePage/gift.svg";
 import leftArrowIcon from "@/assets/images/reviewDetailPage/left-arrow.svg";

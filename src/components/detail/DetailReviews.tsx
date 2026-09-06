@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import Review from "../review/Review";
 import ReviewSummary from "./ReviewSummary";
 import rightArrowIcon from "@/assets/images/detailPage/right-arrow.svg";

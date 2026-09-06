@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { isAxiosError } from "axios";
 import PageStatus from "../../components/common/PageStatus";
 import DetailFunctionButtons from "../../components/detail/DetailFunctionButtons";

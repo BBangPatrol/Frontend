@@ -1,15 +1,17 @@
 import closeButtonIcon from "@/assets/images/collectiblePage/collectible-detail-close.svg";
 import tempCollectible from "@/assets/images/collectiblePage/temp-collect.png";
+import type { Collectible } from "../../api/collectibles";
 
 type CollectibleDetailModalProps = {
+  collectible: Collectible;
   onClose: () => void;
 };
 
-export default function CollectibleDetailModal({ onClose }: CollectibleDetailModalProps) {
+export default function CollectibleDetailModal({ collectible, onClose }: CollectibleDetailModalProps) {
   return (
     <section className="fixed inset-0 bg-white/85 md:bg-black/50 flex flex-col gap-5 items-center justify-center">
       <CollectibleImage onClose={onClose} />
-      <CollectibleExplain />
+      <CollectibleExplain collectible={collectible} />
     </section>
   );
 }
@@ -28,11 +30,11 @@ function CollectibleImage({ onClose }: { onClose: () => void }) {
   );
 }
 
-function CollectibleExplain() {
+function CollectibleExplain({ collectible }: { collectible: Collectible }) {
   return (
     <div className="px-4 py-2 bg-black/60 rounded-xl flex flex-col items-center gap-[2.8px]">
-      <p className="text-sub-01 text-[9.80px] font-bold">No.001</p>
-      <p className="text-white typo-body-02">나는야 꿈순이</p>
+      <p className="text-sub-01 text-[9.80px] font-bold">No.{String(collectible.collectibleId).padStart(3, "0")}</p>
+      <p className="text-white typo-body-02">{collectible.name}</p>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import tempCollectible from "@/assets/images/drawPage/temp-collectible.png";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 type DrawResultProps = {
   onClose: () => void;

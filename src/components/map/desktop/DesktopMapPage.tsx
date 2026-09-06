@@ -7,7 +7,7 @@ import visitIcon from "@/assets/images/mapPage/visit.svg";
 import type { StoreSearchResult, StoreSearchSort } from "../../../api/stores";
 import { useStoreSearch } from "../../../hooks/useStoreSearch";
 import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { CustomOverlayMap, Map, useKakaoLoader } from "react-kakao-maps-sdk";
 
 const KAKAO_MAP_API_KEY = import.meta.env.VITE_KAKAO_MAP_API_KEY?.trim() ?? "";

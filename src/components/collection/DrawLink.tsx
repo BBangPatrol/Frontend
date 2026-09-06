@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import drawButtonIcon from "@/assets/images/collectiblePage/gift-white.svg";
 
 export default function DrawLink() {

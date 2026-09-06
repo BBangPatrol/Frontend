@@ -1,7 +1,7 @@
 import { isAxiosError } from "axios";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import type { LoginErrorResponse } from "../api/auth";
 import { API_BASE_URL } from "../api/config";
 import { useLogin } from "../hooks/useLogin";

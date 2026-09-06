@@ -3,7 +3,7 @@ import { isAxiosError } from "axios";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { api } from "../api/client";
 import { API_BASE_URL, API_PATH } from "../api/config";
 import type { RootState } from "../store/store";
