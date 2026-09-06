@@ -3,6 +3,7 @@ import check from "../../assets/icon/check-sub-01.svg";
 import trash from "../../assets/icon/trash-red.svg";
 
 type ModalType = "receipt" | "delete" | "collection";
+
 type Rarity = "normal" | "rare" | "hero" | "legend";
 
 type Props = {
@@ -27,23 +28,23 @@ const rarityStyle: Record<
 > = {
   normal: {
     label: "일반",
-    backgroundClass: "bg-label-01-bg",
-    textClass: "text-label-01-text",
+    backgroundClass: "bg-label-bg-01",
+    textClass: "text-label-text-01",
   },
   rare: {
     label: "희귀",
-    backgroundClass: "bg-label-02-bg",
-    textClass: "text-label-02-text",
+    backgroundClass: "bg-label-bg-02",
+    textClass: "text-label-text-02",
   },
   hero: {
     label: "영웅",
-    backgroundClass: "bg-label-03-bg",
-    textClass: "text-label-03-text",
+    backgroundClass: "bg-label-bg-03",
+    textClass: "text-label-text-03",
   },
   legend: {
     label: "전설",
-    backgroundClass: "bg-label-04-bg",
-    textClass: "text-label-04-text",
+    backgroundClass: "bg-label-bg-04",
+    textClass: "text-label-text-04",
   },
 };
 
@@ -79,29 +80,44 @@ export default function OriginModal({
     >
       {type === "collection" ? (
         <>
-          {/* 수집품 이미지 */}
+          {/* 수집품 이미지 영역 */}
           <div
             className={`
-              flex items-center justify-center overflow-hidden rounded-xl
-              ${currentRarity.backgroundClass}
+              relative isolate flex items-center justify-center
               ${isMobile ? "h-40 w-40" : "h-48 w-48"}
             `}
           >
+            {/* 희귀도별 흐림 배경 */}
+            <div
+              aria-hidden="true"
+              className={`
+                absolute inset-5 rounded-full
+                blur-[48px]
+                ${currentRarity.backgroundClass}
+              `}
+            />
+
+            {/* 수집품 이미지 */}
             {imageUrl && (
               <img
                 src={imageUrl}
                 alt={name || "획득한 수집품"}
-                className="h-full w-full object-contain"
+                className="
+                  relative z-10
+                  h-full w-full
+                  object-contain
+                "
               />
             )}
           </div>
 
-          {/* 텍스트 영역 */}
+          {/* 수집품 안내 영역 */}
           <div className="flex w-full flex-col items-center gap-3 text-center">
+            {/* 희귀도 라벨 */}
             <span
               className={`
                 rounded-full px-2 py-1
-                text-caption-12-m
+                ${isMobile ? "typo-body-04" : "typo-body-03"}
                 ${currentRarity.backgroundClass}
                 ${currentRarity.textClass}
               `}
@@ -109,53 +125,85 @@ export default function OriginModal({
               희귀도: {currentRarity.label}
             </span>
 
-            <div className="flex flex-col items-center gap-3">
+            <div
+              className={`flex flex-col items-center gap-3 ${isMobile ? "gap-2" : "gap-3"}`}
+            >
               <p
                 className={`
+                  text-black-01
                   ${isMobile ? "typo-head-02" : "typo-head-01"}
-                  text-gray-90
                 `}
               >
                 <span className={currentRarity.textClass}>
                   {name || "새로운 수집품"}
-                </span>{" "}
+                </span>
                 획득!
               </p>
 
-              <p className="whitespace-pre-line text-body-14-r text-gray-60">
+              <p
+                className={`whitespace-pre-line ${isMobile ? "typo-sub-02" : "typo-sub-01"} text-gray-02`}
+              >
                 {"새로운 수집품을 획득했습니다!\n수집품 도감에서 확인해보세요."}
               </p>
             </div>
           </div>
 
           {/* 버튼 영역 */}
-          <div className="flex w-full gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="
-                h-12 flex-1 rounded-xl bg-gray-15
-                text-body-16-b text-gray-70
-              "
-            >
-              닫기
-            </button>
+          {isMobile ? (
+            <div className={`flex w-full gap-2 flex-col`}>
+              <button
+                type="button"
+                onClick={onConfirm}
+                className={`
+                rounded-xl h-10.5 shadow-button
+                bg-sub-01 typo-head-04 text-white
+              `}
+              >
+                도감 확인
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className={`
+                h-10.5 rounded-xl
+                bg-gray-04 typo-head-04 text-gray-01
+              `}
+              >
+                닫기
+              </button>
+            </div>
+          ) : (
+            <div className={`flex w-full gap-3}`}>
+              <button
+                type="button"
+                onClick={onClose}
+                className={`
+                h-11.5 flex-1 rounded-xl
+                bg-gray-04 typo-head-04 text-gray-01
+                
+              `}
+              >
+                닫기
+              </button>
 
-            <button
-              type="button"
-              onClick={onConfirm}
-              className="
-                h-12 flex-1 rounded-xl bg-sub-01
-                text-body-16-b text-white shadow-button
-              "
-            >
-              도감 확인
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={onConfirm}
+                className={`
+                flex-1 rounded-xl
+                bg-sub-01 typo-head-04 text-white
+                shadow-button
+                h-11.5
+              `}
+              >
+                도감 확인
+              </button>
+            </div>
+          )}
         </>
       ) : (
         <>
-          {/* 영수증 인증 / 리뷰 삭제 아이콘 */}
+          {/* 영수증 인증 또는 리뷰 삭제 아이콘 */}
           <div
             className={`
               flex items-center justify-center rounded-full border-2
