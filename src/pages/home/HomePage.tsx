@@ -1,8 +1,8 @@
+// contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
 
 export default function HomePage() {
   const { isMobile } = useResponsive();
-
   return (
     <div>
       <h1>Home</h1>

@@ -5,11 +5,9 @@ import { getMockAuthState } from "../utils/auth";
 import { unauthorized } from "../data/common";
 import {
     getStoreReviewsFirstResponse,
-    getStoreReviewsSecondResponse,
     myFavoriteResponse,
     receiptVerificationResultResponse,
-    searchResultFirstResponse,
-    searchResultSecondResponse,
+    searchResultResponse,
     storeDetailResponse,
     visitVerificationResponse,
 } from "../data/stores";
@@ -32,28 +30,8 @@ async function readJsonBody<T>(request: Request): Promise<T | null> {
 
 export const storesHandlers = [
     // [get] 지도 검색
-    // Query String은 적용되어 있지 않음 (Cursor기반 페이지네이션만 가능)
-    http.get(apiUrl("stores/search"), ({ request }) => {
-        const url = new URL(request.url);
-        const cursor = Number(url.searchParams.get("cursor") ?? 0);
-
-        // 프론트엔드용 응답 (커서가 제대로 입력되지 않은 경우)
-        if (cursor == 0) {
-            return HttpResponse.json(
-                {
-                    isSuccess: false,
-                    code: "400",
-                    message: "cursor 요청값이 올바르게 설정되지 않았습니다.",
-                },
-                { status: 400 },
-            );
-        }
-
-        // 페이지 순환용 응답
-        if (cursor == 1) return HttpResponse.json(searchResultFirstResponse);
-        if (cursor == 2) return HttpResponse.json(searchResultSecondResponse);
-
-        return HttpResponse.json(searchResultFirstResponse);
+    http.get(apiUrl("stores/search"), () => {
+        return HttpResponse.json(searchResultResponse);
     }),
 
     // [post] 즐겨찾기 추가
@@ -114,7 +92,41 @@ export const storesHandlers = [
     }),
 
     // [GET] 근처 관광지 조회
-    http.get(apiUrl("stores/:storeId/near"), () => {}),
+    http.get(apiUrl("stores/:storeId/attractions"), () => {
+        return HttpResponse.json({
+            isSuccess: true,
+            code: "200",
+            message: "요청이 성공적입니다.",
+            data: {
+                attractions: [
+                    {
+                        contentId: "1622695",
+                        category: "관광지",
+                        name: "이시직공정려각",
+                        address: "대전광역시 대덕구 송촌동",
+                        imageUrl:
+                            "http://tong.visitkorea.or.kr/cms/resource/75/3033275_image2_1.JPG",
+                        lat: 36.3619180566,
+                        lng: 127.4394906219,
+                        distance: 1708,
+                        tel: "",
+                    },
+                    {
+                        contentId: "1622603",
+                        category: "관광지",
+                        name: "법동 석장승",
+                        address: "대전광역시 대덕구 법동",
+                        imageUrl:
+                            "http://tong.visitkorea.or.kr/cms/resource/54/3033154_image2_1.JPG",
+                        lat: 36.3676061288,
+                        lng: 127.430166301,
+                        distance: 1809,
+                        tel: "",
+                    },
+                ],
+            },
+        });
+    }),
 
     // [POST] 영수증 OCR 분석
     // storeId = 999 로 존재하지 않는 가게(404) 테스트
@@ -217,23 +229,7 @@ export const storesHandlers = [
 
     // [get] 리뷰 조회 (특정 가게 리뷰 조회)
     // storeId = 999 로 존재하지 않는 가게(404) 테스트
-    // nextCursor로 2페이지까지 조회가능, hasNext로 2페이지에서 페이지네이션 중단하기
-    http.get(apiUrl("stores/:storeId/reviews"), ({ request, params }) => {
-        const url = new URL(request.url);
-        const cursor = Number(url.searchParams.get("cursor") ?? 0);
-
-        // 프론트엔드용 응답 (커서가 제대로 입력되지 않은 경우)
-        if (cursor == 0) {
-            return HttpResponse.json(
-                {
-                    isSuccess: false,
-                    code: "400",
-                    message: "cursor 요청값이 올바르게 설정되지 않았습니다.",
-                },
-                { status: 400 },
-            );
-        }
-
+    http.get(apiUrl("stores/:storeId/reviews"), ({ params }) => {
         const storeId = Number(params.storeId);
 
         if (storeId == 999) {
@@ -247,9 +243,6 @@ export const storesHandlers = [
                 { status: 404 },
             );
         }
-
-        if (cursor == 1) return HttpResponse.json(getStoreReviewsFirstResponse);
-        if (cursor == 2) return HttpResponse.json(getStoreReviewsSecondResponse);
 
         return HttpResponse.json(getStoreReviewsFirstResponse);
     }),
