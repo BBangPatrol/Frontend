@@ -1,4 +1,5 @@
-import { api } from "./client";
+import { api, authApi } from "./client";
+import type { AuthUser } from "../store/authSlice";
 
 export type LoginData = {
   accessToken: string;
@@ -28,4 +29,14 @@ export async function login(code: string) {
   const response = await api.post<LoginResponse>("/auth/login", { code });
 
   return response.data;
+}
+
+export async function getMe() {
+  const response = await authApi.get<{ data: AuthUser }>("/auth/me");
+
+  return response.data.data;
+}
+
+export async function logout() {
+  await authApi.post("/auth/logout");
 }

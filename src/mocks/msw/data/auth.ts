@@ -8,8 +8,9 @@ export const userInfo = {
     code: "200",
     message: "요청이 성공적입니다.",
     data: {
-        userId: 1,
+        id: 1,
         userNickname: "닉네임",
+        imageUrl: null,
     },
     errors: null,
 };
