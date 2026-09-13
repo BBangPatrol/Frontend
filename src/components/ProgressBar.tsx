@@ -23,7 +23,7 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
         aria-valuemin={0}
         aria-valuemax={total}
         aria-valuenow={safeCurrent}
-        className="h-3 w-full overflow-hidden rounded-full bg-gray-100"
+        className="h-3 w-full overflow-hidden rounded-full bg-gray-04"
       >
         <div
           className="h-full rounded-full bg-sub-01 transition-[width] duration-300 ease-out"
