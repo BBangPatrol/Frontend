@@ -18,7 +18,8 @@
     "react-dom": "^19.2.7",
     "react-kakao-maps-sdk": "^1.2.2",
     "react-redux": "^9.3.0",
-    "react-router-dom": "^7.18.3"
+    "react-router-dom": "^7.18.3",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

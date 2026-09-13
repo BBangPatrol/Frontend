@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "./config";
 import { store } from "../store/store";
+import { clearAuth } from "../store/authSlice";
 
 const apiConfig = {
   baseURL: API_BASE_URL,
@@ -22,3 +23,11 @@ authApi.interceptors.request.use((config) => {
 
   return config;
 });
+
+authApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) store.dispatch(clearAuth());
+    return Promise.reject(error);
+  },
+);

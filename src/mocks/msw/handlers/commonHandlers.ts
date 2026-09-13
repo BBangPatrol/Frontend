@@ -20,6 +20,7 @@ const apiPaths = [
     "/api/:v/users/me/points",
     "/api/:v/users/me/reviews",
     "/api/:v/stores/search",
+    "/api/:v/stores/hot",
     "/api/:v/stores/:storeId/detail",
     "/api/:v/stores/:storeId/attractions",
     "/api/:v/stores/:storeId/favorites",
@@ -29,9 +30,9 @@ const apiPaths = [
     "/api/:v/stores/:storeId/reviews/:reviewId",
     "/api/:v/stores/:storeId/reviews/:reviewId/like",
     "/api/:v/missions",
+    "/api/:v/missions/main",
     "/api/:v/missions/:missionId",
     "/api/:v/collectibles",
-    "/api/:v/collectibles/draw",
 ];
 
 // 명세서 상 존재하는 path 이지만 메서드가 없을경우 405 응답

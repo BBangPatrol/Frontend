@@ -5,13 +5,12 @@ import searchIcon from "@/assets/images/mapPage/search.svg";
 import starIcon from "@/assets/images/mapPage/star.svg";
 import visitIcon from "@/assets/images/mapPage/visit.svg";
 import type { StoreSearchResult, StoreSearchSort } from "../../../api/stores";
-import { useStoreSearch } from "../../../hooks/useStoreSearch";
+import { DEFAULT_MAP_CENTER, KAKAO_MAP_API_KEY } from "../../../constants/map";
+import Pagination from "../../common/Pagination";
+import { useStoreSearch } from "../../../hooks/api/useStoreSearch";
 import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { CustomOverlayMap, Map, useKakaoLoader } from "react-kakao-maps-sdk";
-
-const KAKAO_MAP_API_KEY = import.meta.env.VITE_KAKAO_MAP_API_KEY?.trim() ?? "";
-const DEFAULT_MAP_CENTER = { lat: 36.3504, lng: 127.3845 };
 
 export default function DesktopMapPage() {
   const [searchInput, setSearchInput] = useState("");
@@ -46,16 +45,12 @@ export default function DesktopMapPage() {
     setSelectedBakeryId(null);
   };
 
-  const handleNextPage = () => {
-    const nextCursor = searchQuery.data?.pageInfo.nextCursor;
-    if (nextCursor == null) return;
-
-    setCursorHistory((history) => [...history, nextCursor]);
-    setSelectedBakeryId(null);
-  };
-
-  const handlePreviousPage = () => {
-    setCursorHistory((history) => history.slice(0, -1));
+  const handlePageChange = (page: number) => {
+    if (page <= cursorHistory.length) setCursorHistory((history) => history.slice(0, page));
+    else {
+      const nextCursor = searchQuery.data?.cursorPageInfo.nextCursor;
+      if (nextCursor != null) setCursorHistory((history) => [...history, nextCursor]);
+    }
     setSelectedBakeryId(null);
   };
 
@@ -68,15 +63,14 @@ export default function DesktopMapPage() {
           sort={sort}
           selectedBakeryId={selectedBakeryId}
           page={cursorHistory.length}
-          hasNext={searchQuery.data?.pageInfo.hasNext ?? false}
+          hasNext={searchQuery.data?.cursorPageInfo.hasNext ?? false}
           isLoading={searchQuery.isFetching}
           isError={searchQuery.isError}
           onSearchInputChange={setSearchInput}
           onSearch={handleSearch}
           onSortChange={handleSortChange}
           onBakerySelect={(bakery) => setSelectedBakeryId(bakery.bakery.id)}
-          onNextPage={handleNextPage}
-          onPreviousPage={handlePreviousPage}
+          onPageChange={handlePageChange}
         />
         <div className="relative min-w-0 flex-1">
           <MapView bakeries={bakeries} selectedBakery={selectedBakery} onBakerySelect={(bakery) => setSelectedBakeryId(bakery.bakery.id)} />
@@ -148,8 +142,7 @@ type SearchPanelProps = {
   onSearch: (event: FormEvent<HTMLFormElement>) => void;
   onSortChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   onBakerySelect: (bakery: StoreSearchResult) => void;
-  onNextPage: () => void;
-  onPreviousPage: () => void;
+  onPageChange: (page: number) => void;
 };
 
 function SearchPanel({
@@ -165,8 +158,7 @@ function SearchPanel({
   onSearch,
   onSortChange,
   onBakerySelect,
-  onNextPage,
-  onPreviousPage,
+  onPageChange,
 }: SearchPanelProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const [scrollbar, setScrollbar] = useState({ top: 0, height: 0, visible: false });
@@ -223,8 +215,7 @@ function SearchPanel({
             isLoading={isLoading}
             isError={isError}
             onBakerySelect={onBakerySelect}
-            onNextPage={onNextPage}
-            onPreviousPage={onPreviousPage}
+            onPageChange={onPageChange}
           />
         </div>
         {scrollbar.visible && (
@@ -265,11 +256,10 @@ type SearchResultContentProps = {
   isLoading: boolean;
   isError: boolean;
   onBakerySelect: (bakery: StoreSearchResult) => void;
-  onNextPage: () => void;
-  onPreviousPage: () => void;
+  onPageChange: (page: number) => void;
 };
 
-function SearchResultContent({ bakeries, selectedBakeryId, page, hasNext, isLoading, isError, onBakerySelect, onNextPage, onPreviousPage }: SearchResultContentProps) {
+function SearchResultContent({ bakeries, selectedBakeryId, page, hasNext, isLoading, isError, onBakerySelect, onPageChange }: SearchResultContentProps) {
   if (isLoading) return <SearchFallback message="검색 결과를 불러오는 중이에요" />;
   if (isError) return <SearchFallback message="검색 결과를 불러오지 못했어요" />;
   if (bakeries.length === 0) return <SearchFallback message="검색 결과가 없어요" />;
@@ -279,27 +269,13 @@ function SearchResultContent({ bakeries, selectedBakeryId, page, hasNext, isLoad
       {bakeries.map((bakery) => (
         <BakeryCard key={bakery.bakery.id} bakery={bakery} selected={bakery.bakery.id === selectedBakeryId} onClick={() => onBakerySelect(bakery)} />
       ))}
-      <Pagination page={page} hasNext={hasNext} onPrevious={onPreviousPage} onNext={onNextPage} />
+      <Pagination page={page} hasNext={hasNext} onPageChange={onPageChange} />
     </>
   );
 }
 
 function SearchFallback({ message }: { message: string }) {
   return <div className="typo-body-03 flex min-h-32 flex-1 items-center justify-center text-gray-02">{message}</div>;
-}
-
-function Pagination({ page, hasNext, onPrevious, onNext }: { page: number; hasNext: boolean; onPrevious: () => void; onNext: () => void }) {
-  return (
-    <div className="flex items-center justify-center gap-4 py-2">
-      <button type="button" aria-label="이전 페이지" disabled={page === 1} onClick={onPrevious} className="size-8 rounded-full border border-gray-03 disabled:opacity-30">
-        ←
-      </button>
-      <span className="typo-body-04 text-gray-02">{page}</span>
-      <button type="button" aria-label="다음 페이지" disabled={!hasNext} onClick={onNext} className="size-8 rounded-full border border-gray-03 disabled:opacity-30">
-        →
-      </button>
-    </div>
-  );
 }
 
 function BakeryCard({ bakery: result, selected, onClick }: { bakery: StoreSearchResult; selected: boolean; onClick: () => void }) {
@@ -315,7 +291,7 @@ function BakeryCard({ bakery: result, selected, onClick }: { bakery: StoreSearch
       onClick={onClick}
       className={`flex w-full shrink-0 gap-2 rounded-2xl border border-sub-01 p-4 text-left shadow-[0px_1px_3px_0px_rgba(0,0,0,0.10)] ${selected ? "bg-yellow-02" : "bg-white"} ${selected ? "border-sub-01" : "border-gray-04"}`}
     >
-      <img src={bakery.image || bakery.signatureImages[0] || bakeryImage} alt="" className="h-21 w-22 rounded-xl object-cover" />
+      <img src={bakery.image || bakeryImage} alt="" className="h-21 w-22 rounded-xl object-cover" />
       <div className="flex w-full min-w-0 flex-col justify-center gap-2">
         <div className="flex items-center">
           <h3 className="typo-head-04 text-black-01 truncate">{bakery.name}</h3>

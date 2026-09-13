@@ -1,6 +1,6 @@
 import { authApi } from "./client";
 
-export type MissionStatus = "notReceived" | "inProgress" | "completed" | "fail";
+export type MissionStatus = "notReceived" | "inProgress" | "completed" | "failed";
 
 export type Mission = {
   id: number;
@@ -17,7 +17,7 @@ export type Mission = {
 
 export type Missions = {
   missions: Mission[];
-  pageInfo: {
+  cursorPageInfo: {
     size: number;
     hasNext: boolean;
     nextCursor: number | null;
@@ -36,9 +36,9 @@ type ApiResponse<T> = {
   data: T;
 };
 
-export async function getMissions() {
+export async function getMissions(cursor?: number) {
   const response = await authApi.get<ApiResponse<Missions>>("/missions", {
-    params: { filter: "all", size: 20 },
+    params: { filter: "all", cursor, size: 20 },
   });
 
   return response.data.data;

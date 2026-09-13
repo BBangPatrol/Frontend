@@ -96,6 +96,16 @@
   --shadow-card: 0px 1px 3px -1px rgba(0, 0, 0, 0.1); /* 카드 기본 그림자 */
 }
 
+@layer base {
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
 /* Figma Typography: Head, Body, Sub */
 .typo-head-01 {
   font-size: 24px;

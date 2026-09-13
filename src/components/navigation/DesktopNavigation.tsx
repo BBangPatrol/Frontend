@@ -1,3 +1,8 @@
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { startKakaoLogin } from "../../utils/kakao";
+import { useLogout } from "../../hooks/api/useLogout";
+import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { NavLink } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useResponsive } from "../../contexts/ResponsiveContext";
@@ -30,15 +35,16 @@ const navigationItems = [
 export default function DesktopNavigation() {
   const { isMobile } = useResponsive();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isLoggedIn = useIsLoggedIn();
+  const { mutate: requestLogout } = useLogout();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const tempProfileImageUrl =
-    "https://stickershop.line-scdn.net/stickershop/v1/product/15939148/LINEStorePC/main.png?v=1";
+  const profileImageUrl = user?.imageUrl || logo;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -98,12 +104,12 @@ export default function DesktopNavigation() {
               className="flex items-center gap-2 rounded-full px-3 py-1 transition-colors hover:bg-gray-100"
             >
               <img
-                src={tempProfileImageUrl}
+                src={profileImageUrl}
                 alt="Profile"
                 className="h-8 w-8 rounded-full object-cover"
               />
 
-              <p className="typo-body-03 text-black-01">닉네임</p>
+              <p className="typo-body-03 text-black-01">{user?.userNickname}</p>
             </button>
 
             {isProfileOpen && (
@@ -123,7 +129,7 @@ export default function DesktopNavigation() {
                   type="button"
                   className="flex w-full items-center justify-center rounded-lg px-3 py-2 typo-body-03 text-red-500 transition-colors hover:bg-gray-100"
                   onClick={() => {
-                    setIsLoggedIn(false);
+                    requestLogout();
                     setIsProfileOpen(false);
                   }}
                 >
@@ -144,13 +150,13 @@ export default function DesktopNavigation() {
       {isProfileModalOpen && (
         <ProfileModal
           isMobile={isMobile}
-          nickname="빵순이"
-          profileImageUrl={tempProfileImageUrl}
+          nickname={user?.userNickname ?? ""}
+          profileImageUrl={profileImageUrl}
           onClose={() => setIsProfileModalOpen(false)}
           onChangeNickname={() => {}}
           onSubmit={() => setIsProfileModalOpen(false)}
           onLogout={() => {
-            setIsLoggedIn(false);
+            requestLogout();
             setIsProfileModalOpen(false);
           }}
         />
@@ -158,10 +164,7 @@ export default function DesktopNavigation() {
       {isLoginModalOpen && (
         <LoginModal
           isMobile={isMobile}
-          onClick={() => {
-            setIsLoginModalOpen(false);
-            setIsLoggedIn(true);
-          }}
+          onClick={startKakaoLogin}
           onClose={() => setIsLoginModalOpen(false)}
         />
       )}

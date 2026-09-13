@@ -1,3 +1,8 @@
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { startKakaoLogin } from "../../utils/kakao";
+import { useLogout } from "../../hooks/api/useLogout";
+import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useResponsive } from "../../contexts/ResponsiveContext";
@@ -32,14 +37,15 @@ export default function MobileNavigation() {
   const { isMobile } = useResponsive();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isLoggedIn = useIsLoggedIn();
+  const { mutate: requestLogout } = useLogout();
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const location = useLocation();
 
-  const tempProfileImageUrl =
-    "https://stickershop.line-scdn.net/stickershop/v1/product/15939148/LINEStorePC/main.png?v=1";
+  const profileImageUrl = user?.imageUrl || logo;
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -245,11 +251,11 @@ export default function MobileNavigation() {
             <div className="flex w-full justify-between py-3">
               <div className="flex items-center gap-2">
                 <img
-                  src={tempProfileImageUrl}
+                  src={profileImageUrl}
                   alt="Profile"
                   className="h-6 w-6 rounded-full"
                 />
-                <p className="typo-body-03">닉네임님 환영합니다</p>
+                <p className="typo-body-03">{user?.userNickname}님 환영합니다</p>
               </div>
               <button
                 onClick={() => setIsProfileModalOpen(true)}
@@ -270,13 +276,13 @@ export default function MobileNavigation() {
         {isProfileModalOpen && (
           <ProfileModal
             isMobile={isMobile}
-            nickname="빵순이"
-            profileImageUrl={tempProfileImageUrl}
+            nickname={user?.userNickname ?? ""}
+            profileImageUrl={profileImageUrl}
             onClose={() => setIsProfileModalOpen(false)}
             onChangeNickname={() => {}}
             onSubmit={() => setIsProfileModalOpen(false)}
             onLogout={() => {
-              setIsLoggedIn(false);
+              requestLogout();
               setIsProfileModalOpen(false);
             }}
           />
@@ -284,10 +290,7 @@ export default function MobileNavigation() {
         {isLoginModalOpen && (
           <LoginModal
             isMobile={isMobile}
-            onClick={() => {
-              setIsLoginModalOpen(false);
-              setIsLoggedIn(true);
-            }}
+            onClick={startKakaoLogin}
             onClose={() => setIsLoginModalOpen(false)}
           />
         )}

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getStoreSearch, type StoreSearchParams } from "../api/stores";
+import { getStoreSearch, type StoreSearchParams } from "../../api/stores";
 
 export function useStoreSearch(params: StoreSearchParams) {
   return useQuery({

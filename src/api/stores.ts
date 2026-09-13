@@ -1,4 +1,4 @@
-import { api } from "./client";
+import { api, authApi } from "./client";
 
 export type StoreBakery = {
   id: number;
@@ -11,10 +11,9 @@ export type StoreBakery = {
   hours: string;
   avgRating: number | null;
   signatureMenu: string;
+  image: string | null;
   summary: string | null;
   content: string;
-  images: string[];
-  signatureImages: string[];
 };
 
 export type StoreReview = {
@@ -26,6 +25,7 @@ export type StoreReview = {
   content: string;
   keywords: number[];
   images: string[];
+  thumbnails: string[];
   likeCount: number;
   date: string;
 };
@@ -38,10 +38,13 @@ export type StoreDetail = {
 
 export type StoreReviews = {
   reviews: StoreReview[];
+  count: number;
   pageInfo: {
+    page: number;
     size: number;
+    totalElements: number;
+    totalPages: number;
     hasNext: boolean;
-    nextCursor: number | null;
   };
 };
 
@@ -71,7 +74,6 @@ export type StoreSearchBakery = {
   lat: number;
   lon: number;
   signatureMenu: string;
-  signatureImages: string[];
 };
 
 export type StoreSearchResult = {
@@ -82,7 +84,7 @@ export type StoreSearchResult = {
 
 export type StoreSearch = {
   result: StoreSearchResult[];
-  pageInfo: {
+  cursorPageInfo: {
     size: number;
     hasNext: boolean;
     nextCursor: number | null;
@@ -95,6 +97,30 @@ export type StoreSearchParams = {
   lat?: number;
   lon?: number;
   cursor?: number;
+};
+
+export type ReceiptAnalysisResult = {
+  bakeryName: string;
+  date: string;
+  amount: number;
+  menu: string;
+  verificationToken: string;
+};
+
+export type VisitResult = {
+  visitId: number;
+  point: number;
+};
+
+export type CreateReviewResult = {
+  reviewId: number;
+};
+
+export type StoreApiErrorResponse = {
+  isSuccess: false;
+  code: string;
+  message: string;
+  data?: null;
 };
 
 type ApiResponse<T> = {
@@ -125,14 +151,48 @@ export async function getStoreDetail(storeId: string) {
   return response.data.data;
 }
 
-export async function getStoreReviews(storeId: string) {
-  const response = await api.get<ApiResponse<StoreReviews>>(`/stores/${storeId}/reviews`);
+export async function getStoreReviews(storeId: string, page = 0) {
+  const response = await api.get<ApiResponse<StoreReviews>>(`/stores/${storeId}/reviews`, {
+    params: { page },
+  });
 
   return response.data.data;
 }
 
 export async function getStoreAttractions(storeId: string) {
   const response = await api.get<ApiResponse<StoreAttractions>>(`/stores/${storeId}/attractions`);
+
+  return response.data.data;
+}
+
+export async function analyzeReceipt({ storeId, receipt }: { storeId: string; receipt: File }) {
+  const formData = new FormData();
+  formData.append("receipt", receipt);
+
+  const response = await authApi.post<ApiResponse<ReceiptAnalysisResult>>(`/stores/${storeId}/visit-verifications`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+    timeout: 0,
+  });
+
+  return response.data.data;
+}
+
+export async function createVisit({ storeId, totalAmount, date, verificationToken }: { storeId: string; totalAmount: number; date: string; verificationToken: string }) {
+  const response = await authApi.post<ApiResponse<VisitResult>>(`/stores/${storeId}/visits`, { totalAmount, date, verificationToken });
+
+  return response.data.data;
+}
+
+export async function createReview({ storeId, rating, content, keywordIds, reviewImages }: { storeId: string; rating: number; content: string; keywordIds: number[]; reviewImages: File[] }) {
+  const formData = new FormData();
+  formData.append("rating", String(rating));
+  formData.append("content", content);
+  keywordIds.forEach((keywordId) => formData.append("keywordIds", String(keywordId)));
+  reviewImages.forEach((reviewImage) => formData.append("reviewImages", reviewImage));
+
+  const response = await authApi.post<ApiResponse<CreateReviewResult>>(`/stores/${storeId}/reviews`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
   return response.data.data;
 }
