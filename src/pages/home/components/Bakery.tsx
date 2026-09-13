@@ -21,7 +21,7 @@ export default function Bakery({
   return (
     <button className={`flex flex-col gap-3`} onClick={onClick}>
       <div
-        className={`overflow-hidden ${isMobile ? "w-40 h-35 rounded-xl" : "w-100 h-75 rounded-2xl"}`}
+        className={`overflow-hidden ${isMobile ? "w-40 h-35 rounded-xl" : "w-98 h-75 rounded-2xl"}`}
       >
         <img
           src={imageUrl}

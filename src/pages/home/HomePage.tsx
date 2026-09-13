@@ -115,7 +115,7 @@ export default function HomePage() {
 
   return (
     <div
-      className={`flex flex-col items-start justify-center ${isMobile ? "p-4 gap-8" : "p-6 gap-12"}`}
+      className={`flex flex-col items-start justify-center max-w-7xl mx-auto ${isMobile ? "p-4 gap-8" : "p-6 gap-12"}`}
     >
       {/* Banner */}
       <section
@@ -177,8 +177,9 @@ export default function HomePage() {
             isMobile ? "gap-4" : "gap-6"
           }`}
         >
-          {hotData.stores.map((store) => (
-            <div key={store.storeId} className={`shrink-0`}>
+          {/* isMobile이 false면 0~2번 인덱스까지만 자릅니다 */}
+          {hotData.stores.slice(0, isMobile ? undefined : 3).map((store) => (
+            <div key={store.storeId} className="shrink-0">
               <Bakery
                 isMobile={isMobile}
                 storeName={store.storeName}
