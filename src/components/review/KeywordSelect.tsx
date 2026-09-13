@@ -1,6 +1,12 @@
 import Keyword from "./Keyword";
 
-export default function KeywordSelect({ keywords }: { keywords: string[] }) {
+type KeywordSelectProps = {
+  keywords: { id: number; label: string }[];
+  selectedKeywordIds: number[];
+  onKeywordToggle: (id: number) => void;
+};
+
+export default function KeywordSelect({ keywords, selectedKeywordIds, onKeywordToggle }: KeywordSelectProps) {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex gap-3 items-end">
@@ -8,8 +14,8 @@ export default function KeywordSelect({ keywords }: { keywords: string[] }) {
         <p className="text-gray-02 typo-body-04 md:mb-px md:text-sm!">5개까지 선택 가능</p>
       </div>
       <div className="flex flex-wrap gap-2 md:gap-3">
-        {keywords.map((value) => (
-          <Keyword key={value} title={value} />
+        {keywords.map((keyword) => (
+          <Keyword key={keyword.id} id={keyword.id} title={keyword.label} selected={selectedKeywordIds.includes(keyword.id)} onToggle={onKeywordToggle} />
         ))}
       </div>
     </section>

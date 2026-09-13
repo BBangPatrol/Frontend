@@ -7,8 +7,6 @@ import HomePage from "../pages/home/HomePage";
 import MapPage from "../pages/map/MapPage";
 import CollectionPage from "../pages/collection/CollectionPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
-import ApiTestPage from "../pages/ApiTestPage";
-import LoginTestPage from "../pages/LoginTestPage";
 import KakaoCallbackPage from "../pages/KakaoCallbackPage";
 import DetailPage from "../pages/detail/DetailPage";
 import ReviewDetailPage from "../pages/review/ReviewDetailPage";
@@ -25,12 +23,10 @@ export const router = createBrowserRouter(
       <Route path="/" element={<RootLayout />}>
         {/* Footer가 필요한 페이지 */}
         <Route element={<FooterLayout />}>
-          <Route path="map" element={<MapPage />} />
-          <Route path="/login-test" element={<LoginTestPage />} />
           <Route path="/detail/:storeId" element={<DetailPage />} />
-          <Route path="/detail/review" element={<ReviewDetailPage />} />
-          <Route path="/detail/review/new" element={<AddReviewPage />} />
-          <Route path="/receipt/verify" element={<ReceiptVerificationPage />} />
+          <Route path="/detail/review/:storeId" element={<ReviewDetailPage />} />
+          <Route path="/detail/review/new/:storeId" element={<AddReviewPage />} />
+          <Route path="/receipt/verify/:storeId" element={<ReceiptVerificationPage />} />
           <Route path="/receipt/result" element={<ReceiptResultPage />} />
           <Route path="/collection" element={<CollectionPage />} />
           <Route path="/mission" element={<MissionPage />} />
@@ -40,8 +36,8 @@ export const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route path="collection" element={<CollectionPage />} />
         <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="api-test" element={<ApiTestPage />} />
         <Route path="/collection/draw" element={<DrawPage />} />
+        <Route path="map" element={<MapPage />} />
       </Route>
     </>,
   ),
