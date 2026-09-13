@@ -1,5 +1,6 @@
 // assets
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // assets
@@ -11,6 +12,8 @@ import Bakery from "./components/Bakery";
 import Mission from "./components/Mission";
 
 export default function HomePage() {
+  const navigate = useNavigate();
+
   const { isMobile } = useResponsive();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -115,7 +118,7 @@ export default function HomePage() {
 
   return (
     <div
-      className={`flex flex-col items-start justify-center max-w-7xl mx-auto ${isMobile ? "p-4 gap-8" : "p-6 gap-12"}`}
+      className={`flex flex-col items-start justify-center max-w-7xl mx-auto ${isMobile ? "p-4 gap-8" : "p-6 gap-12"} mb-40`}
     >
       {/* Banner */}
       <section
@@ -209,8 +212,12 @@ export default function HomePage() {
               미션 수행하러 가기
             </p>
           </div>
-          <div
+          <button
             className={`flex items-center justify-center ${isMobile ? "gap-1" : "gap-1"}`}
+            onClick={() => {
+              navigate("/mission");
+              // 전체보기 버튼 클릭 시 동작
+            }}
           >
             <p
               className={`text-gray-02 ${isMobile ? "typo-sub-03" : "typo-sub-01"}`}
@@ -220,7 +227,7 @@ export default function HomePage() {
             <div className={` ${isMobile ? "w-3 h-3" : "w-4 h-4"}`}>
               <img src={right} alt="right" />
             </div>
-          </div>
+          </button>
         </div>
         <div className="relative w-full overflow-hidden">
           {/* 미션 목록 */}

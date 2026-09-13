@@ -1,4 +1,8 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from "react-router-dom";
 
 import RootLayout from "../layouts/RootLayout";
 import FooterLayout from "../layouts/FooterLayout";
@@ -31,10 +35,11 @@ export const router = createBrowserRouter(
         <Route path="/receipt/result" element={<ReceiptResultPage />} />
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/mission" element={<MissionPage />} />
+        <Route index element={<HomePage />} />
       </Route>
 
       {/* Footer가 필요 없는 페이지 */}
-      <Route index element={<HomePage />} />
+
       <Route path="collection" element={<CollectionPage />} />
       <Route path="dashboard" element={<DashboardPage />} />
       <Route path="api-test" element={<ApiTestPage />} />
