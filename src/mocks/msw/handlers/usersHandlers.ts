@@ -4,8 +4,8 @@ import { getMockAuthState } from "../utils/auth";
 // data
 import { unauthorized } from "../data/common";
 import { breadCollectionResponse, myPageResponse, myPointFirstResponse, myPointSecondResponse, myReviewsFirstResponse, myReviewsSecondResponse, userProfileImage } from "../data/users";
+import { apiUrl } from "../../../api/config";
 
-const API_VERSION = "v1";
 const MAX_PROFILE_IMAGE_SIZE = 5 * 1024 * 1024;
 
 type UpdateNicknameRequestBody = {
@@ -22,7 +22,7 @@ async function readJsonBody<T>(request: Request): Promise<T | null> {
 
 export const usersHandlers = [
     // [get] 빵 컬렉션
-    http.get(`*/api/${API_VERSION}/users/me/bread-collections`, ({ request }) => {
+    http.get(apiUrl("users/me/bread-collections"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -31,7 +31,7 @@ export const usersHandlers = [
     }),
 
     // [get] 마이페이지
-    http.get(`*/api/${API_VERSION}/users/me`, ({ request }) => {
+    http.get(apiUrl("users/me"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -41,7 +41,7 @@ export const usersHandlers = [
 
     // [patch] 닉네임 수정
     // nickname: "conflict"로 중복 닉네임 테스트
-    http.patch(`*/api/${API_VERSION}/users/me/edit`, async ({ request }) => {
+    http.patch(apiUrl("users/me/edit"), async ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -98,7 +98,7 @@ export const usersHandlers = [
 
     // [PATCH] 내 프로필 이미지 설정
     // 파일명이 "too-many"로 시작하면 429 응답 (테스트용)
-    http.patch(`*/api/${API_VERSION}/users/me/profile-image`, async ({ request }) => {
+    http.patch(apiUrl("users/me/profile-image"), async ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -171,7 +171,7 @@ export const usersHandlers = [
     }),
 
     // [GET] 내 프로필 이미지 조회
-    http.get(`*/api/${API_VERSION}/users/me/profile-image`, ({ request }) => {
+    http.get(apiUrl("users/me/profile-image"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -181,7 +181,7 @@ export const usersHandlers = [
 
     // [get] 내 포인트 기록 조회
     // nextCursor를 이용해 순환하도록 되어있음 (1->2, 2->1)
-    http.get(`*/api/${API_VERSION}/users/me/points`, ({ request }) => {
+    http.get(apiUrl("users/me/points"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
@@ -211,7 +211,7 @@ export const usersHandlers = [
 
     // [get] 내가 작성한 리뷰 조회
     // nextCursor를 이용해 순환하도록 되어있음 (1->2, 2->1)
-    http.get(`*/api/${API_VERSION}/users/me/reviews`, ({ request }) => {
+    http.get(apiUrl("users/me/reviews"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
         }
