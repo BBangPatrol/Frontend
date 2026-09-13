@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getStoreDetail } from "../api/stores";
+import { getStoreDetail } from "../../api/stores";
 
 export function useStoreDetail(storeId: string) {
   return useQuery({

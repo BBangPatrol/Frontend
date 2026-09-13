@@ -21,7 +21,6 @@ export const reissue = {
     message: "토큰 재발급에 성공했습니다.",
     data: {
         accessToken: MOCK_ACCESS_TOKEN,
-        refreshToken: MOCK_REFRESH_TOKEN,
     },
     errors: null,
 };

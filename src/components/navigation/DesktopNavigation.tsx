@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import { startKakaoLogin } from "../../utils/kakao";
-import { useLogout } from "../../hooks/useLogout";
+import { useLogout } from "../../hooks/api/useLogout";
+import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { NavLink } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useResponsive } from "../../contexts/ResponsiveContext";
@@ -34,8 +35,8 @@ const navigationItems = [
 export default function DesktopNavigation() {
   const { isMobile } = useResponsive();
 
-  const { accessToken, user } = useSelector((state: RootState) => state.auth);
-  const isLoggedIn = Boolean(accessToken && user);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isLoggedIn = useIsLoggedIn();
   const { mutate: requestLogout } = useLogout();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);

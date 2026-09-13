@@ -1,19 +1,23 @@
 import emptyStarIcon from "@/assets/images/reviewDetailPage/empty-star.svg";
 import fullStarIcon from "@/assets/images/reviewDetailPage/full-star.svg";
 
-export default function ReviewRatingSummary({ ratingPercentages }: { ratingPercentages: number[][] }) {
+type ReviewRatingSummaryProps = {
+  rating: number;
+  reviewCount: number;
+  ratingPercentages: number[][];
+};
+
+export default function ReviewRatingSummary({ rating, reviewCount, ratingPercentages }: ReviewRatingSummaryProps) {
   return (
     <section className="bg-yellow-02 flex flex-col p-4 gap-4 w-full rounded-3xl border border-main-05 md:flex-row md:p-6 md:gap-8">
       <div className="flex flex-col justify-center items-center pl-12 pr-14">
-        <p className="text-black-01 text-3xl font-extrabold mb-2 md:text-5xl md:font-bold">4.8</p>
+        <p className="text-black-01 text-3xl font-extrabold mb-2 md:text-5xl md:font-bold">{rating.toFixed(1)}</p>
         <div className="flex gap-1 mb-1 h-4 md:h-auto">
-          <img src={fullStarIcon} />
-          <img src={fullStarIcon} />
-          <img src={fullStarIcon} />
-          <img src={fullStarIcon} />
-          <img src={emptyStarIcon} />
+          {Array.from({ length: 5 }).map((_, index) => (
+            <img key={index} src={index < Math.round(rating) ? fullStarIcon : emptyStarIcon} alt="" />
+          ))}
         </div>
-        <p className="text-gray-02 typo-body-04 md:text-sm!">1,234명 참여</p>
+        <p className="text-gray-02 typo-body-04 md:text-sm!">{reviewCount.toLocaleString()}명 참여</p>
       </div>
       <div className="flex flex-1 flex-col gap-2">
         {ratingPercentages.map(([rating, value]) => {
