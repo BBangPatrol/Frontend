@@ -92,6 +92,8 @@
   --shadow-dropdown: 0px 25px 50px -12px rgba(0, 0, 0, 0.25); /* 모달 기본 그림자 */
 
   --shadow-btn: 0px 4px 6px -2px rgba(198, 139, 89, 0.2); /* 버튼 기본 그림자 */
+
+  --shadow-card: 0px 1px 3px -1px rgba(0, 0, 0, 0.1); /* 카드 기본 그림자 */
 }
 
 /* Figma Typography: Head, Body, Sub */
@@ -199,6 +201,7 @@
 
 /* 가로 스크롤 영역의 스크롤바 숨김 (칩·카드 행이 위아래 선처럼 보이는 것 방지) */
 .no-scrollbar {
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
