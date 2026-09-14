@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export type AuthUser = {
-  userId: number;
+  id: number;
   userNickname: string;
-  profileImage: string | null;
+  imageUrl: string | null;
 };
 
 type AuthState = {

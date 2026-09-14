@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+// utils
+import { startKakaoLogin } from "../../utils/kakao";
+// hooks
+import { useLogout } from "../../hooks/api/useLogout";
+import useIsLoggedIn from "../../hooks/useIsLoggedIn";
+import { useEditProfile } from "../../hooks/api/useEditProfile";
+import { useEditProfileImage } from "../../hooks/api/useEditProfileImage";
+import { useMe } from "../../hooks/api/useMe";
+// contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // assets
 import logo from "../../assets/icon/logo.svg";
+import right from "../../assets/icon/right.svg";
 // constants
 import Button from "../Button";
 import ProfileModal from "../modal/ProfileModal";
@@ -31,15 +41,20 @@ const navigationItems = [
 export default function MobileNavigation() {
   const { isMobile } = useResponsive();
 
+  const isLoggedIn = useIsLoggedIn();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  const { data: me } = useMe();
+  const { mutate: requestLogout } = useLogout();
+  const { mutate: requestEditProfile } = useEditProfile();
+  const { mutate: requestEditProfileImage } = useEditProfileImage();
+
   const location = useLocation();
 
-  const tempProfileImageUrl =
-    "https://stickershop.line-scdn.net/stickershop/v1/product/15939148/LINEStorePC/main.png?v=1";
+  const profileImageUrl = me?.imageUrl || logo;
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -66,6 +81,26 @@ export default function MobileNavigation() {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  const handleEditProfile = (
+    newNickname?: string | undefined,
+    newProfileImage?: File | undefined,
+  ) => {
+    if (newNickname) {
+      requestEditProfile(newNickname, {
+        onSuccess: () => {
+          setIsProfileModalOpen(false);
+        },
+      });
+    }
+    if (newProfileImage) {
+      requestEditProfileImage(newProfileImage, {
+        onSuccess: () => {
+          setIsProfileModalOpen(false);
+        },
+      });
+    }
+  };
 
   return (
     <>
@@ -245,17 +280,17 @@ export default function MobileNavigation() {
             <div className="flex w-full justify-between py-3">
               <div className="flex items-center gap-2">
                 <img
-                  src={tempProfileImageUrl}
+                  src={profileImageUrl}
                   alt="Profile"
                   className="h-6 w-6 rounded-full"
                 />
-                <p className="typo-body-03">닉네임님 환영합니다</p>
+                <p className="typo-body-03">{me?.userNickname}님 환영합니다</p>
               </div>
               <button
                 onClick={() => setIsProfileModalOpen(true)}
                 className="typo-sub-02 text-gray-02"
               >
-                프로필 수정하기
+                <img src={right} alt="right" className="h-6 w-6" />
               </button>
             </div>
           ) : (
@@ -270,13 +305,12 @@ export default function MobileNavigation() {
         {isProfileModalOpen && (
           <ProfileModal
             isMobile={isMobile}
-            nickname="빵순이"
-            profileImageUrl={tempProfileImageUrl}
+            nickname={me?.userNickname ?? ""}
+            profileImageUrl={profileImageUrl}
             onClose={() => setIsProfileModalOpen(false)}
-            onChangeNickname={() => {}}
-            onSubmit={() => setIsProfileModalOpen(false)}
+            onSubmit={handleEditProfile}
             onLogout={() => {
-              setIsLoggedIn(false);
+              requestLogout();
               setIsProfileModalOpen(false);
             }}
           />
@@ -284,10 +318,7 @@ export default function MobileNavigation() {
         {isLoginModalOpen && (
           <LoginModal
             isMobile={isMobile}
-            onClick={() => {
-              setIsLoginModalOpen(false);
-              setIsLoggedIn(true);
-            }}
+            onClick={startKakaoLogin}
             onClose={() => setIsLoginModalOpen(false)}
           />
         )}

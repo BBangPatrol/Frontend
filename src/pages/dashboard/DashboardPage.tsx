@@ -1,7 +1,7 @@
-export default function CollectionPage() {
+export default function DashboardPage() {
   return (
     <div>
-      <h1>컬렉션</h1>
+      <h1>대시보드</h1>
     </div>
   );
 }

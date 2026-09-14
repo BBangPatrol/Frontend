@@ -1,4 +1,9 @@
-export default function ReviewWrite() {
+type ReviewWriteProps = {
+  content: string;
+  onContentChange: (content: string) => void;
+};
+
+export default function ReviewWrite({ content, onContentChange }: ReviewWriteProps) {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex gap-3 items-end">
@@ -6,6 +11,8 @@ export default function ReviewWrite() {
         <p className="text-gray-02 typo-body-04 md:mb-px md:text-sm!">5개까지 사진 첨부 가능</p>
       </div>
       <textarea
+        value={content}
+        onChange={(event) => onContentChange(event.target.value)}
         className="h-32 min-h-17 p-4 rounded-2xl border-2 border-gray-03 text-black-01 typo-sub-01 placeholder:text-black-02 md:h-48 md:text-lg! md:leading-5!"
         placeholder="가게에 대한 솔직한 후기를 남겨주세요."
       ></textarea>

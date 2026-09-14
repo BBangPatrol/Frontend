@@ -97,8 +97,7 @@ const missingCollectibleIds = new Set([3, 12, 18, 29, 44, 58, 76, 90]);
 const rareCollectibleIds = new Set([7, 8, 9, 10, 17, 18, 19, 20, 28, 29, 30, 31, 39, 40, 41, 42, 51, 52, 53, 59, 60, 61, 70, 71, 72, 77, 78, 79]);
 const epicCollectibleIds = new Set([11, 12, 21, 22, 32, 43, 44, 54, 55, 62, 63, 73, 74, 80]);
 
-const collectionItems = collectibleNames
-  .map((name, index) => {
+const allCollectionItems = collectibleNames.map((name, index) => {
     const collectibleId = index + 1;
     const rank = collectibleId >= 87 ? "LEGENDARY" : epicCollectibleIds.has(collectibleId) ? "EPIC" : rareCollectibleIds.has(collectibleId) ? "RARE" : "NORMAL";
 
@@ -108,8 +107,8 @@ const collectionItems = collectibleNames
       rank,
       image: `https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/${collectibleId}.png`,
     };
-  })
-  .filter(({ collectibleId }) => !missingCollectibleIds.has(collectibleId));
+  });
+const collectionItems = allCollectionItems.filter(({ collectibleId }) => !missingCollectibleIds.has(collectibleId));
 
 export const collectionListResponse = {
   isSuccess: true,
@@ -121,12 +120,25 @@ export const collectionListResponse = {
   },
 };
 
+export const allCollectionListResponse = {
+  ...collectionListResponse,
+  data: {
+    items: allCollectionItems,
+    length: allCollectionItems.length,
+  },
+};
+
 export const collectionDrawResponse = {
   isSuccess: true,
   code: "201",
   message: "뽑기에 성공했습니다.",
   data: {
-    itemId: 1,
+    collectibleId: 88,
+    name: "꿈돌이 빵다발",
+    rank: "LEGENDARY",
+    image: "https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/88.png",
+    duplicated: false,
+    refundPoint: 0,
     currentPoint: 1250,
   },
 };
@@ -136,7 +148,12 @@ export const collectionDrawDuplicateResponse = {
   code: "200",
   message: "요청은 성공적이나, 중복 아이템이 뽑혀 소량의 포인트를 환불해드립니다.",
   data: {
-    itemId: 1,
-    currentPoint: 1255,
+    collectibleId: 88,
+    name: "꿈돌이 빵다발",
+    rank: "LEGENDARY",
+    image: "https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/88.png",
+    duplicated: true,
+    refundPoint: 20,
+    currentPoint: 1250,
   },
 };

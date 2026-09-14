@@ -7,14 +7,12 @@ type MissionProps = {
   onCollectPoint: (missionId: number) => void;
 };
 
-const MISSION_POINT = 100;
-
 export default function Mission({ mission, isCollecting, onCollectPoint }: MissionProps) {
   const { id, title, description, count, targetCount, status } = mission;
   const percentage = (count / targetCount) * 100;
   const isCompleted = status === "completed";
   const isNotReceived = status === "notReceived";
-  const isFail = status === "fail";
+  const isFail = status === "failed";
   const containerColor = isCompleted ? "bg-green-50/30 border-green-500/20" : isNotReceived ? "bg-yellow-02 border-sub-01/30" : "bg-white border-gray-04";
   const progressColor = isCompleted ? "text-green" : "text-sub-01";
   const progressBarColor = isCompleted ? "bg-green" : "bg-sub-01";
@@ -34,12 +32,12 @@ export default function Mission({ mission, isCollecting, onCollectPoint }: Missi
             className="typo-body-04 flex self-start items-center gap-1 rounded-lg bg-sub-01 p-1.5 text-white shadow-sm disabled:opacity-60 md:text-base! md:leading-5.5!"
           >
             <img src={pointIcon} alt="" />
-            {MISSION_POINT}P 받기
+            {isCollecting ? "수령 중..." : "포인트 받기"}
           </button>
         ) : (
           <div className={`flex self-start items-center gap-1 rounded-lg p-1 md:items-center bg-gray-04`}>
             <img src={pointIcon} alt="" />
-            <p className={`typo-body-04 md:text-base! md:leading-5.5! text-gray-01`}>{isFail ? "실패" : `${MISSION_POINT}P 적립${isCompleted ? " 완료!" : ""}`}</p>
+            <p className={`typo-body-04 md:text-base! md:leading-5.5! text-gray-01`}>{isFail ? "실패" : `포인트 적립${isCompleted ? " 완료!" : ""}`}</p>
           </div>
         )}
       </div>
