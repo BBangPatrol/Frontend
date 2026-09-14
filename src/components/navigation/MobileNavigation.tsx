@@ -6,6 +6,7 @@ import { startKakaoLogin } from "../../utils/kakao";
 import { useLogout } from "../../hooks/api/useLogout";
 import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { useEditProfile } from "../../hooks/api/useEditProfile";
+import { useEditProfileImage } from "../../hooks/api/useEditProfileImage";
 import { useMe } from "../../hooks/api/useMe";
 // contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
@@ -49,6 +50,7 @@ export default function MobileNavigation() {
   const { data: me } = useMe();
   const { mutate: requestLogout } = useLogout();
   const { mutate: requestEditProfile } = useEditProfile();
+  const { mutate: requestEditProfileImage } = useEditProfileImage();
 
   const location = useLocation();
 
@@ -80,12 +82,24 @@ export default function MobileNavigation() {
     };
   }, [isOpen]);
 
-  const handleEditProfile = (newNickname: string) => {
-    requestEditProfile(newNickname, {
-      onSuccess: () => {
-        setIsProfileModalOpen(false);
-      },
-    });
+  const handleEditProfile = (
+    newNickname?: string | undefined,
+    newProfileImage?: File | undefined,
+  ) => {
+    if (newNickname) {
+      requestEditProfile(newNickname, {
+        onSuccess: () => {
+          setIsProfileModalOpen(false);
+        },
+      });
+    }
+    if (newProfileImage) {
+      requestEditProfileImage(newProfileImage, {
+        onSuccess: () => {
+          setIsProfileModalOpen(false);
+        },
+      });
+    }
   };
 
   return (

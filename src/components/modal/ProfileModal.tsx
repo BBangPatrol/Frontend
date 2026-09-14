@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 // assets
 import X from "../../assets/icon/X-gray-02.svg";
@@ -11,7 +11,7 @@ interface ProfileModalProps {
   profileImageUrl?: string;
   onClose: () => void;
   onChangeNickname?: (value: string) => void;
-  onSubmit: (nickname: string) => void;
+  onSubmit: (nickname: string, profileImage?: File) => void;
   onLogout?: () => void;
 }
 
@@ -24,17 +24,53 @@ export default function ProfileModal({
   onSubmit,
   onLogout,
 }: ProfileModalProps) {
-  // 임시로 모달 내부에서 닉네임 상태 관리
+  // 닉네임
   const [editedNickname, setEditedNickname] = useState(nickname);
+
+  // 선택한 이미지 파일
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  // 이미지 미리보기 URL
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // 파일 input 접근용
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleNicknameChange = (value: string) => {
     setEditedNickname(value);
     onChangeNickname?.(value);
   };
 
+  // 사진 선택
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    // 이미지 파일인지 확인
+    if (!file.type.startsWith("image/")) {
+      alert("이미지 파일만 선택해주세요.");
+      return;
+    }
+
+    setSelectedImage(file);
+
+    // 미리보기
+    const previewUrl = URL.createObjectURL(file);
+    setPreviewImage(previewUrl);
+  };
+
   // 수정 완료
   const handleSubmit = () => {
-    onSubmit?.(editedNickname);
+    if (editedNickname.trim() === "") {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+    if (editedNickname === nickname && !selectedImage) {
+      alert("변경 사항이 없습니다.");
+      return;
+    }
+    onSubmit(editedNickname, selectedImage ?? undefined);
   };
 
   return createPortal(
@@ -53,6 +89,7 @@ export default function ProfileModal({
           >
             프로필 수정
           </h2>
+
           <button
             type="button"
             onClick={onClose}
@@ -75,9 +112,19 @@ export default function ProfileModal({
               isMobile ? "h-20 w-20" : "h-24 w-24"
             }`}
           >
-            {profileImageUrl ? (
+            {/* 숨겨진 파일 input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+            />
+
+            {/* Profile Image */}
+            {previewImage || profileImageUrl ? (
               <img
-                src={profileImageUrl}
+                src={previewImage ?? profileImageUrl}
                 alt="Profile"
                 className="h-full w-full rounded-full object-cover"
               />
@@ -87,9 +134,11 @@ export default function ProfileModal({
               </div>
             )}
 
+            {/* Camera Button */}
             <button
               type="button"
               className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-sub-01 text-white"
+              onClick={() => fileInputRef.current?.click()}
             >
               <img
                 src={Camera}

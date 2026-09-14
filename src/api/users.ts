@@ -10,4 +10,13 @@ export async function editNickname(nickname: string) {
   });
   return response.status;
 }
-1;
+
+export async function editProfileImage(profileImage: File) {
+  const formData = new FormData();
+  formData.append("profileImage", profileImage);
+  await authApi.post("/users/me/profile-image", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // hooks
 import { useEditProfile } from "../../hooks/api/useEditProfile";
+import { useEditProfileImage } from "../../hooks/api/useEditProfileImage";
 import { useLogout } from "../../hooks/api/useLogout";
 import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { useMe } from "../../hooks/api/useMe";
@@ -48,6 +49,7 @@ export default function DesktopNavigation() {
   const { data: me } = useMe();
   const { mutate: requestLogout } = useLogout();
   const { mutate: requestEditProfile } = useEditProfile();
+  const { mutate: requestEditProfileImage } = useEditProfileImage();
 
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -70,12 +72,24 @@ export default function DesktopNavigation() {
     };
   }, []);
 
-  const handleEditProfile = (newNickname: string) => {
-    requestEditProfile(newNickname, {
-      onSuccess: () => {
-        setIsProfileModalOpen(false);
-      },
-    });
+  const handleEditProfile = (
+    newNickname?: string | undefined,
+    newProfileImage?: File | undefined,
+  ) => {
+    if (newNickname) {
+      requestEditProfile(newNickname, {
+        onSuccess: () => {
+          setIsProfileModalOpen(false);
+        },
+      });
+    }
+    if (newProfileImage) {
+      requestEditProfileImage(newProfileImage, {
+        onSuccess: () => {
+          setIsProfileModalOpen(false);
+        },
+      });
+    }
   };
 
   return (
