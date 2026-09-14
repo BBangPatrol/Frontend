@@ -1,14 +1,18 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store/store";
-import { startKakaoLogin } from "../../utils/kakao";
-import { useLogout } from "../../hooks/api/useLogout";
-import useIsLoggedIn from "../../hooks/useIsLoggedIn";
+// libraries
 import { NavLink } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+// contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
-
+// hooks
+import { useEditProfile } from "../../hooks/api/useEditProfile";
+import { useLogout } from "../../hooks/api/useLogout";
+import useIsLoggedIn from "../../hooks/useIsLoggedIn";
+import { useMe } from "../../hooks/api/useMe";
+// utils
+import { startKakaoLogin } from "../../utils/kakao";
+// assets
 import logo from "../../assets/icon/logo.svg";
-
+// components
 import ProfileModal from "../modal/ProfileModal";
 import LoginModal from "../modal/LoginModal";
 
@@ -35,16 +39,19 @@ const navigationItems = [
 export default function DesktopNavigation() {
   const { isMobile } = useResponsive();
 
-  const user = useSelector((state: RootState) => state.auth.user);
   const isLoggedIn = useIsLoggedIn();
-  const { mutate: requestLogout } = useLogout();
+
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  const { data: me } = useMe();
+  const { mutate: requestLogout } = useLogout();
+  const { mutate: requestEditProfile } = useEditProfile();
+
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const profileImageUrl = user?.imageUrl || logo;
+  const profileImageUrl = me?.imageUrl || logo;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -62,6 +69,14 @@ export default function DesktopNavigation() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleEditProfile = (newNickname: string) => {
+    requestEditProfile(newNickname, {
+      onSuccess: () => {
+        setIsProfileModalOpen(false);
+      },
+    });
+  };
 
   return (
     <header className="sticky top-0 z-100 h-18 w-full border-black/5 bg-white/95 backdrop-blur-md border-b">
@@ -109,7 +124,7 @@ export default function DesktopNavigation() {
                 className="h-8 w-8 rounded-full object-cover"
               />
 
-              <p className="typo-body-03 text-black-01">{user?.userNickname}</p>
+              <p className="typo-body-03 text-black-01">{me?.userNickname}</p>
             </button>
 
             {isProfileOpen && (
@@ -150,11 +165,10 @@ export default function DesktopNavigation() {
       {isProfileModalOpen && (
         <ProfileModal
           isMobile={isMobile}
-          nickname={user?.userNickname ?? ""}
+          nickname={me?.userNickname ?? ""}
           profileImageUrl={profileImageUrl}
           onClose={() => setIsProfileModalOpen(false)}
-          onChangeNickname={() => {}}
-          onSubmit={() => setIsProfileModalOpen(false)}
+          onSubmit={handleEditProfile}
           onLogout={() => {
             requestLogout();
             setIsProfileModalOpen(false);

@@ -1,4 +1,6 @@
 import { createPortal } from "react-dom";
+import { useState } from "react";
+
 // assets
 import X from "../../assets/icon/X-gray-02.svg";
 import Camera from "../../assets/icon/camera-white.svg";
@@ -7,39 +9,56 @@ interface ProfileModalProps {
   isMobile?: boolean;
   nickname?: string;
   profileImageUrl?: string;
-  onClose?: () => void;
+  onClose: () => void;
   onChangeNickname?: (value: string) => void;
-  onSubmit?: () => void;
+  onSubmit: (nickname: string) => void;
   onLogout?: () => void;
 }
 
 export default function ProfileModal({
   isMobile = false,
-  nickname = "빵순이",
+  nickname = "빵돌이",
   profileImageUrl,
   onClose,
   onChangeNickname,
   onSubmit,
   onLogout,
 }: ProfileModalProps) {
+  // 임시로 모달 내부에서 닉네임 상태 관리
+  const [editedNickname, setEditedNickname] = useState(nickname);
+
+  const handleNicknameChange = (value: string) => {
+    setEditedNickname(value);
+    onChangeNickname?.(value);
+  };
+
+  // 수정 완료
+  const handleSubmit = () => {
+    onSubmit?.(editedNickname);
+  };
+
   return createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
       <div
-        className={`flex flex-col rounded-[20px] bg-white shadow-dropdown p-9 ${
+        className={`flex flex-col rounded-[20px] bg-white p-9 shadow-dropdown ${
           isMobile ? "w-78 gap-7" : "w-118 gap-8"
         }`}
       >
         {/* Header */}
         <div className="flex items-center justify-between">
           <h2
-            className={` text-black-01 ${isMobile ? "typo-head-03" : "typo-head-01"}`}
+            className={`text-black-01 ${
+              isMobile ? "typo-head-03" : "typo-head-01"
+            }`}
           >
             프로필 수정
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className={`flex items-center justify-center rounded-full bg-gray-04 ${isMobile ? "h-6 w-6" : "h-8 w-8"}`}
+            className={`flex items-center justify-center rounded-full bg-gray-04 ${
+              isMobile ? "h-6 w-6" : "h-8 w-8"
+            }`}
           >
             <img
               src={X}
@@ -48,10 +67,13 @@ export default function ProfileModal({
             />
           </button>
         </div>
+
         <div className={`flex flex-col ${isMobile ? "gap-5" : "gap-6"}`}>
           {/* Profile Image */}
           <div
-            className={`relative mx-auto ${isMobile ? "h-20 w-20" : "h-24 w-24"}`}
+            className={`relative mx-auto ${
+              isMobile ? "h-20 w-20" : "h-24 w-24"
+            }`}
           >
             {profileImageUrl ? (
               <img
@@ -76,17 +98,25 @@ export default function ProfileModal({
               />
             </button>
           </div>
+
           {/* Nickname Input */}
-          <div className={`flex flex-col gap-2`}>
+          <div className="flex flex-col gap-2">
             <label
-              className={`block text-black-01 ${isMobile ? "typo-body-03" : "typo-body-02"}`}
+              className={`block text-black-01 ${
+                isMobile ? "typo-body-03" : "typo-body-02"
+              }`}
             >
               닉네임
             </label>
+
             <input
-              value={nickname}
-              onChange={(e) => onChangeNickname?.(e.target.value)}
-              className={`w-full rounded-xl border border-main-03 text-black-01 outline-none focus:border-main-01 ${isMobile ? "p-3 typo-sub-01" : "px-4 py-3 text-[16px] leading-6 font-normal"}`}
+              value={editedNickname}
+              onChange={(e) => handleNicknameChange(e.target.value)}
+              className={`w-full rounded-xl border border-main-03 text-black-01 outline-none focus:border-main-01 ${
+                isMobile
+                  ? "p-3 typo-sub-01"
+                  : "px-4 py-3 text-[16px] leading-6 font-normal"
+              }`}
             />
           </div>
         </div>
@@ -95,15 +125,20 @@ export default function ProfileModal({
         <div className="flex flex-col gap-2">
           <button
             type="button"
-            onClick={onSubmit}
-            className={`flex-1 rounded-xl bg-sub-01 font-semibold text-white shadow-btn ${isMobile ? "typo-head-05 py-3" : "typo-head-04 py-4"}`}
+            onClick={handleSubmit}
+            className={`flex-1 rounded-xl bg-sub-01 font-semibold text-white shadow-btn ${
+              isMobile ? "typo-head-05 py-3" : "typo-head-04 py-4"
+            }`}
           >
             수정 완료
           </button>
+
           <button
             type="button"
             onClick={onLogout}
-            className={`flex-1 rounded-xl bg-red font-semibold text-white shadow-btn ${isMobile ? "typo-head-05 py-3" : "typo-head-04 py-4"}`}
+            className={`flex-1 rounded-xl border border-red font-semibold text-red shadow-btn ${
+              isMobile ? "typo-head-05 py-3" : "typo-head-04 py-4"
+            }`}
           >
             로그아웃
           </button>
