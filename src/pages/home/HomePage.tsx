@@ -29,7 +29,7 @@ export default function HomePage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const { data: hotData } = useHotStores();
-  const { data: missionData } = useMissions();
+  const { data: missionData } = useMissions(isLoggedIn);
 
   const notLoginMissionData = {
     missions: [
