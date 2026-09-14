@@ -40,7 +40,7 @@ export default function Mission({
           {missionTypeToText[missionType] || "미션"}
         </div>
         <p
-          className={`text-black-01 ${isMobile ? "typo-body-03" : "typo-body-01"}`}
+          className={`text-black-01 truncate  ${isMobile ? "typo-body-03" : "typo-body-01"}`}
         >
           {title}
         </p>

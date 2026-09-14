@@ -1,16 +1,20 @@
 // assets
-// import { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
+// utils
+import { startKakaoLogin } from "../../utils/kakao";
 // assets
 import locarion from "../../assets/icon/location.svg";
 import book from "../../assets/icon/book.svg";
 import right from "../../assets/icon/right.svg";
+import lock from "../../assets/icon/lock.svg";
 // components
 import Bakery from "./components/Bakery";
 import Mission from "./components/Mission";
 import useIsLoggedIn from "../../hooks/useIsLoggedIn";
+import LoginModal from "../../components/modal/LoginModal";
 // hooks
 import { useHotStores } from "../../hooks/api/useGetHotStore";
 import { useMissions } from "../../hooks/api/useGetMissionAtHome";
@@ -22,106 +26,63 @@ export default function HomePage() {
 
   const isLoggedIn = useIsLoggedIn();
 
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   const { data: hotData } = useHotStores();
   const { data: missionData } = useMissions();
 
-  // const hotData = {
-  //   stores: [
-  //     {
-  //       storeId: 1,
-  //       storeName: "성심당 본점",
-  //       rating: 4.8,
-  //       region: "서구",
-  //       imageUrl:
-  //         "https://i.namu.wiki/i/8MZZehLGZ1TCO4G7sBivu6GwEpFxajfYyXJ-m-2SIdrIH-4_1amvSyW-6fWykumnu0koFi6LZGNMJLV1O9k7sg.webp",
-  //     },
-  //     {
-  //       storeId: 2,
-  //       storeName: "성심당 서구점",
-  //       rating: 4.3,
-  //       region: "서구",
-  //       imageUrl:
-  //         "https://image.wiselycompany.co.kr/prod/products/2952/1X1_4ba87d44.webp?w=1500&q=90&f=webp",
-  //     },
-  //     {
-  //       storeId: 3,
-  //       storeName: "성심당 동구점",
-  //       rating: 4.1,
-  //       region: "동구",
-  //       imageUrl:
-  //         "https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/cf80/live/a2d43f00-7087-11f0-8dbd-f3d32ebd3327.jpg.webp",
-  //     },
-  //     {
-  //       storeId: 4,
-  //       storeName: "성심당 유성점",
-  //       rating: 3.5,
-  //       region: "유성구",
-  //       imageUrl:
-  //         "https://minio.nculture.org/amsweb-opt/multimedia_assets/197/85642/92264/c/%EA%B2%BD%EC%A3%BC-%ED%99%A9%EB%82%A8%EB%B9%B5-%281%29-medium-size.jpg",
-  //     },
-  //     {
-  //       storeId: 5,
-  //       storeName: "성심당 대전역점",
-  //       rating: 2.1,
-  //       region: "대전역구",
-  //       imageUrl:
-  //         "https://thebreadbag.co.kr/wp-content/uploads/2025/05/%EB%B9%B5%EB%B0%B1%ED%99%94%EC%A0%90_1.jpg",
-  //     },
-  //   ],
-  // };
-
-  // const missionData = {
-  //   missions: [
-  //     {
-  //       id: 1,
-  //       title: "서구 마스터",
-  //       description: "대전 서구의 빵집 5곳 방문하기",
-  //       count: 5,
-  //       targetCount: 5,
-  //       startDate: null,
-  //       endDate: null,
-  //       completedDate: null,
-  //       status: "notReceived",
-  //       missionType: "bakery",
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "중구 마스터",
-  //       description: "대전 중구의 빵집 5곳 방문하기",
-  //       count: 3,
-  //       targetCount: 5,
-  //       startDate: null,
-  //       endDate: null,
-  //       completedDate: null,
-  //       status: "inProgress",
-  //       missionType: "bakery",
-  //     },
-  //     {
-  //       id: 5,
-  //       title: "빵 평론가",
-  //       description: "리뷰 10개 작성하기",
-  //       count: 0,
-  //       targetCount: 10,
-  //       startDate: null,
-  //       endDate: null,
-  //       completedDate: null,
-  //       status: "inProgress",
-  //       missionType: "review",
-  //     },
-  //     {
-  //       id: 3,
-  //       title: "유성구 마스터",
-  //       description: "대전 유성구의 빵집 5곳 방문하기",
-  //       count: 5,
-  //       targetCount: 5,
-  //       startDate: null,
-  //       endDate: null,
-  //       completedDate: "2026-07-05 22:00:00",
-  //       status: "completed",
-  //       missionType: "bakery",
-  //     },
-  //   ],
-  // };
+  const notLoginMissionData = {
+    missions: [
+      {
+        id: 1,
+        title: "첫 영수증 인증",
+        description: "영수증 인증 1회 시도하기",
+        count: 0,
+        targetCount: 1,
+        startDate: null,
+        endDate: null,
+        completedDate: null,
+        status: "inProgress",
+        missionType: "receipt",
+      },
+      {
+        id: 2,
+        title: "첫 리뷰 작성",
+        description: "리뷰 1회 달기",
+        count: 0,
+        targetCount: 1,
+        startDate: null,
+        endDate: null,
+        completedDate: null,
+        status: "inProgress",
+        missionType: "review",
+      },
+      {
+        id: 3,
+        title: "첫 가챠 뽑기",
+        description: "꿈돌이 뽑기 1회 시도하기",
+        count: 0,
+        targetCount: 1,
+        startDate: null,
+        endDate: null,
+        completedDate: null,
+        status: "inProgress",
+        missionType: "collection",
+      },
+      {
+        id: 4,
+        title: "빵지순례 시작하기",
+        description: "첫 번째 빵집 방문 기록 남기기",
+        count: 0,
+        targetCount: 1,
+        startDate: null,
+        endDate: null,
+        completedDate: null,
+        status: "inProgress",
+        missionType: "bakery",
+      },
+    ],
+  };
 
   return (
     <div
@@ -147,6 +108,9 @@ export default function HomePage() {
         </div>
         <button
           className={`flex items-center justify-center rounded-full bg-black-01 text-white ${isMobile ? "typo-body-04  py-2 px-4" : "typo-body-02 py-3.5 px-8"}`}
+          onClick={() => {
+            navigate("/map");
+          }}
         >
           지금 둘러보기
         </button>
@@ -247,23 +211,41 @@ export default function HomePage() {
             } ${!isLoggedIn ? "pointer-events-none select-none" : ""}`}
             aria-disabled={!isLoggedIn}
           >
-            {missionData &&
-              missionData.missions.map((mission) => (
-                <div key={mission.id} className="shrink-0">
-                  <Mission
-                    isMobile={isMobile}
-                    title={mission.title}
-                    count={mission.count}
-                    targetCount={mission.targetCount}
-                    missionType={mission.missionType}
-                    onClick={() => {
-                      if (!isLoggedIn) return;
+            {missionData
+              ? missionData.missions.map((mission) => (
+                  <div key={mission.id} className="shrink-0">
+                    <Mission
+                      isMobile={isMobile}
+                      title={mission.title}
+                      count={mission.count}
+                      targetCount={mission.targetCount}
+                      missionType={mission.missionType}
+                      onClick={() => {
+                        if (!isLoggedIn) return;
 
-                      // 로그인 상태에서 실행할 동작
-                    }}
-                  />
-                </div>
-              ))}
+                        // 로그인 상태에서 실행할 동작
+                        navigate("/mission");
+                      }}
+                    />
+                  </div>
+                ))
+              : notLoginMissionData.missions.map((mission) => (
+                  <div key={mission.id} className="shrink-0">
+                    <Mission
+                      isMobile={isMobile}
+                      title={mission.title}
+                      count={mission.count}
+                      targetCount={mission.targetCount}
+                      missionType={mission.missionType}
+                      onClick={() => {
+                        if (!isLoggedIn) return;
+
+                        // 로그인 상태에서 실행할 동작
+                        navigate("/mission");
+                      }}
+                    />
+                  </div>
+                ))}
           </div>
 
           {/* 비로그인 오버레이 */}
@@ -273,37 +255,16 @@ export default function HomePage() {
                 type="button"
                 className="flex flex-col items-center gap-1"
                 onClick={() => {
-                  // 실제 로그인 페이지로 보낼 경우
-                  // navigate("/login");
+                  setShowLoginModal(true);
                 }}
               >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className={`${isMobile ? "h-7 w-7" : "h-8 w-8"} text-gray-02`}
-                >
-                  <rect
-                    x="5"
-                    y="10"
-                    width="14"
-                    height="11"
-                    rx="2"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                  />
-                  <path
-                    d="M8 10V7a4 4 0 0 1 8 0v3"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <div className={` ${isMobile ? "w-6 h-6" : "w-8 h-8"}`}>
+                  <img src={lock} alt="lock" />
+                </div>
 
                 <span
-                  className={`rounded-full border border-gray-03 bg-white px-3 py-1 text-black-01 shadow-sm ${
-                    isMobile ? "typo-sub-03" : "typo-body-04"
-                  }`}
+                  className={`rounded-full shadow-btn bg-white text-gray-01
+                    ${isMobile ? " px-2 py-1 typo-sub-03" : "px-3 py-1.5 typo-body-03"}`}
                 >
                   로그인하고 참여하기
                 </span>
@@ -312,6 +273,13 @@ export default function HomePage() {
           )}
         </div>
       </div>
+      {showLoginModal && (
+        <LoginModal
+          isMobile={isMobile}
+          onClick={startKakaoLogin}
+          onClose={() => setShowLoginModal(false)}
+        />
+      )}
     </div>
   );
 }

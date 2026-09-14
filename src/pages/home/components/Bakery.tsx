@@ -44,7 +44,7 @@ export default function Bakery({
           <div
             className={`text-gray-01 ${isMobile ? "typo-sub-02" : "typo-body-03"}`}
           >
-            {rating}
+            {rating ? rating : "-"}
           </div>
           <div
             className={`text-gray-01 ${isMobile ? "typo-sub-02" : "typo-body-03"}`}
