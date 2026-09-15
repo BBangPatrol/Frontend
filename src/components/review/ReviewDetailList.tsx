@@ -1,10 +1,14 @@
 import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import type { StoreReview } from "../../api/stores";
+import type { RootState } from "../../store/store";
 import Pagination from "../common/Pagination";
 import Review from "./Review";
 import downArrowIcon from "@/assets/images/reviewDetailPage/down_arrow.svg";
 
 type ReviewDetailListProps = {
+  storeId: string;
   reviews: StoreReview[];
   sort: string;
   page: number;
@@ -13,7 +17,9 @@ type ReviewDetailListProps = {
   onPageChange: (page: number) => void;
 };
 
-export default function ReviewDetailList({ reviews, sort, page, totalPages, onSortChange, onPageChange }: ReviewDetailListProps) {
+export default function ReviewDetailList({ storeId, reviews, sort, page, totalPages, onSortChange, onPageChange }: ReviewDetailListProps) {
+  const userId = useSelector((state: RootState) => state.auth.user?.id);
+  const navigate = useNavigate();
   const sortedReviews = useMemo(() => {
     const nextReviews = [...reviews];
 
@@ -48,7 +54,17 @@ export default function ReviewDetailList({ reviews, sort, page, totalPages, onSo
       <div className="flex flex-col gap-3">
         {sortedReviews.length > 0 ? (
           sortedReviews.map((review) => (
-            <Review key={review.id} isDetail starRating={review.rating} userName={review.writerName} content={review.content} date={review.date} likeCount={review.likeCount} />
+            <Review
+              key={review.id}
+              isDetail
+              canManage={review.writerId === userId}
+              onEdit={() => navigate(`/detail/review/${storeId}/${review.id}/edit`, { state: { review } })}
+              starRating={review.rating}
+              userName={review.writerName}
+              content={review.content}
+              date={review.date}
+              likeCount={review.likeCount}
+            />
           ))
         ) : (
           <p className="py-8 text-center text-gray-02 typo-body-03">작성된 리뷰가 없습니다.</p>

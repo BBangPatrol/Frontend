@@ -12,10 +12,10 @@ function LayoutContent() {
   const { isMobile } = useResponsive();
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="flex min-h-dvh w-full flex-col">
       {isMobile ? <MobileNavigation /> : <DesktopNavigation />}
 
-      <main className="w-full">
+      <main className="flex w-full flex-1 flex-col">
         <Outlet />
       </main>
     </div>

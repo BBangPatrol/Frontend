@@ -8,21 +8,21 @@ type DetailReviewsProps = {
   storeId: string;
   reviews: StoreReview[];
   reviewCount: number;
-  reviewPercentages?: number[];
+  summary?: string | null;
 };
 
-export default function DetailReviews({ storeId, reviews, reviewCount, reviewPercentages }: DetailReviewsProps) {
+export default function DetailReviews({ storeId, reviews, reviewCount, summary }: DetailReviewsProps) {
   return (
     <section className="flex flex-col gap-3 md:gap-4">
       <h3>
         <span className="text-black-01 typo-body-01 md:text-lg! md:font-bold! md:leading-7!">리뷰</span>{" "}
         <span className="text-[#99A1AF] typo-body-01 md:text-lg! md:font-normal! md:leading-7!">{reviewCount.toLocaleString()}</span>
       </h3>
-      {reviewPercentages && <ReviewSummary reviewPercentages={reviewPercentages} />}
+      {summary && <ReviewSummary key={storeId} summary={summary} storeId={storeId} />}
       <div className="flex flex-col gap-2 md:gap-4">
         {reviews.length > 0 ? (
           <>
-            {reviews.map((review) => (
+            {reviews.slice(0, 3).map((review) => (
               <Review key={review.id} starRating={review.rating} userName={review.writerName} content={review.content} date={review.date} likeCount={review.likeCount} />
             ))}
             <Link to={`/detail/review/${storeId}`} className="flex py-3 rounded-xl justify-center items-center gap-1">
