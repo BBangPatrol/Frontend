@@ -9,8 +9,8 @@ import { DEFAULT_MAP_CENTER, KAKAO_MAP_API_KEY } from "../../../constants/map";
 import Pagination from "../../common/Pagination";
 import { useStoreSearch } from "../../../hooks/api/useStoreSearch";
 import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { Link } from "react-router-dom";
 import { CustomOverlayMap, Map, useKakaoLoader } from "react-kakao-maps-sdk";
+import MapBakeryPopup from "../MapBakeryPopup";
 
 export default function DesktopMapPage() {
   const [searchInput, setSearchInput] = useState("");
@@ -116,13 +116,8 @@ function MapView({ bakeries, selectedBakery, onBakerySelect }: { bakeries: Store
         );
       })}
       {selectedBakery && (
-        <CustomOverlayMap position={{ lat: selectedBakery.bakery.lat, lng: selectedBakery.bakery.lon }} yAnchor={1.65} zIndex={3}>
-          <div className="flex items-center gap-3 whitespace-nowrap rounded-xl bg-white px-3 py-2 shadow-lg">
-            <strong className="typo-head-05 text-black-01">{selectedBakery.bakery.name}</strong>
-            <Link to={`/detail/${selectedBakery.bakery.id}`} className="typo-body-04 rounded-lg bg-sub-01 px-2 py-1.5 text-white">
-              상세보기
-            </Link>
-          </div>
+        <CustomOverlayMap key={`popup-${selectedBakery.bakery.id}`} position={{ lat: selectedBakery.bakery.lat, lng: selectedBakery.bakery.lon }} xAnchor={0.5} yAnchor={1} zIndex={3}>
+          <MapBakeryPopup bakery={selectedBakery.bakery} />
         </CustomOverlayMap>
       )}
     </Map>

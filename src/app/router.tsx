@@ -38,6 +38,10 @@ export const router = createBrowserRouter(
             element={<AddReviewPage />}
           />
           <Route
+            path="/detail/review/:storeId/:reviewId/edit"
+            element={<AddReviewPage />}
+          />
+          <Route
             path="/receipt/verify/:storeId"
             element={<ReceiptVerificationPage />}
           />

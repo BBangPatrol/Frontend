@@ -3,23 +3,30 @@ import cameraIcon from "@/assets/images/reviewPage/camera.svg";
 
 type AddImagesProps = {
   images: File[];
+  existingImages?: string[];
   onImagesChange: (images: File[]) => void;
 };
 
-export default function AddImages({ images, onImagesChange }: AddImagesProps) {
+export default function AddImages({ images, existingImages = [], onImagesChange }: AddImagesProps) {
+  const imageCount = existingImages.length + images.length;
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedImages = Array.from(event.target.files ?? []);
-    onImagesChange([...images, ...selectedImages].slice(0, 5));
+    onImagesChange([...images, ...selectedImages].slice(0, 5 - existingImages.length));
     event.target.value = "";
   };
 
   return (
     <section className="flex flex-col gap-2">
       <div className="flex flex-wrap gap-2">
+        {existingImages.map((image) => (
+          <div key={image} className="size-24 overflow-hidden rounded-xl border border-gray-03 md:size-28">
+            <img src={image} alt="기존 리뷰 이미지" className="size-full object-cover" />
+          </div>
+        ))}
         {images.map((image, index) => (
           <ImagePreview key={`${image.name}-${image.lastModified}-${index}`} image={image} onRemove={() => onImagesChange(images.filter((_, imageIndex) => imageIndex !== index))} />
         ))}
-        {images.length < 5 && (
+        {imageCount < 5 && (
           <>
             <input id="review-images" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple onChange={handleImageChange} className="hidden" />
             <label htmlFor="review-images" className="size-24 rounded-xl border-dashed border-2 border-gray-03 flex justify-center items-center cursor-pointer md:size-28">
@@ -28,7 +35,7 @@ export default function AddImages({ images, onImagesChange }: AddImagesProps) {
           </>
         )}
       </div>
-      <p className="text-gray-02 typo-body-04">{images.length}/5</p>
+      <p className="text-gray-02 typo-body-04">{imageCount}/5</p>
     </section>
   );
 }

@@ -27,24 +27,24 @@ export const breadCollectionResponse = {
 export const myPageResponse = {
     isSuccess: true,
     code: "200",
-    message: "OK",
+    message: "요청이 성공적입니다.",
     data: {
         nickname: "테스트유저",
         collectionBooks: {
             collected: 14,
-            total: 95,
+            total: 50,
             items: [
                 {
-                    collectibleId: 2,
-                    name: "꿈돌이 소보로빵",
-                    rank: "NORMAL",
-                    image: "https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/2.png",
+                    collectibleId: 87,
+                    name: "93 꿈돌이",
+                    rank: "LEGENDARY",
+                    image: "https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/87.png",
                 },
                 {
-                    collectibleId: 88,
-                    name: "꿈돌이 빵다발",
-                    rank: "LEGENDARY",
-                    image: "https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/88.png",
+                    collectibleId: 11,
+                    name: "꿈돌이 프레첼",
+                    rank: "EPIC",
+                    image: "https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/11.png",
                 },
             ],
         },
@@ -56,17 +56,17 @@ export const myPageResponse = {
         missions: [
             {
                 missionId: 1,
-                title: "중구 5개 다녀오기",
+                title: "중구 5개 클리어",
                 count: 3,
                 targetCount: 5,
-                status: "inProgress",
+                status: "in_progress",
             },
             {
                 missionId: 2,
-                title: "수집품 10개 모으기",
-                count: 10,
+                title: "미션 2",
+                count: 2,
                 targetCount: 10,
-                status: "notReceived",
+                status: "not_received",
             },
         ],
     },

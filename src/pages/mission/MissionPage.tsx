@@ -23,15 +23,16 @@ export default function MissionPage() {
     if (nextCursor != null) setCursorHistory((history) => [...history, nextCursor]);
   };
 
-  if (missionsQuery.isPending) return <PageStatus message="미션을 불러오는 중입니다." />;
+  if (missionsQuery.isPending) return <PageStatus message="미션을 불러오는 중입니다." isLoading />;
   if (missionsQuery.isError || !missionsQuery.data) return <PageStatus message="미션을 불러오지 못했습니다." showBackButton={missionsQuery.isError} />;
 
   return (
-    <main className="p-4 flex flex-col gap-5 md:max-w-213 md:mx-auto md:gap-8">
+    <main className="w-full p-4 flex flex-col gap-5 md:max-w-213 md:mx-auto md:gap-8">
       <PageHeader title="미션 현황" subTitle="다양한 미션 수행으로 포인트를 얻어보세요!" icon={medalIcon} />
       <MissionList
         missions={missionsQuery.data.missions}
         collectingMissionId={collectPointMutation.isPending ? collectPointMutation.variables : null}
+        collectedMissionId={collectPointMutation.isSuccess ? collectPointMutation.variables : null}
         onCollectPoint={(missionId) => collectPointMutation.mutate(missionId)}
       />
       <Pagination page={cursorHistory.length} hasNext={missionsQuery.data.cursorPageInfo.hasNext} onPageChange={handlePageChange} />

@@ -15,7 +15,7 @@ export default function CollectionPage() {
   const collectiblesQuery = useCollectibles();
   const allCollectiblesQuery = useAllCollectibles();
 
-  if (collectiblesQuery.isPending || allCollectiblesQuery.isPending) return <PageStatus message="수집품을 불러오는 중입니다." />;
+  if (collectiblesQuery.isPending || allCollectiblesQuery.isPending) return <PageStatus message="수집품을 불러오는 중입니다." isLoading />;
   if (collectiblesQuery.isError || allCollectiblesQuery.isError || !collectiblesQuery.data || !allCollectiblesQuery.data)
     return <PageStatus message="수집품을 불러오지 못했습니다." showBackButton={collectiblesQuery.isError || allCollectiblesQuery.isError} />;
 
