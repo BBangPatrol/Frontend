@@ -42,7 +42,7 @@ export const router = createBrowserRouter(
             element={<ReceiptVerificationPage />}
           />
           <Route path="/receipt/result" element={<ReceiptResultPage />} />
-          <Route path="/collection" element={<CollectionPage />} />
+          <Route path="/dashboard/collection" element={<CollectionPage />} />
           <Route path="/mission" element={<MissionPage />} />
         </Route>
 
@@ -50,7 +50,7 @@ export const router = createBrowserRouter(
 
         <Route path="collection" element={<CollectionPage />} />
         <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="/collection/draw" element={<DrawPage />} />
+        <Route path="/dashboard/collection/draw" element={<DrawPage />} />
         <Route path="map" element={<MapPage />} />
       </Route>
     </>,
