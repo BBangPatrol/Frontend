@@ -13,11 +13,12 @@ import lock from "../../assets/icon/lock.svg";
 // components
 import Bakery from "./components/Bakery";
 import Mission from "./components/Mission";
-import useIsLoggedIn from "../../hooks/useIsLoggedIn";
+
 import LoginModal from "../../components/modal/LoginModal";
 // hooks
 import { useHotStores } from "../../hooks/api/useGetHotStore";
 import { useMissions } from "../../hooks/api/useGetMissionAtHome";
+import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ export default function HomePage() {
 
   return (
     <div
-      className={`flex flex-col items-start justify-center max-w-7xl mx-auto ${isMobile ? "p-4 gap-8" : "p-6 gap-12"} mb-40`}
+      className={`flex flex-col items-start justify-center max-w-7xl mx-auto ${isMobile ? "p-4 gap-8" : "p-6 gap-12 mb-40"} `}
     >
       {/* Banner */}
       <section
