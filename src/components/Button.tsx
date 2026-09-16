@@ -20,7 +20,7 @@ export default function Button({
       className={`
         ${className}
         ${type === "brown" ? "bg-sub-01 hover:bg-sub-02" : "bg-red hover:bg-red-600"}
-        w-full
+        Shadow-btn
         text-white
         transition-colors
         duration-200
