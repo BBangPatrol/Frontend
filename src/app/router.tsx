@@ -19,6 +19,7 @@ import ReceiptVerificationPage from "../pages/receipt/ReceiptVerificationPage";
 import ReceiptResultPage from "../pages/receipt/ReceiptResultPage";
 import DrawPage from "../pages/collection/DrawPage";
 import MissionPage from "../pages/mission/MissionPage";
+import MainCollectionPage from "../pages/mainCollection/MainCollection";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +45,7 @@ export const router = createBrowserRouter(
           <Route path="/receipt/result" element={<ReceiptResultPage />} />
           <Route path="/dashboard/collection" element={<CollectionPage />} />
           <Route path="/mission" element={<MissionPage />} />
+          <Route path="/collection" element={<MainCollectionPage />} />
         </Route>
 
         {/* Footer가 필요 없는 페이지 */}
