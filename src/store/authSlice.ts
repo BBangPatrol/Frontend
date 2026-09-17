@@ -5,6 +5,7 @@ export type AuthUser = {
   id: number;
   userNickname: string;
   imageUrl: string | null;
+  point: number;
 };
 
 type AuthState = {

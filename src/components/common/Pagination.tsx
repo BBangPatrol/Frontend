@@ -11,6 +11,8 @@ type PaginationProps = {
 export default function Pagination({ page, totalPages, hasNext = false, onPageChange }: PaginationProps) {
   const pageCount = totalPages ?? page + (hasNext ? 1 : 0);
   const isLastPage = totalPages != null ? page === totalPages : !hasNext;
+  const visiblePageCount = Math.min(pageCount, 5);
+  const startPage = Math.max(1, Math.min(page - 2, pageCount - visiblePageCount + 1));
 
   if (pageCount <= 1) return null;
 
@@ -19,8 +21,8 @@ export default function Pagination({ page, totalPages, hasNext = false, onPageCh
       <button type="button" aria-label="이전 페이지" disabled={page === 1} className="size-8 flex items-center justify-center disabled:opacity-30" onClick={() => onPageChange(page - 1)}>
         <img src={prevPageIcon} alt="" />
       </button>
-      {Array.from({ length: pageCount }).map((_, index) => {
-        const pageNumber = index + 1;
+      {Array.from({ length: visiblePageCount }).map((_, index) => {
+        const pageNumber = startPage + index;
 
         return (
           <button

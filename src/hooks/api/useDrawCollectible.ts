@@ -6,6 +6,9 @@ export function useDrawCollectible() {
 
   return useMutation({
     mutationFn: drawCollectible,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["collectibles", "me"] }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["collectibles", "me"] });
+      void queryClient.invalidateQueries({ queryKey: ["users", "me"] });
+    },
   });
 }
