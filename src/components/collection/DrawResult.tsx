@@ -1,3 +1,4 @@
+import "@/styles/draw.css";
 import { Link } from "react-router-dom";
 import type { DrawCollectibleResult } from "../../api/collectibles";
 import { COLLECTIBLE_RANK_STYLES } from "../../constants/collectibles";
@@ -5,13 +6,17 @@ import { COLLECTIBLE_RANK_STYLES } from "../../constants/collectibles";
 type DrawResultProps = {
   result: DrawCollectibleResult;
   onClose: () => void;
+  imageStatus: "loading" | "loaded" | "error";
+  onImageLoad: () => void;
+  onImageError: () => void;
 };
 
-export default function DrawResult({ result, onClose }: DrawResultProps) {
+export default function DrawResult({ result, onClose, imageStatus, onImageLoad, onImageError }: DrawResultProps) {
+  const isReady = imageStatus !== "loading";
   return (
-    <section className="fixed inset-0 px-5 bg-white/85 flex justify-center items-center">
-      <div className="w-full max-w-80 md:max-w-96 flex flex-col gap-6 md:gap-8 p-8 bg-white rounded-4xl shadow-2xl">
-        <DrawResultItemImage result={result} />
+    <section aria-hidden={!isReady} className={`${isReady ? "draw-result-overlay" : "invisible pointer-events-none"} fixed inset-0 z-50 px-5 bg-white/85 flex justify-center items-center`}>
+      <div className="draw-result-card w-full max-w-80 md:max-w-96 flex flex-col gap-6 md:gap-8 p-8 bg-white rounded-4xl shadow-2xl">
+        <DrawResultItemImage result={result} imageStatus={imageStatus} onImageLoad={onImageLoad} onImageError={onImageError} />
         <DrawResultExplain result={result} />
         <DrawResultButtons onClose={onClose} />
       </div>
@@ -19,15 +24,19 @@ export default function DrawResult({ result, onClose }: DrawResultProps) {
   );
 }
 
-function DrawResultItemImage({ result }: { result: DrawCollectibleResult }) {
+function DrawResultItemImage({ result, imageStatus, onImageLoad, onImageError }: Omit<DrawResultProps, "onClose">) {
   return (
     <div className="relative flex justify-center items-center">
-      <div className="absolute size-40 opacity-80 bg-indigo-50 rounded-xl blur-xl" />
+      <div aria-hidden="true" className="absolute size-40 opacity-80 bg-indigo-50 rounded-xl blur-xl" />
+      {imageStatus === "error" ? <p className="relative size-40 flex items-center justify-center text-gray-02 typo-sub-02">이미지를 불러오지 못했어요</p> : (
       <img
-        className="size-40 z-10 object-contain"
+        className="draw-result-item size-40 z-10 object-contain"
         src={result.image}
         alt={result.name}
+        onLoad={onImageLoad}
+        onError={onImageError}
       />
+      )}
     </div>
   );
 }
@@ -36,7 +45,7 @@ function DrawResultExplain({ result }: { result: DrawCollectibleResult }) {
   const rankStyle = COLLECTIBLE_RANK_STYLES[result.rank];
 
   return (
-    <div className="flex flex-col gap-3 items-center">
+    <div className="draw-result-details flex flex-col gap-3 items-center">
       <p
         className={`px-2 py-1 rounded-2xl typo-body-04 md:text-sm! ${rankStyle.badge}`}
       >
