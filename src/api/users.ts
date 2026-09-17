@@ -29,6 +29,24 @@ export type DashboardData = {
   missions: DashboardMission[];
 };
 
+export type PointHistoryItem = {
+  type: "earn" | "spend";
+  content: string;
+  amount: number;
+  date: string;
+};
+
+export type PointHistoryData = {
+  point_history: PointHistoryItem[];
+  pageInfo: {
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    hasNext: boolean;
+  };
+};
+
 type ApiResponse<T> = {
   isSuccess: boolean;
   code: string;
@@ -42,6 +60,13 @@ export type EditNicknameRequest = {
 
 export async function getDashboard() {
   const response = await authApi.get<ApiResponse<DashboardData>>("/users/me");
+  return response.data.data;
+}
+
+export async function getPointHistory(page = 0) {
+  const response = await authApi.get<ApiResponse<PointHistoryData>>("/users/me/points", {
+    params: { page },
+  });
   return response.data.data;
 }
 
