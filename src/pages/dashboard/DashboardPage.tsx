@@ -40,29 +40,54 @@ interface PointAndReviewCardProps extends ResponsiveProps {
 
 export default function DashboardPage() {
   const { isMobile } = useResponsive();
-  const profileImageUrl = useSelector((state: RootState) => state.auth.user?.imageUrl ?? null);
+  const profileImageUrl = useSelector(
+    (state: RootState) => state.auth.user?.imageUrl ?? null,
+  );
   const dashboardQuery = useDashboard();
 
-  if (dashboardQuery.isPending) return <PageStatus message="대시보드를 불러오는 중입니다." isLoading />;
-  if (dashboardQuery.isError || !dashboardQuery.data) return <PageStatus message="대시보드를 불러오지 못했습니다." showBackButton />;
+  if (dashboardQuery.isPending)
+    return <PageStatus message="대시보드를 불러오는 중입니다." isLoading />;
+  if (dashboardQuery.isError || !dashboardQuery.data)
+    return (
+      <PageStatus message="대시보드를 불러오지 못했습니다." showBackButton />
+    );
 
-  const { nickname, collectionBooks, point, reviews, missions } = dashboardQuery.data;
+  const { nickname, collectionBooks, point, reviews, missions } =
+    dashboardQuery.data;
 
   return (
     <main className="p-4 flex flex-col gap-7 md:p-8 md:gap-9 md:max-w-7xl md:m-auto">
-      <DashboardHeader isMobile={isMobile} nickname={nickname} profileImageUrl={profileImageUrl} />
+      <DashboardHeader
+        isMobile={isMobile}
+        nickname={nickname}
+        profileImageUrl={profileImageUrl}
+      />
       {isMobile ? (
         <div className="flex flex-col gap-5">
-          <CollectiblesCard isMobile={isMobile} collectionBooks={collectionBooks} />
+          <CollectiblesCard
+            isMobile={isMobile}
+            collectionBooks={collectionBooks}
+          />
           <MissionCard isMobile={isMobile} missions={missions} />
-          <PointAndReviewCard isMobile={isMobile} point={point} reviews={reviews} />
+          <PointAndReviewCard
+            isMobile={isMobile}
+            point={point}
+            reviews={reviews}
+          />
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-6">
-          <CollectiblesCard isMobile={isMobile} collectionBooks={collectionBooks} />
+          <CollectiblesCard
+            isMobile={isMobile}
+            collectionBooks={collectionBooks}
+          />
           <div className="flex flex-col gap-5">
             <MissionCard isMobile={isMobile} missions={missions} />
-            <PointAndReviewCard isMobile={isMobile} point={point} reviews={reviews} />
+            <PointAndReviewCard
+              isMobile={isMobile}
+              point={point}
+              reviews={reviews}
+            />
           </div>
         </div>
       )}
@@ -70,19 +95,30 @@ export default function DashboardPage() {
   );
 }
 
-function DashboardHeader({ isMobile, nickname, profileImageUrl }: DashboardHeaderProps) {
+function DashboardHeader({
+  isMobile,
+  nickname,
+  profileImageUrl,
+}: DashboardHeaderProps) {
   return (
     <section className="flex">
       <div className="flex gap-3 items-center">
         <div className="size-10 rounded-full overflow-hidden">
-          <img className="size-full object-cover" src={profileImageUrl ?? logoImage} alt={`${nickname} 프로필`} />
+          <img
+            className="size-full object-cover"
+            src={profileImageUrl ?? logoImage}
+            alt={`${nickname} 프로필`}
+          />
         </div>
         <h2 className="text-2xl font-extrabold text-bl ack-01">
           안녕, <span className="text-sub-01">{nickname}</span>!
         </h2>
       </div>
       {!isMobile && (
-        <Link to="/" className="flex gap-2 ml-auto px-8 py-4 bg-sub-01 text-white rounded-2xl typo-head-03">
+        <Link
+          to="/"
+          className="flex gap-2 ml-auto px-8 py-4 bg-sub-01 text-white rounded-2xl typo-head-03"
+        >
           <img src={cameraImage} />
           <p>영수증으로 방문 인증</p>
         </Link>
@@ -91,27 +127,40 @@ function DashboardHeader({ isMobile, nickname, profileImageUrl }: DashboardHeade
   );
 }
 
-function CollectiblesCard({ isMobile, collectionBooks }: CollectiblesCardProps) {
+function CollectiblesCard({
+  isMobile,
+  collectionBooks,
+}: CollectiblesCardProps) {
   const itemLimit = isMobile ? 3 : 8;
   const visibleItems = collectionBooks.items.slice(0, itemLimit);
   const emptyItemCount = itemLimit - visibleItems.length;
 
   return (
-    <Link to="/collection">
+    <Link to="/dashboard/collection">
       <section className="flex flex-col gap-4 p-5 bg-yellow-02 border border-main-05 rounded-xl md:rounded-4xl md:p-7 md:gap-5">
         <div className="flex gap-1.5 items-center">
           <div>
             <img className="md:size-7" src={giftImage} />
           </div>
-          <h3 className={`${isMobile ? "typo-head-04" : "typo-head-02"}`}>수집품 도감</h3>
-          <div className={`flex text-sub-02 ml-auto ${isMobile ? "typo-sub-02" : "typo-body-04"}`}>
+          <h3 className={`${isMobile ? "typo-head-04" : "typo-head-02"}`}>
+            수집품 도감
+          </h3>
+          <div
+            className={`flex text-sub-02 ml-auto ${isMobile ? "typo-sub-02" : "typo-body-04"}`}
+          >
             전체보기 <img src={rightBrownArrow} />
           </div>
         </div>
         <div className="flex flex-col gap-3 md:gap-4">
           <div className="flex flex-col gap-1 md:gap-2">
-            <p className={isMobile ? "typo-head-04" : "typo-head-03"}>{collectionBooks.collected}개의 수집품을 모았어요</p>
-            <p className={`${isMobile ? "typo-sub-02" : "typo-body-03"} text-gray-02`}>수집품 뽑기로 {collectionBooks.total}가지의 수집품을 모아보세요</p>
+            <p className={isMobile ? "typo-head-04" : "typo-head-03"}>
+              {collectionBooks.collected}개의 수집품을 모았어요
+            </p>
+            <p
+              className={`${isMobile ? "typo-sub-02" : "typo-body-03"} text-gray-02`}
+            >
+              수집품 뽑기로 {collectionBooks.total}가지의 수집품을 모아보세요
+            </p>
           </div>
           <div className="grid grid-cols-3 grid-rows-1 gap-3 md:grid-cols-4 md:grid-rows-2 md:gap-2">
             {visibleItems.map((item) => (
@@ -119,7 +168,11 @@ function CollectiblesCard({ isMobile, collectionBooks }: CollectiblesCardProps) 
                 key={item.collectibleId}
                 className="flex aspect-square items-center justify-center overflow-hidden rounded-xl border-2 border-gray-03 bg-white p-2 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] md:rounded-lg"
               >
-                <img className="size-full object-contain" src={item.image} alt={item.name} />
+                <img
+                  className="size-full object-contain"
+                  src={item.image}
+                  alt={item.name}
+                />
               </div>
             ))}
             {Array.from({ length: emptyItemCount }, (_, index) => (
@@ -153,8 +206,12 @@ function MissionCard({ isMobile, missions }: MissionCardProps) {
 
   if (!currentMission) return null;
 
-  const progressPercentage = currentMission.targetCount > 0 ? Math.min((currentMission.count / currentMission.targetCount) * 100, 100) : 0;
-  const statusText = currentMission.status === "not_received" ? "보상 수령 가능" : "진행 중";
+  const progressPercentage =
+    currentMission.targetCount > 0
+      ? Math.min((currentMission.count / currentMission.targetCount) * 100, 100)
+      : 0;
+  const statusText =
+    currentMission.status === "not_received" ? "보상 수령 가능" : "진행 중";
   const fadeClassName = missions.length > 1 ? "dashboard-mission-fade" : "";
 
   return (
@@ -164,20 +221,36 @@ function MissionCard({ isMobile, missions }: MissionCardProps) {
           <div>
             <img src={medalImage} />
           </div>
-          <h3 className={isMobile ? "typo-head-04" : "typo-head-02"}>진행 중 미션</h3>
+          <h3 className={isMobile ? "typo-head-04" : "typo-head-02"}>
+            진행 중 미션
+          </h3>
           <img src={rightBlackArrow} className="ml-auto" />
         </div>
         <div className="flex flex-col gap-3 md:gap-4.5">
-          <div key={currentMission.missionId} className={`flex flex-col gap-1 md:gap-2 ${fadeClassName}`}>
-            <p className={isMobile ? "typo-head-04" : "typo-head-03"}>{currentMission.title}</p>
-            <p className={`${isMobile ? "typo-sub-02" : "typo-body-03"} text-gray-02`}>{statusText}</p>
+          <div
+            key={currentMission.missionId}
+            className={`flex flex-col gap-1 md:gap-2 ${fadeClassName}`}
+          >
+            <p className={isMobile ? "typo-head-04" : "typo-head-03"}>
+              {currentMission.title}
+            </p>
+            <p
+              className={`${isMobile ? "typo-sub-02" : "typo-body-03"} text-gray-02`}
+            >
+              {statusText}
+            </p>
           </div>
           <div className="flex flex-col gap-1.5">
-            <div className={`flex justify-between text-sub-01 ${isMobile ? "typo-body-04" : "typo-body-03"}`}>
+            <div
+              className={`flex justify-between text-sub-01 ${isMobile ? "typo-body-04" : "typo-body-03"}`}
+            >
               <p>진행률</p>
               <p key={currentMission.missionId} className={fadeClassName}>
                 {currentMission.count}
-                <span className="text-gray-01"> / {currentMission.targetCount}</span>
+                <span className="text-gray-01">
+                  {" "}
+                  / {currentMission.targetCount}
+                </span>
               </p>
             </div>
             <div
@@ -188,7 +261,10 @@ function MissionCard({ isMobile, missions }: MissionCardProps) {
               aria-valuemax={currentMission.targetCount}
               aria-valuenow={currentMission.count}
             >
-              <div className="h-full rounded-full bg-sub-01 transition-[width] duration-700 ease-in-out" style={{ width: `${progressPercentage}%` }} />
+              <div
+                className="h-full rounded-full bg-sub-01 transition-[width] duration-700 ease-in-out"
+                style={{ width: `${progressPercentage}%` }}
+              />
             </div>
           </div>
         </div>
@@ -197,10 +273,17 @@ function MissionCard({ isMobile, missions }: MissionCardProps) {
   );
 }
 
-function PointAndReviewCard({ isMobile, point, reviews }: PointAndReviewCardProps) {
+function PointAndReviewCard({
+  isMobile,
+  point,
+  reviews,
+}: PointAndReviewCardProps) {
   return (
     <section className="flex gap-4">
-      <Link to="/" className="flex flex-col gap-4 p-5 flex-1 bg-white border border-main-05 rounded-xl md:rounded-4xl md:gap-6 md:p-7">
+      <Link
+        to="/"
+        className="flex flex-col gap-4 p-5 flex-1 bg-white border border-main-05 rounded-xl md:rounded-4xl md:gap-6 md:p-7"
+      >
         <div className="flex gap-1.5 items-center">
           <img src={coinImage} className="size-5 md:size-7" />
           <h3 className={isMobile ? "typo-head-04" : "typo-head-02"}>포인트</h3>
@@ -209,29 +292,43 @@ function PointAndReviewCard({ isMobile, point, reviews }: PointAndReviewCardProp
         <div className="flex flex-col gap-3">
           <p>
             <span className="text-2xl font-extrabold">{point}</span>
-            <span className="typo-head-04 text-gray-02 font-extrabold ml-0.5">P</span>
+            <span className="typo-head-04 text-gray-02 font-extrabold ml-0.5">
+              P
+            </span>
           </p>
           <div className="flex gap-1 items-center">
             <img src={grayGiftImage} />
             <p className="text-sm font-bold text-gray-01">
-              뽑기 <span className="text-sub-01">{Math.floor(point / 100)}</span>회 가능
+              뽑기{" "}
+              <span className="text-sub-01">{Math.floor(point / 100)}</span>회
+              가능
             </p>
           </div>
         </div>
       </Link>
-      <Link to="/" className="flex flex-col gap-4 p-5 flex-1 bg-white border border-main-05 rounded-xl md:rounded-4xl md:gap-6 md:p-7">
+      <Link
+        to="/dashboard/reviews"
+        className="flex flex-col gap-4 p-5 flex-1 bg-white border border-main-05 rounded-xl md:rounded-4xl md:gap-6 md:p-7"
+      >
         <div className="flex gap-1.5 items-center">
           <img src={reviewImage} className="size-5 md:size-7" />
-          <h3 className={isMobile ? "typo-head-04" : "typo-head-02"}>나의 리뷰</h3>
+          <h3 className={isMobile ? "typo-head-04" : "typo-head-02"}>
+            나의 리뷰
+          </h3>
           <img src={rightBlackArrow} className="ml-auto size-4" />
         </div>
         <div className="flex flex-col gap-3">
           <p>
-            <span className="text-2xl font-extrabold">{reviews.reviewCount}</span>
-            <span className="typo-head-04 text-gray-02 font-extrabold ml-0.5">건</span>
+            <span className="text-2xl font-extrabold">
+              {reviews.reviewCount}
+            </span>
+            <span className="typo-head-04 text-gray-02 font-extrabold ml-0.5">
+              건
+            </span>
           </p>
           <p className="text-sm font-bold text-gray-01">
-            받은 좋아요 <span className="text-sub-01">{reviews.reviewLikes}</span>
+            받은 좋아요{" "}
+            <span className="text-sub-01">{reviews.reviewLikes}</span>
           </p>
         </div>
       </Link>

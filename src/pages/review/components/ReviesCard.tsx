@@ -1,5 +1,5 @@
 // assets
-import click_like from "../../../assets/icon/like-black-01.svg";
+// import click_like from "../../../assets/icon/like-black-01.svg";
 import unclick_like from "../../../assets/icon/like-gray-02.svg";
 import star from "../../../assets/icon/star.svg";
 import emptyStar from "../../../assets/icon/empty_star.svg";

@@ -1,8 +1,8 @@
 // libraries
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 // hooks
-import useIsLoggedIn from "../../hooks/useIsLoggedIn";
+// import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 // contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // components
@@ -12,12 +12,10 @@ import ReviewCard from "./components/ReviesCard";
 // assets
 import review from "../../assets/images/dashboardPage/review.svg";
 import like from "../../assets/icon/like-sub-01.svg";
-// utils
-import { startKakaoLogin } from "../../utils/kakao";
 
 export default function MyReviewPage() {
-  const isLoggedIn = useIsLoggedIn();
-  const navigate = useNavigate();
+  // const isLoggedIn = useIsLoggedIn();
+  // const navigate = useNavigate();
 
   const { isMobile } = useResponsive();
 
