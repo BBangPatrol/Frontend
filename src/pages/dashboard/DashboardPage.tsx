@@ -19,7 +19,7 @@ export default function DashboardPage() {
   const { nickname, collectionBooks, point, reviews, missions } = dashboardQuery.data;
 
   return (
-    <main className="p-4 flex flex-col gap-7 md:p-8 md:gap-9 md:max-w-7xl md:m-auto">
+    <main className="w-full p-4 flex flex-col gap-7 md:p-8 md:gap-9 md:max-w-7xl md:mx-auto">
       <DashboardHeader isMobile={isMobile} nickname={nickname} profileImageUrl={profileImageUrl} />
       {isMobile ? (
         <div className="flex flex-col gap-5">

@@ -14,7 +14,7 @@ export default function CollectiblesCard({ isMobile, collectionBooks }: Collecti
   const emptyItemCount = itemLimit - visibleItems.length;
 
   return (
-    <Link to="/collection">
+    <Link to="/dashboard/collection">
       <section className="flex flex-col gap-4 p-5 bg-yellow-02 border border-main-05 rounded-xl md:rounded-4xl md:p-7 md:gap-5">
         <div className="flex gap-1.5 items-center">
           <div>
