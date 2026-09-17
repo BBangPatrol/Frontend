@@ -24,7 +24,6 @@ export default function Button({
         text-white
         transition-colors
         duration-200
-        hover:bg-sub-02
         rounded-xl
         ${isMobile ? "py-3 typo-head-05" : "py-4 typo-head-04"}
       `}
