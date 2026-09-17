@@ -11,6 +11,7 @@ export const userInfo = {
         id: 1,
         userNickname: "닉네임",
         imageUrl: null,
+        point: 1250,
     },
     errors: null,
 };

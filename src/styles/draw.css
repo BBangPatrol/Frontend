@@ -1,0 +1,55 @@
+@keyframes draw-result-overlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes draw-result-card {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes draw-result-item {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.draw-result-overlay {
+  animation: draw-result-overlay 240ms ease-out both;
+}
+
+.draw-result-overlay .draw-result-card {
+  animation: draw-result-card 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.draw-result-overlay .draw-result-item {
+  animation: draw-result-item 450ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+}
+
+.draw-result-overlay .draw-result-details {
+  animation: draw-result-overlay 350ms ease-out 140ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-result-overlay,
+  .draw-result-overlay .draw-result-card,
+  .draw-result-overlay .draw-result-item,
+  .draw-result-overlay .draw-result-details {
+    animation: none;
+  }
+}
