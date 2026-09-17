@@ -209,6 +209,12 @@
   line-height: 20px;
 }
 
+.typo-body-05-des {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 15px;
+}
+
 /* 가로 스크롤 영역의 스크롤바 숨김 (칩·카드 행이 위아래 선처럼 보이는 것 방지) */
 .no-scrollbar {
   -ms-overflow-style: none;
