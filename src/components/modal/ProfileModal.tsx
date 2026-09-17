@@ -76,8 +76,8 @@ export default function ProfileModal({
   return createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
       <div
-        className={`flex flex-col rounded-[20px] bg-white p-9 shadow-dropdown ${
-          isMobile ? "w-78 gap-7" : "w-118 gap-8"
+        className={`flex flex-col rounded-[20px] bg-white  shadow-dropdown ${
+          isMobile ? "w-78 gap-7 p-7" : "w-118 gap-8 p-9"
         }`}
       >
         {/* Header */}
