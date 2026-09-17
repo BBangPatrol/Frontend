@@ -5,8 +5,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff")
-    format("woff");
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff") format("woff");
 }
 
 @font-face {
@@ -14,8 +13,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff")
-    format("woff");
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff") format("woff");
 }
 
 @font-face {
@@ -23,8 +21,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff")
-    format("woff");
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff") format("woff");
 }
 
 /* Figma 디자인 시스템 (node 2370:1227) 기준 Color·Typography 토큰 */
@@ -213,6 +210,61 @@
   font-size: 10px;
   font-weight: 700;
   line-height: 15px;
+}
+
+@keyframes dashboard-mission-fade {
+  0% {
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.dashboard-mission-fade {
+  animation: dashboard-mission-fade 5s ease-in-out;
+}
+
+@keyframes mission-reward-received {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mission-reward-received {
+  animation: mission-reward-received 280ms ease-out;
+}
+
+@keyframes map-popup-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.map-popup-enter {
+  transform-origin: bottom center;
+  animation: map-popup-enter 220ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-popup-enter,
+  .mission-reward-received {
+    animation: none;
+  }
 }
 
 /* 가로 스크롤 영역의 스크롤바 숨김 (칩·카드 행이 위아래 선처럼 보이는 것 방지) */

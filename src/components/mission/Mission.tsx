@@ -4,10 +4,11 @@ import type { Mission as MissionData } from "../../api/missions";
 type MissionProps = {
   mission: MissionData;
   isCollecting: boolean;
+  isJustCollected: boolean;
   onCollectPoint: (missionId: number) => void;
 };
 
-export default function Mission({ mission, isCollecting, onCollectPoint }: MissionProps) {
+export default function Mission({ mission, isCollecting, isJustCollected, onCollectPoint }: MissionProps) {
   const { id, title, description, count, targetCount, status } = mission;
   const percentage = (count / targetCount) * 100;
   const isCompleted = status === "completed";
@@ -35,7 +36,7 @@ export default function Mission({ mission, isCollecting, onCollectPoint }: Missi
             {isCollecting ? "수령 중..." : "포인트 받기"}
           </button>
         ) : (
-          <div className={`flex self-start items-center gap-1 rounded-lg p-1 md:items-center bg-gray-04`}>
+          <div className={`flex self-start items-center gap-1 rounded-lg p-1 md:items-center bg-gray-04 ${isJustCollected ? "mission-reward-received" : ""}`}>
             <img src={pointIcon} alt="" />
             <p className={`typo-body-04 md:text-base! md:leading-5.5! text-gray-01`}>{isFail ? "실패" : `포인트 적립${isCompleted ? " 완료!" : ""}`}</p>
           </div>

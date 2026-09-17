@@ -13,8 +13,6 @@ import { useStoreReviews } from "../../hooks/api/useStoreReviews";
 import type { StoreDetailErrorResponse } from "../../api/stores";
 import mainImage from "@/assets/images/detailPage/temp_1.jpeg";
 
-const reviewPercentages = [0, 25, 50, 75, 100];
-
 export default function DetailPage() {
   const { isMobile } = useResponsive();
   const { storeId = "" } = useParams<{ storeId: string }>();
@@ -32,7 +30,7 @@ export default function DetailPage() {
     return <PageStatus message={message ?? "가게 정보를 불러오지 못했습니다."} showBackButton />;
   }
 
-  if (storeDetailQuery.isPending || storeReviewsQuery.isPending || storeAttractionsQuery.isPending) return <PageStatus message="가게 정보를 불러오는 중입니다." />;
+  if (storeDetailQuery.isPending || storeReviewsQuery.isPending || storeAttractionsQuery.isPending) return <PageStatus message="가게 정보를 불러오는 중입니다." isLoading />;
   if (!storeDetailQuery.data || !storeReviewsQuery.data || !storeAttractionsQuery.data) return null;
 
   const { bakery } = storeDetailQuery.data;
@@ -51,7 +49,7 @@ export default function DetailPage() {
           <DetailSummary bakery={bakery} />
           {isMobile && <DetailFunctionButtons storeId={storeId} />}
         </div>
-        {isMobile ? <DetailReviews storeId={storeId} reviews={reviews} reviewCount={count} reviewPercentages={reviewPercentages} /> : <ReviewSummary reviewPercentages={reviewPercentages} />}
+        {isMobile ? <DetailReviews storeId={storeId} reviews={reviews} reviewCount={count} summary={bakery.summary} /> : bakery.summary ? <ReviewSummary key={bakery.id} summary={bakery.summary} storeId={storeId} /> : null}
         <Recommendation attractions={attractions} />
       </div>
       {!isMobile && (

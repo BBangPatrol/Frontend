@@ -24,7 +24,7 @@ export default function ReviewDetailPage() {
     return <PageStatus message={message ?? "리뷰를 불러오지 못했습니다."} showBackButton />;
   }
 
-  if (storeDetailQuery.isPending || storeReviewsQuery.isPending) return <PageStatus message="리뷰를 불러오는 중입니다." />;
+  if (storeDetailQuery.isPending || storeReviewsQuery.isPending) return <PageStatus message="리뷰를 불러오는 중입니다." isLoading />;
   if (!storeDetailQuery.data || !storeReviewsQuery.data) return null;
 
   const { bakery } = storeDetailQuery.data;
@@ -43,7 +43,7 @@ export default function ReviewDetailPage() {
         }
       />
       <ReviewRatingSummary rating={averageRating} reviewCount={count} ratingPercentages={ratingPercentages} />
-      <ReviewDetailList reviews={reviews} sort={sort} page={pageInfo.page} totalPages={pageInfo.totalPages} onSortChange={setSort} onPageChange={setPage} />
+      <ReviewDetailList storeId={storeId} reviews={reviews} sort={sort} page={pageInfo.page} totalPages={pageInfo.totalPages} onSortChange={setSort} onPageChange={setPage} />
     </main>
   );
 }

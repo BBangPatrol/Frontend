@@ -1,8 +1,49 @@
 import { authApi } from "./client";
+import type { CollectibleRank } from "../types/collectibles";
+
+export type DashboardMission = {
+  missionId: number;
+  title: string;
+  count: number;
+  targetCount: number;
+  status: "in_progress" | "not_received";
+};
+
+export type DashboardData = {
+  nickname: string;
+  collectionBooks: {
+    collected: number;
+    total: number;
+    items: Array<{
+      collectibleId: number;
+      name: string;
+      rank: CollectibleRank;
+      image: string;
+    }>;
+  };
+  point: number;
+  reviews: {
+    reviewCount: number;
+    reviewLikes: number;
+  };
+  missions: DashboardMission[];
+};
+
+type ApiResponse<T> = {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: T;
+};
 
 export type EditNicknameRequest = {
   nickname: string;
 };
+
+export async function getDashboard() {
+  const response = await authApi.get<ApiResponse<DashboardData>>("/users/me");
+  return response.data.data;
+}
 
 export async function editNickname(nickname: string) {
   const response = await authApi.patch("/users/me/edit", {

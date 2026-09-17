@@ -116,6 +116,17 @@ export type CreateReviewResult = {
   reviewId: number;
 };
 
+export type UpdateReviewParams = {
+  storeId: string;
+  reviewId: number;
+  rating: number;
+  content: string;
+  deleteKeywordIds?: number[];
+  keywordIds?: number[];
+  deleteImages?: number[];
+  reviewImages?: File[];
+};
+
 export type StoreApiErrorResponse = {
   isSuccess: false;
   code: string;
@@ -191,6 +202,22 @@ export async function createReview({ storeId, rating, content, keywordIds, revie
   reviewImages.forEach((reviewImage) => formData.append("reviewImages", reviewImage));
 
   const response = await authApi.post<ApiResponse<CreateReviewResult>>(`/stores/${storeId}/reviews`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return response.data.data;
+}
+
+export async function updateReview({ storeId, reviewId, rating, content, deleteKeywordIds = [], keywordIds = [], deleteImages = [], reviewImages = [] }: UpdateReviewParams) {
+  const formData = new FormData();
+  formData.append("rating", String(rating));
+  formData.append("content", content);
+  deleteKeywordIds.forEach((keywordId) => formData.append("deleteKeywordIds", String(keywordId)));
+  keywordIds.forEach((keywordId) => formData.append("keywordIds", String(keywordId)));
+  deleteImages.forEach((imageId) => formData.append("deleteImages", String(imageId)));
+  reviewImages.forEach((reviewImage) => formData.append("reviewImages", reviewImage));
+
+  const response = await authApi.patch<ApiResponse<CreateReviewResult>>(`/stores/${storeId}/reviews/${reviewId}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 

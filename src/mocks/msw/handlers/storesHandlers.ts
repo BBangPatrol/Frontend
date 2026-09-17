@@ -480,9 +480,11 @@ export const storesHandlers = [
             return HttpResponse.json(unauthorized, { status: 401 });
         }
 
+        const storeId = Number(params.storeId);
         const reviewId = Number(params.reviewId);
+        const review = storeReviews.find((item) => item.id === reviewId);
 
-        if (reviewId === 999) {
+        if (storeId === 999 || !review) {
             return HttpResponse.json(
                 {
                     isSuccess: false,
@@ -494,15 +496,32 @@ export const storesHandlers = [
             );
         }
 
+        if (review.writerId !== 1) {
+            return HttpResponse.json(
+                {
+                    isSuccess: false,
+                    code: "USER403",
+                    message: "권한이 없습니다.",
+                },
+                { status: 403 },
+            );
+        }
+
         const formData = await request.formData().catch(() => null);
-        const ratingValue = formData?.get("rating");
-        const rating = ratingValue == null ? null : Number(ratingValue);
+        const rating = Number(formData?.get("rating"));
         const content = formData?.get("content");
+        const deleteKeywordIds = formData?.getAll("deleteKeywordIds") ?? [];
+        const keywordIds = formData?.getAll("keywordIds") ?? [];
+        const deleteImages = formData?.getAll("deleteImages") ?? [];
         const reviewImages = formData?.getAll("reviewImages") ?? [];
 
         const hasValidRequiredFields =
-            (rating == null || (Number.isInteger(rating) && rating >= 1 && rating <= 5)) &&
-            (content == null || typeof content === "string");
+            Number.isInteger(rating) &&
+            rating >= 1 &&
+            rating <= 5 &&
+            typeof content === "string" &&
+            content.trim().length > 0 &&
+            [...deleteKeywordIds, ...keywordIds, ...deleteImages].every((id) => typeof id === "string" && Number.isInteger(Number(id)));
 
         if (!hasValidRequiredFields) {
             return HttpResponse.json(
@@ -551,6 +570,11 @@ export const storesHandlers = [
                 { status: 429 },
             );
         }
+
+        const removedKeywordIds = deleteKeywordIds.map(Number);
+        review.rating = rating;
+        review.content = content.trim();
+        review.keywords = [...new Set([...review.keywords.filter((keywordId) => !removedKeywordIds.includes(keywordId)), ...keywordIds.map(Number)])];
 
         return HttpResponse.json({
             isSuccess: true,

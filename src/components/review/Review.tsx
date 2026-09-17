@@ -5,6 +5,8 @@ import { useResponsive } from "../../contexts/ResponsiveContext";
 
 type ReviewProps = {
   isDetail?: boolean;
+  canManage?: boolean;
+  onEdit?: () => void;
   starRating: number;
   userName?: string;
   content?: string;
@@ -12,7 +14,7 @@ type ReviewProps = {
   likeCount?: number;
 };
 
-export default function Review({ isDetail = false, starRating, userName = "알수없음", content = "알수없음", date = "0일 전", likeCount = 0 }: ReviewProps) {
+export default function Review({ isDetail = false, canManage = false, onEdit, starRating, userName = "알수없음", content = "알수없음", date = "0일 전", likeCount = 0 }: ReviewProps) {
   const { isMobile } = useResponsive();
   return (
     <article className="flex flex-col py-2 gap-3 border-b border-gray-04">
@@ -40,7 +42,7 @@ export default function Review({ isDetail = false, starRating, userName = "알�
           <div className="h-5 px-1 py-2 rounded-lg border border-sub-01 flex justify-center items-center typo-sub-02 md:typo-body-03 text-sub-01">디저트가 맛있어요</div>
           <div className="h-5 px-1 py-2 rounded-lg border border-sub-01 flex justify-center items-center typo-sub-02 md:typo-body-03 text-sub-01">뷰가 좋아요</div>
         </div>
-        <p className="text-gray-01 typo-sub-01 mt-1">{content}</p>
+        <p className="text-gray-01 typo-sub-01-des mt-1">{content}</p>
       </div>
       <div className="flex">
         <button className="flex self-start bg-gray-04 gap-2 h-7 px-3 py-1.5 rounded-lg justify-start items-center">
@@ -50,9 +52,9 @@ export default function Review({ isDetail = false, starRating, userName = "알�
             <p>{likeCount}</p>
           </div>
         </button>
-        {isDetail && (
+        {isDetail && canManage && (
           <>
-            <button className="ml-5 text-black-02 typo-body-03 underline">리뷰 수정</button>
+            <button type="button" onClick={onEdit} className="ml-5 text-black-02 typo-body-03 underline">리뷰 수정</button>
             <button className="ml-3 text-black-02 typo-body-03 underline">리뷰 삭제</button>
           </>
         )}

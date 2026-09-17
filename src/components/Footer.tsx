@@ -5,7 +5,7 @@ type FooterProps = {
 export default function Footer({ isMobile }: FooterProps) {
   return (
     <footer
-      className={`flex w-full items-start justify-between bg-yellow-02 border-t-main-04  ${isMobile ? "flex-col items-center justify-center gap-4 p-6" : "flex-row items-start justify-between py-8 px-26"}`}
+      className={`mt-auto flex w-full shrink-0 items-start justify-between bg-yellow-02 border-t-main-04  ${isMobile ? "flex-col items-center justify-center gap-4 p-6" : "flex-row items-start justify-between py-8 px-26"}`}
     >
       <div className="flex items-center gap-4 ">
         <button
