@@ -20,7 +20,7 @@ export default function LoginModal({
     <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
       <div
         className={`relative flex flex-col items-center justify-center rounded-[20px] bg-white shadow-dropdown  ${
-          isMobile ? "w-78 gap-7 p-9" : "w-118 gap-8 p-12"
+          isMobile ? "w-78 gap-3 p-9" : "w-118 gap-5 p-12"
         }`}
       >
         <button
@@ -41,14 +41,15 @@ export default function LoginModal({
           </h2>
           {description && (
             <p
-              className={`text-gray-02 ${isMobile ? "typo-body-04" : "typo-body-03"}`}
+              className={`text-gray-02 text-center ${isMobile ? "typo-body-04" : "typo-body-03"}`}
+              style={{ whiteSpace: "pre-line" }}
             >
               {description}
             </p>
           )}
         </div>
 
-        <div className={`flex flex-col gap-2`}>
+        <div className={`flex flex-col gap-4`}>
           <button
             type="button"
             className={`flex w-full items-center justify-center shadow-btn`}

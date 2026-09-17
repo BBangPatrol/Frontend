@@ -287,7 +287,10 @@ export default function MobileNavigation() {
                 <p className="typo-body-03">{me?.userNickname}님 환영합니다</p>
               </div>
               <button
-                onClick={() => setIsProfileModalOpen(true)}
+                onClick={() => {
+                  setIsProfileModalOpen(true);
+                  setIsOpen(false);
+                }}
                 className="typo-sub-02 text-gray-02"
               >
                 <img src={right} alt="right" className="h-6 w-6" />
@@ -295,7 +298,10 @@ export default function MobileNavigation() {
             </div>
           ) : (
             <Button
-              onClick={() => setIsLoginModalOpen(true)}
+              onClick={() => {
+                setIsLoginModalOpen(true);
+                setIsOpen(false);
+              }}
               isMobile={isMobile}
             >
               로그인

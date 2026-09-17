@@ -16,6 +16,7 @@ import ReceiptResultPage from "../pages/receipt/ReceiptResultPage";
 import DrawPage from "../pages/collection/DrawPage";
 import MissionPage from "../pages/mission/MissionPage";
 import PointPage from "../pages/dashboard/point/PointPage";
+import MainCollectionPage from "../pages/mainCollection/MainCollection";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,8 +32,9 @@ export const router = createBrowserRouter(
           <Route path="/detail/review/:storeId/:reviewId/edit" element={<AddReviewPage />} />
           <Route path="/receipt/verify/:storeId" element={<ReceiptVerificationPage />} />
           <Route path="/receipt/result" element={<ReceiptResultPage />} />
-          <Route path="/collection" element={<CollectionPage />} />
+          <Route path="/dashboard/collection" element={<CollectionPage />} />
           <Route path="/mission" element={<MissionPage />} />
+          <Route path="/collection" element={<MainCollectionPage />} />
         </Route>
 
         {/* Footer가 필요 없는 페이지 */}
@@ -42,6 +44,10 @@ export const router = createBrowserRouter(
         <Route path="/dashboard/point" element={<PointPage />} />
         <Route path="/collection/draw" element={<DrawPage />} />
         <Route path="/map" element={<MapPage />} />
+        <Route path="collection" element={<CollectionPage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard/collection/draw" element={<DrawPage />} />
+        <Route path="map" element={<MapPage />} />
       </Route>
     </>,
   ),
