@@ -3,12 +3,14 @@ import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // hooks
 // import useIsLoggedIn from "../../hooks/useIsLoggedIn";
+import { useReviews } from "../../hooks/api/useGetRevies";
 // contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // components
 import Pagination from "../../components/common/Pagination";
 import PageHeader from "../../components/common/PageHeader";
 import ReviewCard from "./components/ReviesCard";
+import PageStatus from "../../components/common/PageStatus";
 // assets
 import review from "../../assets/images/dashboardPage/review.svg";
 import like from "../../assets/icon/like-sub-01.svg";
@@ -19,64 +21,76 @@ export default function MyReviewPage() {
 
   const { isMobile } = useResponsive();
 
-  const ReviewData = {
-    reviews: [
-      {
-        bakeryId: 1,
-        bakeryName: "성심당 본점",
-        reviewId: 1,
-        rating: 5,
-        content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
-        likeCount: 12,
-        date: "2026.05.20",
-      },
-      {
-        bakeryId: 1,
-        bakeryName: "성심당 본점",
-        reviewId: 2,
-        rating: 5,
-        content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
-        likeCount: 12,
-        date: "2026.05.20",
-      },
-      {
-        bakeryId: 1,
-        bakeryName: "성심당 본점",
-        reviewId: 3,
-        rating: 5,
-        content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
-        likeCount: 12,
-        date: "2026.05.20",
-      },
-      {
-        bakeryId: 1,
-        bakeryName: "성심당 본점",
-        reviewId: 4,
-        rating: 5,
-        content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
-        likeCount: 12,
-        date: "2026.05.20",
-      },
-      {
-        bakeryId: 2,
-        bakeryName: "하레하레",
-        reviewId: 5,
-        rating: 5,
-        content: "소금빵 겉바속촉 제대로입니다. 인생 소금빵 등극!",
-        likeCount: 25,
-        date: "2026.05.18",
-      },
-    ],
-    reviewCount: 7,
-    reviewLikes: 42,
-    pageInfo: {
-      page: 0,
-      size: 5,
-      totalElements: 7,
-      totalPages: 2,
-      hasNext: true,
-    },
-  };
+  const { data: ReviewData, isPending, isError } = useReviews(true);
+
+  if (isPending) {
+    return <PageStatus message="리뷰 데이터를 불러오는 중입니다." />;
+  }
+
+  if (isError) {
+    return (
+      <PageStatus message="리뷰 데이터를 불러오는 중 오류가 발생했습니다." />
+    );
+  }
+
+  // const ReviewData = {
+  //   reviews: [
+  //     {
+  //       bakeryId: 1,
+  //       bakeryName: "성심당 본점",
+  //       reviewId: 1,
+  //       rating: 5,
+  //       content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
+  //       likeCount: 12,
+  //       date: "2026.05.20",
+  //     },
+  //     {
+  //       bakeryId: 1,
+  //       bakeryName: "성심당 본점",
+  //       reviewId: 2,
+  //       rating: 5,
+  //       content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
+  //       likeCount: 12,
+  //       date: "2026.05.20",
+  //     },
+  //     {
+  //       bakeryId: 1,
+  //       bakeryName: "성심당 본점",
+  //       reviewId: 3,
+  //       rating: 5,
+  //       content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
+  //       likeCount: 12,
+  //       date: "2026.05.20",
+  //     },
+  //     {
+  //       bakeryId: 1,
+  //       bakeryName: "성심당 본점",
+  //       reviewId: 4,
+  //       rating: 5,
+  //       content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
+  //       likeCount: 12,
+  //       date: "2026.05.20",
+  //     },
+  //     {
+  //       bakeryId: 2,
+  //       bakeryName: "하레하레",
+  //       reviewId: 5,
+  //       rating: 5,
+  //       content: "소금빵 겉바속촉 제대로입니다. 인생 소금빵 등극!",
+  //       likeCount: 25,
+  //       date: "2026.05.18",
+  //     },
+  //   ],
+  //   reviewCount: 7,
+  //   reviewLikes: 42,
+  //   pageInfo: {
+  //     page: 0,
+  //     size: 5,
+  //     totalElements: 7,
+  //     totalPages: 2,
+  //     hasNext: true,
+  //   },
+  // };
 
   const [cursorHistory, setCursorHistory] = useState<Array<number | undefined>>(
     [undefined],
@@ -143,9 +157,9 @@ export default function MyReviewPage() {
       >
         {ReviewData.reviews.length === 0 ? (
           <div
-            className={`text-center text-gray-01 ${isMobile ? "typo-sub-02" : "typo-sub-01"} `}
+            className={`self-start text-gray-01 ${isMobile ? "typo-sub-02" : "typo-sub-01"} `}
           >
-            인증한 빵집이 없어요.
+            아직 리뷰가 없어요.
           </div>
         ) : (
           <div
