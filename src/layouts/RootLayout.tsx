@@ -1,4 +1,5 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { motion } from "motion/react";
 
 import {
   ResponsiveProvider,
@@ -18,12 +19,15 @@ export default function RootLayout() {
 
 function LayoutContent() {
   const { isMobile } = useResponsive();
+  const { pathname } = useLocation();
 
   return (
     <div className="min-h-dvh flex flex-col">
       {isMobile ? <MobileNavigation /> : <DesktopNavigation />}
 
-      <Outlet />
+      <motion.div key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex min-w-0 flex-1 flex-col">
+        <Outlet />
+      </motion.div>
     </div>
   );
 }

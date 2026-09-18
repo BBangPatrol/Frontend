@@ -1,3 +1,5 @@
+import { motion } from "motion/react";
+
 type Props = {
   children: React.ReactNode;
   onClick?: () => void;
@@ -14,7 +16,8 @@ export default function Button({
   type = "brown",
 }: Props) {
   return (
-    <button
+    <motion.button
+      whileTap={{ scale: 0.98 }}
       type="button"
       onClick={onClick}
       className={`
@@ -29,6 +32,6 @@ export default function Button({
       `}
     >
       {children}
-    </button>
+    </motion.button>
   );
 }

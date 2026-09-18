@@ -33,7 +33,7 @@ export default function PointAndReviewCard({ isMobile, point, reviews }: PointAn
           </div>
         </div>
       </Link>
-      <Link to="/" className="flex min-w-0 flex-col gap-4 p-5 flex-1 bg-white border border-main-05 rounded-xl md:rounded-4xl md:p-4 lg:gap-6 lg:p-7">
+      <Link to="/dashboard/reviews" className="flex min-w-0 flex-col gap-4 p-5 flex-1 bg-white border border-main-05 rounded-xl md:rounded-4xl md:p-4 lg:gap-6 lg:p-7">
         <div className="flex gap-1.5 items-center">
           <img src={reviewImage} className="size-5 shrink-0 lg:size-7" />
           <h3 className={`${isMobile ? "typo-head-04" : "text-base font-extrabold leading-5 lg:text-xl lg:leading-5.5"} whitespace-nowrap`}>나의 리뷰</h3>

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { motion } from "motion/react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { StoreReview } from "../../api/stores";
@@ -51,7 +52,7 @@ export default function ReviewDetailList({ storeId, reviews, sort, page, totalPa
           <img src={downArrowIcon} alt="" className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" />
         </div>
       </div>
-      <div className="flex flex-col gap-3">
+      <motion.div key={`${page}-${sort}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-3">
         {sortedReviews.length > 0 ? (
           sortedReviews.map((review) => (
             <Review
@@ -70,7 +71,7 @@ export default function ReviewDetailList({ storeId, reviews, sort, page, totalPa
         ) : (
           <p className="py-8 text-center text-gray-02 typo-body-03">작성된 리뷰가 없습니다.</p>
         )}
-      </div>
+      </motion.div>
       <Pagination page={page + 1} totalPages={totalPages} onPageChange={(pageNumber) => onPageChange(pageNumber - 1)} />
     </section>
   );
