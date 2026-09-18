@@ -134,7 +134,11 @@ export default function HomePage() {
               내 위치에서 가까운
             </p>
           </div>
-          <div
+          <button
+            onClick={() => {
+              navigate("/map");
+              // 전체보기 버튼 클릭 시 동작
+            }}
             className={`flex items-center justify-center ${isMobile ? "gap-1" : "gap-1"}`}
           >
             <p
@@ -145,7 +149,7 @@ export default function HomePage() {
             <div className={` ${isMobile ? "w-3 h-3" : "w-4 h-4"}`}>
               <img src={right} alt="right" />
             </div>
-          </div>
+          </button>
         </div>
         <div
           className={`no-scrollbar flex w-full min-w-0 max-w-full items-start justify-start overflow-x-auto ${
@@ -162,7 +166,9 @@ export default function HomePage() {
                   rating={store.rating}
                   region={store.region}
                   imageUrl={store.imageUrl}
-                  onClick={() => {}}
+                  onClick={() => {
+                    navigate(`/detail/${store.storeId}`);
+                  }}
                 />
               </div>
             ))}

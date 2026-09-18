@@ -17,6 +17,7 @@ import DrawPage from "../pages/collection/DrawPage";
 import MissionPage from "../pages/mission/MissionPage";
 import PointPage from "../pages/dashboard/point/PointPage";
 import MainCollectionPage from "../pages/mainCollection/MainCollection";
+import MyReviewPage from "../pages/review/MyReviewPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +36,7 @@ export const router = createBrowserRouter(
           <Route path="/dashboard/collection" element={<CollectionPage />} />
           <Route path="/mission" element={<MissionPage />} />
           <Route path="/collection" element={<MainCollectionPage />} />
+          <Route path="/dashboard/reviews" element={<MyReviewPage />} />
         </Route>
 
         {/* Footer가 필요 없는 페이지 */}
