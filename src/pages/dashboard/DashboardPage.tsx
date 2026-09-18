@@ -9,12 +9,15 @@ import logoImage from "@/assets/icon/logo.svg";
 import cameraImage from "@/assets/images/dashboardPage/camera.svg";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { DashboardData, DashboardMission } from "../../api/users";
 import PageStatus from "../../components/common/PageStatus";
+import LoginModal from "../../components/modal/LoginModal";
 import { useResponsive } from "../../contexts/ResponsiveContext";
 import { useDashboard } from "../../hooks/api/useDashboard";
+import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import type { RootState } from "../../store/store";
+import { startKakaoLogin } from "../../utils/kakao";
 
 interface ResponsiveProps {
   isMobile: boolean;
@@ -38,22 +41,47 @@ interface PointAndReviewCardProps extends ResponsiveProps {
   reviews: DashboardData["reviews"];
 }
 
+const guestDashboardData: DashboardData = {
+  nickname: "게스트",
+  collectionBooks: {
+    collected: 0,
+    total: 0,
+    items: [],
+  },
+  point: 0,
+  reviews: {
+    reviewCount: 0,
+    reviewLikes: 0,
+  },
+  missions: [
+    {
+      missionId: 0,
+      title: "로그인하고 미션에 참여해보세요",
+      count: 0,
+      targetCount: 1,
+      status: "in_progress",
+    },
+  ],
+};
+
 export default function DashboardPage() {
+  const isLoggedIn = useIsLoggedIn();
+  const navigate = useNavigate();
   const { isMobile } = useResponsive();
   const profileImageUrl = useSelector(
     (state: RootState) => state.auth.user?.imageUrl ?? null,
   );
-  const dashboardQuery = useDashboard();
+  const dashboardQuery = useDashboard(isLoggedIn);
 
-  if (dashboardQuery.isPending)
+  if (isLoggedIn && dashboardQuery.isPending)
     return <PageStatus message="대시보드를 불러오는 중입니다." isLoading />;
-  if (dashboardQuery.isError || !dashboardQuery.data)
+  if (isLoggedIn && (dashboardQuery.isError || !dashboardQuery.data))
     return (
       <PageStatus message="대시보드를 불러오지 못했습니다." showBackButton />
     );
 
   const { nickname, collectionBooks, point, reviews, missions } =
-    dashboardQuery.data;
+    isLoggedIn ? dashboardQuery.data! : guestDashboardData;
 
   return (
     <main className="w-full p-4 flex flex-col gap-7 md:p-8 md:gap-9 md:max-w-7xl md:mx-auto">
@@ -90,6 +118,14 @@ export default function DashboardPage() {
             />
           </div>
         </div>
+      )}
+      {!isLoggedIn && (
+        <LoginModal
+          isMobile={isMobile}
+          onClick={startKakaoLogin}
+          description="로그인하고 나만의 빵집 활동과 기록을 한눈에 확인해보세요"
+          onClose={() => navigate("/")}
+        />
       )}
     </main>
   );
