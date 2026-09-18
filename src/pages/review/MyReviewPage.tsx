@@ -23,6 +23,10 @@ export default function MyReviewPage() {
 
   const { data: ReviewData, isPending, isError } = useReviews(true);
 
+  const [cursorHistory, setCursorHistory] = useState<Array<number | undefined>>(
+    [undefined],
+  );
+
   if (isPending) {
     return <PageStatus message="리뷰 데이터를 불러오는 중입니다." />;
   }
@@ -91,10 +95,6 @@ export default function MyReviewPage() {
   //     hasNext: true,
   //   },
   // };
-
-  const [cursorHistory, setCursorHistory] = useState<Array<number | undefined>>(
-    [undefined],
-  );
 
   const handlePageChange = (page: number) => {
     if (page <= cursorHistory.length) {

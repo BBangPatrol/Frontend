@@ -6,7 +6,7 @@ export const reviewsQueryKey = ["reviews"] as const;
 export function useReviews(isLoggedIn: boolean) {
   return useQuery({
     queryKey: [...reviewsQueryKey],
-    queryFn: () => getMyReviews(1),
+    queryFn: () => getMyReviews(0),
     enabled: isLoggedIn,
   });
 }
