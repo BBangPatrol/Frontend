@@ -1,12 +1,42 @@
+import coinImage from "@/assets/images/dashboardPage/coin.svg";
+import giftImage from "@/assets/images/dashboardPage/gift.svg";
+import grayGiftImage from "@/assets/images/dashboardPage/gray-gift.svg";
+import medalImage from "@/assets/images/dashboardPage/medal.svg";
+import reviewImage from "@/assets/images/dashboardPage/review.svg";
+import rightBlackArrow from "@/assets/images/dashboardPage/right-black-arrow.svg";
+import rightBrownArrow from "@/assets/images/dashboardPage/right-brown-arrow.svg";
+import logoImage from "@/assets/icon/logo.svg";
+import cameraImage from "@/assets/images/dashboardPage/camera.svg";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import type { DashboardData, DashboardMission } from "../../api/users";
 import PageStatus from "../../components/common/PageStatus";
-import CollectiblesCard from "../../components/dashboard/CollectiblesCard";
-import DashboardHeader from "../../components/dashboard/DashboardHeader";
-import MissionCard from "../../components/dashboard/MissionCard";
-import PointAndReviewCard from "../../components/dashboard/PointAndReviewCard";
 import { useResponsive } from "../../contexts/ResponsiveContext";
 import { useDashboard } from "../../hooks/api/useDashboard";
 import type { RootState } from "../../store/store";
+
+interface ResponsiveProps {
+  isMobile: boolean;
+}
+
+interface DashboardHeaderProps extends ResponsiveProps {
+  nickname: string;
+  profileImageUrl: string | null;
+}
+
+interface CollectiblesCardProps extends ResponsiveProps {
+  collectionBooks: DashboardData["collectionBooks"];
+}
+
+interface MissionCardProps extends ResponsiveProps {
+  missions: DashboardMission[];
+}
+
+interface PointAndReviewCardProps extends ResponsiveProps {
+  point: number;
+  reviews: DashboardData["reviews"];
+}
 
 export default function DashboardPage() {
   const { isMobile } = useResponsive();
@@ -27,7 +57,11 @@ export default function DashboardPage() {
 
   return (
     <main className="w-full p-4 flex flex-col gap-7 md:p-8 md:gap-9 md:max-w-7xl md:mx-auto">
-      <DashboardHeader isMobile={isMobile} nickname={nickname} profileImageUrl={profileImageUrl} />
+      <DashboardHeader
+        isMobile={isMobile}
+        nickname={nickname}
+        profileImageUrl={profileImageUrl}
+      />
       {isMobile ? (
         <div className="flex flex-col gap-5">
           <CollectiblesCard
