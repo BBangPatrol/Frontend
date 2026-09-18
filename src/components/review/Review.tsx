@@ -1,6 +1,7 @@
 import starIcon from "@/assets/images/detailPage/star.svg";
 import likeIcon from "@/assets/images/detailPage/like.svg";
 import fullStarIcon from "@/assets/images/reviewDetailPage/review-full-star.svg";
+import { REVIEW_KEYWORDS } from "../../constants/reviews";
 import { useResponsive } from "../../contexts/ResponsiveContext";
 
 type ReviewProps = {
@@ -12,10 +13,15 @@ type ReviewProps = {
   content?: string;
   date?: string;
   likeCount?: number;
+  keywords?: number[];
 };
 
-export default function Review({ isDetail = false, canManage = false, onEdit, starRating, userName = "알수없음", content = "알수없음", date = "0일 전", likeCount = 0 }: ReviewProps) {
+export default function Review({ isDetail = false, canManage = false, onEdit, starRating, userName = "알수없음", content = "알수없음", date = "0일 전", likeCount = 0, keywords = [] }: ReviewProps) {
   const { isMobile } = useResponsive();
+  const keywordLabels = keywords
+    .map((keywordId) => REVIEW_KEYWORDS.find(({ id }) => id === keywordId)?.label)
+    .filter((label): label is string => Boolean(label));
+
   return (
     <article className="flex flex-col py-2 gap-3 border-b border-gray-04">
       <header className="flex gap-2 items-center">
@@ -38,10 +44,15 @@ export default function Review({ isDetail = false, canManage = false, onEdit, st
         <p className="ml-auto md:self-start text-gray-02 typo-sub-03 md:text-xs!">{date}</p>
       </header>
       <div className={`flex flex-col ${isDetail && "gap-2"}`}>
-        <div className="h-5 flex gap-1">
-          <div className="h-5 px-1 py-2 rounded-lg border border-sub-01 flex justify-center items-center typo-sub-02 md:typo-body-03 text-sub-01">디저트가 맛있어요</div>
-          <div className="h-5 px-1 py-2 rounded-lg border border-sub-01 flex justify-center items-center typo-sub-02 md:typo-body-03 text-sub-01">뷰가 좋아요</div>
-        </div>
+        {keywordLabels.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {keywordLabels.map((label) => (
+              <div key={label} className="h-5 px-1 py-2 rounded-lg border border-sub-01 flex justify-center items-center typo-sub-02 md:typo-body-03 text-sub-01">
+                {label}
+              </div>
+            ))}
+          </div>
+        )}
         <p className="text-gray-01 typo-sub-01-des mt-1">{content}</p>
       </div>
       <div className="flex">

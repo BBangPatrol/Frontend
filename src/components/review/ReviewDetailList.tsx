@@ -64,6 +64,7 @@ export default function ReviewDetailList({ storeId, reviews, sort, page, totalPa
               content={review.content}
               date={review.date}
               likeCount={review.likeCount}
+              keywords={review.keywords}
             />
           ))
         ) : (

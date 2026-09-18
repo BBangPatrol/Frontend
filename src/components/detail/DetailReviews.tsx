@@ -23,7 +23,7 @@ export default function DetailReviews({ storeId, reviews, reviewCount, summary }
         {reviews.length > 0 ? (
           <>
             {reviews.slice(0, 3).map((review) => (
-              <Review key={review.id} starRating={review.rating} userName={review.writerName} content={review.content} date={review.date} likeCount={review.likeCount} />
+              <Review key={review.id} starRating={review.rating} userName={review.writerName} content={review.content} date={review.date} likeCount={review.likeCount} keywords={review.keywords} />
             ))}
             <Link to={`/detail/review/${storeId}`} className="flex py-3 rounded-xl justify-center items-center gap-1">
               <p className="text-gray-500 typo-sub-01 md:text-inherit">더보기</p>
