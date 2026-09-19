@@ -20,7 +20,7 @@ const RECEIPT_IMAGE_TYPES = ["image/jpeg", "image/png", "image/jpg", "image/webp
 const RECEIPT_IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"];
 const REVIEW_IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
 const favoriteStoreIds = new Set<number>();
-const likedReviewIds = new Set<number>();
+const likedReviewIds = new Set(storeReviews.filter((review) => review.isLike).map((review) => review.id));
 
 type visitVerificationRequestBody = {
     totalAmount: number;
@@ -631,6 +631,12 @@ export const storesHandlers = [
         const likes = !likedReviewIds.has(reviewId);
         if (likes) likedReviewIds.add(reviewId);
         else likedReviewIds.delete(reviewId);
+
+        const review = storeReviews.find((item) => item.id === reviewId);
+        if (review) {
+            review.isLike = likes;
+            review.likeCount = Math.max(0, review.likeCount + (likes ? 1 : -1));
+        }
 
         return HttpResponse.json(
             {

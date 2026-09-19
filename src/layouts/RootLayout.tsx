@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 
@@ -20,6 +21,10 @@ export default function RootLayout() {
 function LayoutContent() {
   const { isMobile } = useResponsive();
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <div className="min-h-dvh flex flex-col">

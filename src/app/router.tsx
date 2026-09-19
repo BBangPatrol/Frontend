@@ -20,6 +20,10 @@ import MissionPage from "../pages/mission/MissionPage";
 import PointPage from "../pages/dashboard/point/PointPage";
 import MainCollectionPage from "../pages/mainCollection/MainCollection";
 import MyReviewPage from "../pages/review/MyReviewPage";
+import InfoPage from "../pages/info/InfoPage";
+import privacyPolicy from "../constants/contents/privacy-policy.md?raw";
+import serviceIntroduction from "../constants/contents/service-introduction.md?raw";
+import termsOfService from "../constants/contents/terms-of-service.md?raw";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +43,9 @@ export const router = createBrowserRouter(
           <Route path="/mission" element={<MissionPage />} />
           <Route path="/collection" element={<MainCollectionPage />} />
           <Route path="/dashboard/reviews" element={<MyReviewPage />} />
+          <Route path="/about" element={<InfoPage title="서비스 소개" content={serviceIntroduction} />} />
+          <Route path="/terms" element={<InfoPage title="이용약관" content={termsOfService} />} />
+          <Route path="/privacy" element={<InfoPage title="개인정보처리방침" content={privacyPolicy} />} />
         </Route>
 
         {/* Footer가 필요 없는 페이지 */}

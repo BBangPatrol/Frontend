@@ -252,6 +252,7 @@ export const storeReviews = [
         images: ["https://example.com/reviews/37-1.jpg"],
         thumbnails: ["https://example.com/reviews/37-1_thumb.jpg"],
         likeCount: 12,
+        isLike: true,
         date: "2026-05-28T14:32:10",
     },
     {
@@ -265,6 +266,7 @@ export const storeReviews = [
         images: [],
         thumbnails: [],
         likeCount: 4,
+        isLike: false,
         date: "2026-05-27T11:20:00",
     },
     ...Array.from({ length: 35 }, (_, index) => ({
@@ -278,6 +280,7 @@ export const storeReviews = [
         images: [],
         thumbnails: [],
         likeCount: index % 10,
+        isLike: index % 3 === 0,
         date: `2026-04-${String(30 - (index % 30)).padStart(2, "0")}T10:00:00`,
     })),
 ];

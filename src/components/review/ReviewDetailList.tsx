@@ -58,6 +58,8 @@ export default function ReviewDetailList({ storeId, reviews, sort, page, totalPa
             <Review
               key={review.id}
               isDetail
+              storeId={storeId}
+              reviewId={review.id}
               canManage={review.writerId === userId}
               onEdit={() => navigate(`/detail/review/${storeId}/${review.id}/edit`, { state: { review } })}
               starRating={review.rating}
@@ -65,6 +67,7 @@ export default function ReviewDetailList({ storeId, reviews, sort, page, totalPa
               content={review.content}
               date={review.date}
               likeCount={review.likeCount}
+              isLike={review.isLike}
               keywords={review.keywords}
             />
           ))

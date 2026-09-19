@@ -27,6 +27,7 @@ export type StoreReview = {
   images: string[];
   thumbnails: string[];
   likeCount: number;
+  isLike: boolean;
   date: string;
 };
 
@@ -116,6 +117,10 @@ export type CreateReviewResult = {
   reviewId: number;
 };
 
+export type ReviewLikeResult = {
+  likes: boolean;
+};
+
 export type UpdateReviewParams = {
   storeId: string;
   reviewId: number;
@@ -166,6 +171,12 @@ export async function getStoreReviews(storeId: string, page = 0) {
   const response = await api.get<ApiResponse<StoreReviews>>(`/stores/${storeId}/reviews`, {
     params: { page },
   });
+
+  return response.data.data;
+}
+
+export async function toggleReviewLike({ storeId, reviewId }: { storeId: string; reviewId: number }) {
+  const response = await authApi.post<ApiResponse<ReviewLikeResult>>(`/stores/${storeId}/reviews/${reviewId}/like`, {});
 
   return response.data.data;
 }
