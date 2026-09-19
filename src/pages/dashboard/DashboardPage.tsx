@@ -12,6 +12,7 @@ import { useDashboard } from "../../hooks/api/useDashboard";
 import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import type { RootState } from "../../store/store";
 import { startKakaoLogin } from "../../utils/kakao";
+import PreviewReceiptDemo from "../../demo/previewReceipt/PreviewReceiptDemo";
 
 const guestDashboardData: DashboardData = {
   nickname: "게스트",
@@ -40,54 +41,33 @@ export default function DashboardPage() {
   const isLoggedIn = useIsLoggedIn();
   const navigate = useNavigate();
   const { isMobile } = useResponsive();
-  const profileImageUrl = useSelector(
-    (state: RootState) => state.auth.user?.imageUrl ?? null,
-  );
+  const profileImageUrl = useSelector((state: RootState) => state.auth.user?.imageUrl ?? null);
   const dashboardQuery = useDashboard(isLoggedIn);
 
   if (isLoggedIn && dashboardQuery.isPending)
     return <PageStatus message="대시보드를 불러오는 중입니다." isLoading />;
   if (isLoggedIn && (dashboardQuery.isError || !dashboardQuery.data))
-    return (
-      <PageStatus message="대시보드를 불러오지 못했습니다." showBackButton />
-    );
+    return <PageStatus message="대시보드를 불러오지 못했습니다." showBackButton />;
 
-  const { nickname, collectionBooks, point, reviews, missions } =
-    isLoggedIn ? dashboardQuery.data! : guestDashboardData;
+  const { nickname, collectionBooks, point, reviews, missions } = isLoggedIn
+    ? dashboardQuery.data!
+    : guestDashboardData;
 
   return (
     <main className="w-full p-4 flex flex-col gap-7 md:p-8 md:gap-9 md:max-w-7xl md:mx-auto">
-      <DashboardHeader
-        isMobile={isMobile}
-        nickname={nickname}
-        profileImageUrl={profileImageUrl}
-      />
+      <DashboardHeader isMobile={isMobile} nickname={nickname} profileImageUrl={profileImageUrl} />
       {isMobile ? (
         <div className="flex flex-col gap-5">
-          <CollectiblesCard
-            isMobile={isMobile}
-            collectionBooks={collectionBooks}
-          />
+          <CollectiblesCard isMobile={isMobile} collectionBooks={collectionBooks} />
           <MissionCard isMobile={isMobile} missions={missions} />
-          <PointAndReviewCard
-            isMobile={isMobile}
-            point={point}
-            reviews={reviews}
-          />
+          <PointAndReviewCard isMobile={isMobile} point={point} reviews={reviews} />
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-6">
-          <CollectiblesCard
-            isMobile={isMobile}
-            collectionBooks={collectionBooks}
-          />
+          <CollectiblesCard isMobile={isMobile} collectionBooks={collectionBooks} />
           <div className="flex flex-col gap-5">
             <MissionCard isMobile={isMobile} missions={missions} />
-            <PointAndReviewCard
-              isMobile={isMobile}
-              point={point}
-              reviews={reviews}
-            />
+            <PointAndReviewCard isMobile={isMobile} point={point} reviews={reviews} />
           </div>
         </div>
       )}
@@ -99,6 +79,7 @@ export default function DashboardPage() {
           onClose={() => navigate("/")}
         />
       )}
+      <PreviewReceiptDemo />
     </main>
   );
 }

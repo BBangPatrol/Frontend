@@ -14,6 +14,8 @@ import AddReviewPage from "../pages/review/AddReviewPage";
 import ReceiptVerificationPage from "../pages/receipt/ReceiptVerificationPage";
 import ReceiptResultPage from "../pages/receipt/ReceiptResultPage";
 import DrawPage from "../pages/collection/DrawPage";
+import DrawEffectTestPage from "../pages/collection/DrawEffectTestPage";
+import OriginalDrawResultTestPage from "../pages/collection/OriginalDrawResultTestPage";
 import MissionPage from "../pages/mission/MissionPage";
 import PointPage from "../pages/dashboard/point/PointPage";
 import MainCollectionPage from "../pages/mainCollection/MainCollection";
@@ -45,6 +47,8 @@ export const router = createBrowserRouter(
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/dashboard/point" element={<PointPage />} />
         <Route path="/collection/draw" element={<DrawPage />} />
+        <Route path="/collection/draw/temp" element={<DrawEffectTestPage />} />
+        <Route path="/collection/draw/temp/original" element={<OriginalDrawResultTestPage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="collection" element={<CollectionPage />} />
         <Route path="dashboard" element={<DashboardPage />} />
