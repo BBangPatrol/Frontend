@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "motion/react";
 import DrawLink from "./DrawLink";
 import TempCollectible from "./TempCollectible";
 import TempEmptyCollectible from "./TempEmptyCollectible";
@@ -84,7 +85,7 @@ export default function CollectItemList({ collectibles, collectedCount, isMobile
         </div>
       </div>
       <div className="p-3 bg-yellow-02 rounded-xl shadow-[inset_0px_2px_4px_0px_rgba(0,0,0,0.05)] border border-main-05 md:p-8 md:rounded-4xl">
-        <div className="grid grid-cols-3 gap-3 md:grid-cols-5 md:gap-6">
+        <motion.div key={`${collectionFilter}-${rankFilter}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-3 gap-3 md:grid-cols-5 md:gap-6">
           {filteredCollectibles.length > 0 ? (
             filteredCollectibles.map(({ collectible, acquired }) =>
               acquired ? (
@@ -96,7 +97,7 @@ export default function CollectItemList({ collectibles, collectedCount, isMobile
           ) : (
             <p className="col-span-3 py-12 text-center text-gray-02 typo-sub-01 md:col-span-5">조건에 맞는 수집품이 없습니다.</p>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { motion } from "motion/react";
 // assets
 import X from "../../assets/icon/X-gray-02.svg";
 import kakao from "../../assets/kakao-login.svg";
@@ -17,8 +18,10 @@ export default function LoginModal({
   onClose,
 }: LoginModalProps) {
   return createPortal(
-    <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
-      <div
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
+      <motion.div
+        initial={{ y: 6, scale: 0.98 }}
+        animate={{ y: 0, scale: 1 }}
         className={`relative flex flex-col items-center justify-center rounded-[20px] bg-white shadow-dropdown  ${
           isMobile ? "w-78 gap-3 p-9" : "w-118 gap-5 p-12"
         }`}
@@ -69,8 +72,8 @@ export default function LoginModal({
             개스트로 둘러보기
           </button>
         </div>
-      </div>
-    </div>,
+      </motion.div>
+    </motion.div>,
     document.body,
   );
 }
