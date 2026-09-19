@@ -1,23 +1,29 @@
 import starIcon from "@/assets/images/detailPage/star.svg";
 import likeIcon from "@/assets/images/detailPage/like.svg";
+import activeLikeIcon from "@/assets/icon/like-sub-01.svg";
 import fullStarIcon from "@/assets/images/reviewDetailPage/review-full-star.svg";
 import { REVIEW_KEYWORDS } from "../../constants/reviews";
 import { useResponsive } from "../../contexts/ResponsiveContext";
+import { useToggleReviewLike } from "../../hooks/api/useToggleReviewLike";
 
 type ReviewProps = {
   isDetail?: boolean;
   canManage?: boolean;
   onEdit?: () => void;
+  storeId: string;
+  reviewId: number;
   starRating: number;
   userName?: string;
   content?: string;
   date?: string;
   likeCount?: number;
+  isLike?: boolean;
   keywords?: number[];
 };
 
-export default function Review({ isDetail = false, canManage = false, onEdit, starRating, userName = "알수없음", content = "알수없음", date = "0일 전", likeCount = 0, keywords = [] }: ReviewProps) {
+export default function Review({ isDetail = false, canManage = false, onEdit, storeId, reviewId, starRating, userName = "알수없음", content = "알수없음", date = "0일 전", likeCount = 0, isLike = false, keywords = [] }: ReviewProps) {
   const { isMobile } = useResponsive();
+  const likeMutation = useToggleReviewLike();
   const keywordLabels = keywords
     .map((keywordId) => REVIEW_KEYWORDS.find(({ id }) => id === keywordId)?.label)
     .filter((label): label is string => Boolean(label));
@@ -56,9 +62,16 @@ export default function Review({ isDetail = false, canManage = false, onEdit, st
         <p className="text-gray-01 typo-sub-01-des mt-1">{content}</p>
       </div>
       <div className="flex">
-        <button className="flex self-start bg-gray-04 gap-2 h-7 px-3 py-1.5 rounded-lg justify-start items-center">
-          <img src={likeIcon} />
-          <div className="flex gap-1 text-gray-02 typo-body-04">
+        <button
+          type="button"
+          aria-pressed={isLike}
+          aria-label={isLike ? "도움이 돼요 취소" : "도움이 돼요"}
+          disabled={likeMutation.isPending}
+          onClick={() => likeMutation.mutate({ storeId, reviewId })}
+          className={`flex h-7 items-center justify-start gap-2 self-start rounded-lg border px-3 py-1.5 disabled:opacity-60 ${isLike ? "border-sub-01 bg-main-05" : "border-transparent bg-gray-04"}`}
+        >
+          <img src={isLike ? activeLikeIcon : likeIcon} alt="" className="size-3.5" />
+          <div className={`flex gap-1 typo-body-04 ${isLike ? "text-sub-01" : "text-gray-02"}`}>
             <p>도움이 돼요</p>
             <p>{likeCount}</p>
           </div>
