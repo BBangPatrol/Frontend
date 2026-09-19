@@ -22,7 +22,7 @@ import MyReviewPage from "../pages/review/MyReviewPage";
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/auth/kakao/callback" element={<KakaoCallbackPage />} />s{" "}
+      <Route path="/auth/kakao/callback" element={<KakaoCallbackPage />} />
       <Route path="/" element={<RootLayout />}>
         {/* Footer가 필요한 페이지 */}
         <Route element={<FooterLayout />}>
