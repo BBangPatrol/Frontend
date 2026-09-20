@@ -11,6 +11,8 @@ import { REVIEW_KEYWORDS } from "../../../constants/reviews";
 import { useToggleReviewLike } from "../../../hooks/api/useToggleReviewLike";
 // utils
 import { formatRelativeDate } from "../../../utils/date";
+// libraries
+import { useNavigate } from "react-router-dom";
 
 interface ReviewCardProps {
   storeId: string;
@@ -24,8 +26,8 @@ interface ReviewCardProps {
   helpfulCount: number;
   visitDate: string;
   isLike: boolean;
-  onEdit?: () => void;
-  onDelete?: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 export default function ReviewCard({
@@ -44,6 +46,8 @@ export default function ReviewCard({
 }: ReviewCardProps) {
   const { isMobile } = useResponsive();
 
+  const navigate = useNavigate();
+
   const likeMutation = useToggleReviewLike();
 
   const keywordLabels = keywords
@@ -57,6 +61,9 @@ export default function ReviewCard({
       className={`w-full rounded-2xl border border-gray-04 bg-white flex flex-col ${
         isMobile ? "px-3 py-4 gap-2" : "p-5 gap-3"
       }`}
+      onClick={() => {
+        navigate(`/detail/review/${storeId}`);
+      }}
     >
       <div className="flex flex-col gap-1">
         {/* 가게명 + 날짜 */}
@@ -144,7 +151,10 @@ export default function ReviewCard({
         >
           <button
             type="button"
-            onClick={onEdit}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
             className="hover:text-black-01"
           >
             리뷰 수정
@@ -152,7 +162,10 @@ export default function ReviewCard({
 
           <button
             type="button"
-            onClick={onDelete}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
             className="hover:text-black-01"
           >
             리뷰 삭제

@@ -164,7 +164,7 @@ export default function MyReviewPage() {
       >
         {ReviewData.reviews.length === 0 ? (
           <div
-            className={`self-start text-gray-01 ${isMobile ? "typo-sub-02" : "typo-sub-01"} `}
+            className={`flex items-center justify-center text-gray-01 ${isMobile ? "typo-body-03" : "typo-body-01"} `}
           >
             아직 리뷰가 없어요.
           </div>
@@ -175,6 +175,8 @@ export default function MyReviewPage() {
             {ReviewData.reviews.map((review) => (
               <ReviewCard
                 key={review.reviewId}
+                reviewId={review.reviewId}
+                storeId={review.bakeryId.toString()}
                 storeName={review.bakeryName}
                 visitDate={review.date}
                 rating={review.rating}
