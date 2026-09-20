@@ -14,7 +14,9 @@ export function useToggleReviewLike() {
     onMutate: async ({ storeId, reviewId }: ToggleReviewLikeParams) => {
       const queryKey = ["stores", storeId, "reviews"];
       await queryClient.cancelQueries({ queryKey });
-      const previousQueries = queryClient.getQueriesData<StoreReviews>({ queryKey });
+      const previousQueries = queryClient.getQueriesData<StoreReviews>({
+        queryKey,
+      });
 
       queryClient.setQueriesData<StoreReviews>({ queryKey }, (data) =>
         data
@@ -25,7 +27,10 @@ export function useToggleReviewLike() {
                   ? {
                       ...review,
                       isLike: !review.isLike,
-                      likeCount: Math.max(0, review.likeCount + (review.isLike ? -1 : 1)),
+                      likeCount: Math.max(
+                        0,
+                        review.likeCount + (review.isLike ? -1 : 1),
+                      ),
                     }
                   : review,
               ),
@@ -36,25 +41,35 @@ export function useToggleReviewLike() {
       return { previousQueries };
     },
     onError: (_error, _variables, context) => {
-      context?.previousQueries.forEach(([queryKey, data]) => queryClient.setQueryData(queryKey, data));
+      context?.previousQueries.forEach(([queryKey, data]) =>
+        queryClient.setQueryData(queryKey, data),
+      );
     },
     onSuccess: ({ likes }, { storeId, reviewId }) => {
-      queryClient.setQueriesData<StoreReviews>({ queryKey: ["stores", storeId, "reviews"] }, (data) =>
-        data
-          ? {
-              ...data,
-              reviews: data.reviews.map((review) =>
-                review.id === reviewId && review.isLike !== likes
-                  ? {
-                      ...review,
-                      isLike: likes,
-                      likeCount: Math.max(0, review.likeCount + (likes ? 1 : -1)),
-                    }
-                  : review,
-              ),
-            }
-          : data,
+      queryClient.setQueriesData<StoreReviews>(
+        { queryKey: ["stores", storeId, "reviews"] },
+        (data) =>
+          data
+            ? {
+                ...data,
+                reviews: data.reviews.map((review) =>
+                  review.id === reviewId && review.isLike !== likes
+                    ? {
+                        ...review,
+                        isLike: likes,
+                        likeCount: Math.max(
+                          0,
+                          review.likeCount + (likes ? 1 : -1),
+                        ),
+                      }
+                    : review,
+                ),
+              }
+            : data,
       );
+      queryClient.invalidateQueries({
+        queryKey: ["reviews"],
+      });
     },
   });
 }

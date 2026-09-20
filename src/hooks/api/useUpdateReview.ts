@@ -8,8 +8,12 @@ export function useUpdateReview() {
   return useMutation({
     mutationFn: updateReview,
     onSuccess: (_result, variables) => {
+
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+
       void queryClient.invalidateQueries({ queryKey: ["stores", variables.storeId, "reviews"] });
       void queryClient.invalidateQueries({ queryKey: collectionQueryKey });
+
     },
   });
 }

@@ -9,6 +9,7 @@ import { useEditProfileImage } from "../../hooks/api/useEditProfileImage";
 import { useLogout } from "../../hooks/api/useLogout";
 import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { useMe } from "../../hooks/api/useMe";
+import { useDeleteUser } from "../../hooks/api/useDeleteUser";
 // utils
 import { startKakaoLogin } from "../../utils/kakao";
 // assets
@@ -16,6 +17,7 @@ import logo from "../../assets/icon/logo.svg";
 // components
 import ProfileModal from "../modal/ProfileModal";
 import LoginModal from "../modal/LoginModal";
+import ConfirmModal from "../modal/ConfirmModal";
 
 const navigationItems = [
   {
@@ -45,11 +47,13 @@ export default function DesktopNavigation() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const { data: me } = useMe();
   const { mutate: requestLogout } = useLogout();
   const { mutate: requestEditProfile } = useEditProfile();
   const { mutate: requestEditProfileImage } = useEditProfileImage();
+  const { mutate: requestDeleteUser } = useDeleteUser();
 
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -187,6 +191,10 @@ export default function DesktopNavigation() {
             requestLogout();
             setIsProfileModalOpen(false);
           }}
+          onDeleteAccount={() => {
+            setIsProfileModalOpen(false);
+            setIsConfirmModalOpen(true);
+          }}
         />
       )}
       {isLoginModalOpen && (
@@ -194,6 +202,20 @@ export default function DesktopNavigation() {
           isMobile={isMobile}
           onClick={startKakaoLogin}
           onClose={() => setIsLoginModalOpen(false)}
+        />
+      )}
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          isMobile={isMobile}
+          title="정말 탈퇴하시겠습니까?"
+          description="탈퇴 시 작성한 리뷰와 컬렉션이 모두 삭제됩니다."
+          confirmText="탈퇴"
+          cancelText="취소"
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={() => {
+            setIsConfirmModalOpen(false);
+            requestDeleteUser();
+          }}
         />
       )}
     </header>

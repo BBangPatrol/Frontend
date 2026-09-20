@@ -18,7 +18,11 @@ export default function LoginModal({
   onClose,
 }: LoginModalProps) {
   return createPortal(
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50"
+    >
       <motion.div
         initial={{ y: 6, scale: 0.98 }}
         animate={{ y: 0, scale: 1 }}
@@ -69,7 +73,7 @@ export default function LoginModal({
             className={`flex w-full items-center justify-center text-gray-02 underline underline-offset-3 underline-gray-02 ${isMobile ? "typo-sub-03" : "typo-sub-01 "}`}
             onClick={onClose}
           >
-            개스트로 둘러보기
+            게스트로 둘러보기
           </button>
         </div>
       </motion.div>
