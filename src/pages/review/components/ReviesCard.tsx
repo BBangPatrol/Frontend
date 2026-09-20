@@ -9,7 +9,9 @@ import { useResponsive } from "../../../contexts/ResponsiveContext";
 import { REVIEW_KEYWORDS } from "../../../constants/reviews";
 // hooks
 import { useToggleReviewLike } from "../../../hooks/api/useToggleReviewLike";
-import useIsLoggedIn from "../../../hooks/useIsLoggedIn";
+// utils
+import { formatRelativeDate } from "../../../utils/date";
+
 interface ReviewCardProps {
   storeId: string;
   reviewId: number;
@@ -42,19 +44,7 @@ export default function ReviewCard({
 }: ReviewCardProps) {
   const { isMobile } = useResponsive();
 
-  const isLoggedIn = useIsLoggedIn();
-
   const likeMutation = useToggleReviewLike();
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}.${month}.${day}`;
-  };
 
   const keywordLabels = keywords
     .map(
@@ -84,7 +74,7 @@ export default function ReviewCard({
               isMobile ? "typo-sub-02" : "typo-sub-01"
             }`}
           >
-            {formatDate(visitDate)}
+            {formatRelativeDate(visitDate)}
           </time>
         </div>
 
@@ -176,11 +166,6 @@ export default function ReviewCard({
           aria-label={isLike ? "도움이 돼요 취소" : "도움이 돼요"}
           disabled={likeMutation.isPending}
           onClick={() => {
-            if (!isLoggedIn) {
-              setIsLoginModalOpen(true);
-              return;
-            }
-
             likeMutation.mutate({
               storeId,
               reviewId,

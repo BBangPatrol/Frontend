@@ -1,5 +1,6 @@
 import type { ChangeEvent } from "react";
 import uploadIcon from "@/assets/images/receiptVerificationPage/upload.svg";
+import ReceiptFailureGuide from "./ReceiptFailureGuide";
 
 type ReceiptUploadProps = {
   isMobile: boolean;
@@ -43,7 +44,12 @@ export default function ReceiptUpload({ isMobile, errorMessage, onUpload }: Rece
             </label>
           </>
         )}
-        {errorMessage && <p className="text-center text-red typo-body-04">{errorMessage}</p>}
+        {errorMessage && (
+          <div className="mt-2 flex flex-col gap-3">
+            <p className="text-center text-red typo-body-04">{errorMessage}</p>
+            <ReceiptFailureGuide />
+          </div>
+        )}
       </div>
     </section>
   );

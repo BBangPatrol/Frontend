@@ -193,9 +193,9 @@
 }
 
 .draw-result-overlay {
-  --draw-primary: #9b7653;
-  --draw-secondary: #f3b86b;
-  --draw-light: #ffe0b2;
+  --draw-primary: #6a7282;
+  --draw-secondary: #9ca3af;
+  --draw-light: #e5e7eb;
   --draw-sparkle-opacity: 0.55;
   --draw-sparkle-duration: 2.8s;
   --draw-shine-opacity: 0.4;

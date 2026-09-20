@@ -27,6 +27,7 @@ export type StoreReview = {
   images: string[];
   thumbnails: string[];
   likeCount: number;
+  isLike: boolean;
   date: string;
 };
 
@@ -64,7 +65,7 @@ export type StoreAttractions = {
   attractions: StoreAttraction[];
 };
 
-export type StoreSearchSort = "visit" | "rating" | "distance";
+export type StoreSearchSort = "visit" | "rating";
 
 export type StoreSearchBakery = {
   id: number;
@@ -94,8 +95,6 @@ export type StoreSearch = {
 export type StoreSearchParams = {
   sort: StoreSearchSort;
   name?: string;
-  lat?: number;
-  lon?: number;
   cursor?: number;
 };
 
@@ -114,6 +113,10 @@ export type VisitResult = {
 
 export type CreateReviewResult = {
   reviewId: number;
+};
+
+export type ReviewLikeResult = {
+  likes: boolean;
 };
 
 export type UpdateReviewParams = {
@@ -143,19 +146,12 @@ type ApiResponse<T> = {
 
 export type StoreDetailErrorResponse = ApiResponse<null>;
 
-export async function getStoreSearch({
-  sort,
-  name,
-  lat,
-  lon,
-  cursor,
-}: StoreSearchParams) {
+export async function getStoreSearch({ sort, name, cursor }: StoreSearchParams) {
   const response = await api.get<ApiResponse<StoreSearch>>("/stores/search", {
     params: {
       sort,
       name,
       cursor,
-      ...(sort === "distance" ? { lat, lon } : {}),
     },
   });
 
@@ -163,152 +159,80 @@ export async function getStoreSearch({
 }
 
 export async function getStoreDetail(storeId: string) {
-  const response = await api.get<ApiResponse<StoreDetail>>(
-    `/stores/${storeId}/detail`,
-  );
+  const response = await api.get<ApiResponse<StoreDetail>>(`/stores/${storeId}/detail`);
 
   return response.data.data;
 }
 
-export async function getStoreReviews(storeId: string, page = 0) {
-  const response = await api.get<ApiResponse<StoreReviews>>(
-    `/stores/${storeId}/reviews`,
-    {
-      params: { page },
-    },
-  );
+export async function getStoreReviews(storeId: string, page = 0, withAuth = false) {
+  const client = withAuth ? authApi : api;
+  const response = await client.get<ApiResponse<StoreReviews>>(`/stores/${storeId}/reviews`, {
+    params: { page },
+  });
+
+  return response.data.data;
+}
+
+export async function toggleReviewLike({ storeId, reviewId }: { storeId: string; reviewId: number }) {
+  const response = await authApi.post<ApiResponse<ReviewLikeResult>>(`/stores/${storeId}/reviews/${reviewId}/like`, {});
 
   return response.data.data;
 }
 
 export async function getStoreAttractions(storeId: string) {
-  const response = await api.get<ApiResponse<StoreAttractions>>(
-    `/stores/${storeId}/attractions`,
-  );
+  const response = await api.get<ApiResponse<StoreAttractions>>(`/stores/${storeId}/attractions`);
 
   return response.data.data;
 }
 
-export async function analyzeReceipt({
-  storeId,
-  receipt,
-}: {
-  storeId: string;
-  receipt: File;
-}) {
+export async function analyzeReceipt({ storeId, receipt }: { storeId: string; receipt: File }) {
   const formData = new FormData();
   formData.append("receipt", receipt);
 
-  const response = await authApi.post<ApiResponse<ReceiptAnalysisResult>>(
-    `/stores/${storeId}/visit-verifications`,
-    formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-      timeout: 0,
-    },
-  );
+  const response = await authApi.post<ApiResponse<ReceiptAnalysisResult>>(`/stores/${storeId}/visit-verifications`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+    timeout: 0,
+  });
 
   return response.data.data;
 }
 
-export async function createVisit({
-  storeId,
-  totalAmount,
-  date,
-  verificationToken,
-}: {
-  storeId: string;
-  totalAmount: number;
-  date: string;
-  verificationToken: string;
-}) {
-  const response = await authApi.post<ApiResponse<VisitResult>>(
-    `/stores/${storeId}/visits`,
-    { totalAmount, date, verificationToken },
-  );
+export async function createVisit({ storeId, totalAmount, date, verificationToken }: { storeId: string; totalAmount: number; date: string; verificationToken: string }) {
+  const response = await authApi.post<ApiResponse<VisitResult>>(`/stores/${storeId}/visits`, { totalAmount, date, verificationToken });
 
   return response.data.data;
 }
 
-export async function createReview({
-  storeId,
-  rating,
-  content,
-  keywordIds,
-  reviewImages,
-}: {
-  storeId: string;
-  rating: number;
-  content: string;
-  keywordIds: number[];
-  reviewImages: File[];
-}) {
+export async function createReview({ storeId, rating, content, keywordIds, reviewImages }: { storeId: string; rating: number; content: string; keywordIds: number[]; reviewImages: File[] }) {
   const formData = new FormData();
   formData.append("rating", String(rating));
   formData.append("content", content);
-  keywordIds.forEach((keywordId) =>
-    formData.append("keywordIds", String(keywordId)),
-  );
-  reviewImages.forEach((reviewImage) =>
-    formData.append("reviewImages", reviewImage),
-  );
+  keywordIds.forEach((keywordId) => formData.append("keywordIds", String(keywordId)));
+  reviewImages.forEach((reviewImage) => formData.append("reviewImages", reviewImage));
 
-  const response = await authApi.post<ApiResponse<CreateReviewResult>>(
-    `/stores/${storeId}/reviews`,
-    formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-    },
-  );
+  const response = await authApi.post<ApiResponse<CreateReviewResult>>(`/stores/${storeId}/reviews`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
   return response.data.data;
 }
 
-export async function updateReview({
-  storeId,
-  reviewId,
-  rating,
-  content,
-  deleteKeywordIds = [],
-  keywordIds = [],
-  deleteImages = [],
-  reviewImages = [],
-}: UpdateReviewParams) {
+export async function updateReview({ storeId, reviewId, rating, content, deleteKeywordIds = [], keywordIds = [], deleteImages = [], reviewImages = [] }: UpdateReviewParams) {
   const formData = new FormData();
   formData.append("rating", String(rating));
   formData.append("content", content);
-  deleteKeywordIds.forEach((keywordId) =>
-    formData.append("deleteKeywordIds", String(keywordId)),
-  );
-  keywordIds.forEach((keywordId) =>
-    formData.append("keywordIds", String(keywordId)),
-  );
-  deleteImages.forEach((imageId) =>
-    formData.append("deleteImages", String(imageId)),
-  );
-  reviewImages.forEach((reviewImage) =>
-    formData.append("reviewImages", reviewImage),
-  );
+  deleteKeywordIds.forEach((keywordId) => formData.append("deleteKeywordIds", String(keywordId)));
+  keywordIds.forEach((keywordId) => formData.append("keywordIds", String(keywordId)));
+  deleteImages.forEach((imageId) => formData.append("deleteImages", String(imageId)));
+  reviewImages.forEach((reviewImage) => formData.append("reviewImages", reviewImage));
 
-  const response = await authApi.patch<ApiResponse<CreateReviewResult>>(
-    `/stores/${storeId}/reviews/${reviewId}`,
-    formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-    },
-  );
+  const response = await authApi.patch<ApiResponse<CreateReviewResult>>(`/stores/${storeId}/reviews/${reviewId}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
   return response.data.data;
 }
 
-export async function deleteReview({
-  storeId,
-  reviewId,
-}: {
-  storeId: number;
-  reviewId: number;
-}) {
-  await authApi.delete<ApiResponse<null>>(
-    `/stores/${storeId}/reviews/${reviewId}`,
-  );
+export async function deleteReview({ storeId, reviewId }: { storeId: number; reviewId: number }) {
+  await authApi.delete<ApiResponse<null>>(`/stores/${storeId}/reviews/${reviewId}`);
 }

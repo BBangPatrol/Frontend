@@ -6,6 +6,7 @@ import ConfirmModal from "../../components/receipt/ConfirmModal";
 import ReceiptResult from "../../components/receipt/ReceiptResult";
 import ReceiptResultButtons from "../../components/receipt/ReceiptResultButtons";
 import ReceiptResultExplain from "../../components/receipt/ReceiptResultExplain";
+import ReceiptFailureGuide from "../../components/receipt/ReceiptFailureGuide";
 import { useCreateVisit } from "../../hooks/api/useCreateVisit";
 import type { ReceiptAnalysisResult, StoreApiErrorResponse } from "../../api/stores";
 import checkIcon from "@/assets/images/receiptResultPage/check.svg";
@@ -49,7 +50,12 @@ export default function ReceiptResultPage() {
       <PageHeader title="영수증 분석 완료" icon={checkIcon} subTitle="아래 인식된 정보를 확인해주세요. 결과는 임의로 수정할 수 없습니다." />
       <ReceiptResult result={result} />
       <ReceiptResultButtons isPending={createVisitMutation.isPending} onConfirm={handleConfirm} onRetry={() => navigate(`/receipt/verify/${storeId}`, { replace: true })} />
-      {errorMessage && <p className="text-center text-red typo-body-04">{errorMessage}</p>}
+      {errorMessage && (
+        <div className="flex flex-col gap-3">
+          <p className="text-center text-red typo-body-04">{errorMessage}</p>
+          <ReceiptFailureGuide />
+        </div>
+      )}
       <ReceiptResultExplain />
       {isConfirmOpen && createVisitMutation.data && <ConfirmModal point={createVisitMutation.data.point} storeId={storeId} onClose={() => setIsConfirmOpen(false)} />}
     </main>
