@@ -59,6 +59,9 @@ export type StoreAttraction = {
   lng: number;
   distance: number;
   tel: string;
+  // TourAPI가 내려주는 이미지 공공누리 유형 (Type1 = 제1유형, Type3 = 제3유형 변경금지).
+  // 지금은 표시에 쓰지 않고, 유형 확인과 후속 처리를 위해 받아 둔다.
+  copyrightType: string | null;
 };
 
 export type StoreAttractions = {

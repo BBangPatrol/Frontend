@@ -221,6 +221,7 @@ export const storesHandlers = [
                         lng: 127.4394906219,
                         distance: 1708,
                         tel: "",
+                        copyrightType: "Type1",
                     },
                     {
                         contentId: "1622603",
@@ -233,6 +234,7 @@ export const storesHandlers = [
                         lng: 127.430166301,
                         distance: 1809,
                         tel: "",
+                        copyrightType: "Type3",
                     },
                 ],
             },

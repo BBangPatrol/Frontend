@@ -26,6 +26,7 @@ export default function Recommendation({ attractions }: { attractions: StoreAttr
           </li>
         ))}
       </ul>
+      <p className="text-gray-02 text-xs leading-5">주변 관광지 정보·사진 출처: ⓒ한국관광공사</p>
     </section>
   );
 }
