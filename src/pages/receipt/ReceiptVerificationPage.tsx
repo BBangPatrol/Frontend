@@ -11,15 +11,18 @@ import receiptIcon from "@/assets/images/receiptVerificationPage/receipt.svg";
 
 export default function ReceiptVerificationPage() {
   const { isMobile } = useResponsive();
-  const { storeId = "" } = useParams<{ storeId: string }>();
-  const analyzeMutation = useAnalyzeReceipt();
+  const { storeId } = useParams<{ storeId?: string }>();
+  const analyzeMutation = useAnalyzeReceipt(storeId);
   const navigate = useNavigate();
 
   const handleUpload = (receipt: File) => {
     analyzeMutation.mutate(
-      { storeId, receipt },
+      { receipt },
       {
-        onSuccess: (result) => navigate("/receipt/result", { state: { storeId, result } }),
+        onSuccess: (result) => {
+          const verifiedStoreId = storeId ?? ("storeId" in result ? String(result.storeId) : "");
+          if (verifiedStoreId) navigate("/receipt/result", { state: { storeId: verifiedStoreId, result } });
+        },
         onError: (error) => {
           if (isAxiosError(error) && error.response?.status === 401) navigate("/", { replace: true });
         },

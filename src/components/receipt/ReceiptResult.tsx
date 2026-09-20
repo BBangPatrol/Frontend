@@ -1,8 +1,8 @@
-import type { ReceiptAnalysisResult } from "../../api/stores";
+import type { ReceiptAnalysisResult, ReceiptMatchResult } from "../../api/stores";
 
-export default function ReceiptResult({ result }: { result: ReceiptAnalysisResult }) {
+export default function ReceiptResult({ result }: { result: ReceiptAnalysisResult | ReceiptMatchResult }) {
   const results = [
-    ["상호명", result.bakeryName],
+    ...("storeName" in result ? [["방문 매장", result.storeName], ["영수증 상호명", result.bakeryName]] : [["상호명", result.bakeryName]]),
     ["일자", result.date],
     ["금액", `${result.amount.toLocaleString("ko-KR")}원`],
   ];

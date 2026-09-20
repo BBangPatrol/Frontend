@@ -1,6 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { analyzeReceipt } from "../../api/stores";
+import { analyzeReceipt, analyzeReceiptWithoutStore } from "../../api/stores";
 
-export function useAnalyzeReceipt() {
-  return useMutation({ mutationFn: analyzeReceipt });
+export function useAnalyzeReceipt(storeId?: string) {
+  return useMutation({
+    mutationFn: ({ receipt }: { receipt: File }) => storeId ? analyzeReceipt({ storeId, receipt }) : analyzeReceiptWithoutStore({ receipt }),
+  });
 }

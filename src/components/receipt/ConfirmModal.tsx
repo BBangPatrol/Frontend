@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 type ConfirmModalProps = {
   point: number;
   storeId: string;
+  visitDetailId: number;
   onClose: () => void;
 };
 
-export default function ConfirmModal({ point, storeId, onClose }: ConfirmModalProps) {
+export default function ConfirmModal({ point, storeId, visitDetailId, onClose }: ConfirmModalProps) {
   return (
     <section className="fixed inset-0 bg-white/85 md:bg-black/50 flex justify-center items-center">
       <div className="w-80 md:w-96 p-8 bg-white rounded-4xl shadow-2xl flex flex-col items-center gap-4 md:gap-5">
@@ -19,7 +20,7 @@ export default function ConfirmModal({ point, storeId, onClose }: ConfirmModalPr
           <p className="text-gray-02 typo-sub-02 md:text-sm!">{point.toLocaleString("ko-KR")}포인트가 적립되었습니다.</p>
         </div>
         <div className="w-full flex flex-col md:flex-row gap-2">
-          <Link to={`/detail/review/new/${storeId}`} className="py-3 text-center md:py-4 md:order-2 md:flex-1 bg-sub-01 rounded-xl text-white typo-head-05 shadow-[0px_4px_6px_-1px_rgba(198,139,89,0.20)]">
+          <Link to={`/detail/review/new/${storeId}`} state={{ visitDetailId }} className="py-3 text-center md:py-4 md:order-2 md:flex-1 bg-sub-01 rounded-xl text-white typo-head-05 shadow-[0px_4px_6px_-1px_rgba(198,139,89,0.20)]">
             리뷰 작성하기
           </Link>
           <button onClick={onClose} className="py-3 md:py-4 md:order-1 md:flex-1 bg-gray-04 rounded-xl text-gray-01 typo-head-05">
