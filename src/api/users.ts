@@ -77,7 +77,11 @@ export type review = {
   reviewId: number;
   rating: number;
   content: string;
+  keywords: number[];
+  images: string[];
+  thumbnails: string[];
   likeCount: number;
+  isLike: boolean;
   date: string;
 };
 
@@ -87,9 +91,12 @@ export async function getDashboard() {
 }
 
 export async function getPointHistory(page = 0) {
-  const response = await authApi.get<ApiResponse<PointHistoryData>>("/users/me/points", {
-    params: { page },
-  });
+  const response = await authApi.get<ApiResponse<PointHistoryData>>(
+    "/users/me/points",
+    {
+      params: { page },
+    },
+  );
   return response.data.data;
 }
 

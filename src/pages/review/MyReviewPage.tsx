@@ -1,9 +1,10 @@
 // libraries
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // hooks
 // import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { useReviews } from "../../hooks/api/useGetRevies";
+import { useDeleteReview } from "../../hooks/api/useDeleteReviews";
 // contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // components
@@ -11,21 +12,27 @@ import Pagination from "../../components/common/Pagination";
 import PageHeader from "../../components/common/PageHeader";
 import ReviewCard from "./components/ReviesCard";
 import PageStatus from "../../components/common/PageStatus";
+import ConfirmModal from "../../components/modal/ConfirmModal";
 // assets
-import review from "../../assets/images/dashboardPage/review.svg";
+import reviews from "../../assets/images/dashboardPage/review.svg";
 import like from "../../assets/icon/like-sub-01.svg";
+// types
+import type { review } from "../../api/users";
 
 export default function MyReviewPage() {
   // const isLoggedIn = useIsLoggedIn();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { isMobile } = useResponsive();
 
   const { data: ReviewData, isPending, isError } = useReviews(true);
+  const { mutate: deleteReview } = useDeleteReview();
 
   const [cursorHistory, setCursorHistory] = useState<Array<number | undefined>>(
     [undefined],
   );
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedReview, setselectedReview] = useState<review | null>(null);
 
   if (isPending) {
     return <PageStatus message="리뷰 데이터를 불러오는 중입니다." />;
@@ -111,7 +118,7 @@ export default function MyReviewPage() {
       <div className="flex items-center justify-between w-full">
         <PageHeader
           title="나의 리뷰"
-          icon={review}
+          icon={reviews}
           subTitle="작성한 리뷰를 확인하고 관리해보세요!"
         />
       </div>
@@ -173,6 +180,22 @@ export default function MyReviewPage() {
                 rating={review.rating}
                 content={review.content}
                 helpfulCount={review.likeCount}
+                keywords={review.keywords}
+                images={review.images}
+                thumbnails={review.thumbnails}
+                isLike={review.isLike}
+                onEdit={() =>
+                  navigate(
+                    `/detail/review/${review.bakeryId}/${review.reviewId}/edit`,
+                    {
+                      state: { review: { id: review.reviewId, ...review } },
+                    },
+                  )
+                }
+                onDelete={() => {
+                  setShowDeleteModal(true);
+                  setselectedReview(review);
+                }}
               />
             ))}
           </div>
@@ -184,6 +207,26 @@ export default function MyReviewPage() {
           onPageChange={handlePageChange}
         />
       </div>
+      {showDeleteModal && (
+        <ConfirmModal
+          isMobile={isMobile}
+          title="리뷰 삭제"
+          description="리뷰를 삭제하시겠습니까?"
+          confirmText="삭제"
+          cancelText="취소"
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={() => {
+            deleteReview({
+              storeId: selectedReview!.bakeryId,
+              reviewId: selectedReview!.reviewId,
+              page: 0,
+            });
+
+            setShowDeleteModal(false);
+            setselectedReview(null);
+          }}
+        />
+      )}
     </div>
   );
 }
