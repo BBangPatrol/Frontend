@@ -16,10 +16,22 @@ type ReviewProps = {
   keywords?: number[];
 };
 
-export default function Review({ isDetail = false, canManage = false, onEdit, starRating, userName = "알수없음", content = "알수없음", date = "0일 전", likeCount = 0, keywords = [] }: ReviewProps) {
+export default function Review({
+  isDetail = false,
+  canManage = false,
+  onEdit,
+  starRating,
+  userName = "알수없음",
+  content = "알수없음",
+  date = "0일 전",
+  likeCount = 0,
+  keywords = [],
+}: ReviewProps) {
   const { isMobile } = useResponsive();
   const keywordLabels = keywords
-    .map((keywordId) => REVIEW_KEYWORDS.find(({ id }) => id === keywordId)?.label)
+    .map(
+      (keywordId) => REVIEW_KEYWORDS.find(({ id }) => id === keywordId)?.label,
+    )
     .filter((label): label is string => Boolean(label));
 
   return (
@@ -38,16 +50,23 @@ export default function Review({ isDetail = false, canManage = false, onEdit, st
         ) : (
           <p className="flex gap-0.5 items-center">
             <img src={starIcon} />
-            <span className="text-KUMDORI-01 typo-sub-02 md:text-sm!">{starRating}</span>
+            <span className="text-KUMDORI-01 typo-sub-02 md:text-sm!">
+              {starRating}
+            </span>
           </p>
         )}
-        <p className="ml-auto md:self-start text-gray-02 typo-sub-03 md:text-xs!">{date}</p>
+        <p className="ml-auto md:self-start text-gray-02 typo-sub-03 md:text-xs!">
+          {date}
+        </p>
       </header>
       <div className={`flex flex-col ${isDetail && "gap-2"}`}>
         {keywordLabels.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {keywordLabels.map((label) => (
-              <div key={label} className="h-5 px-1 py-2 rounded-lg border border-sub-01 flex justify-center items-center typo-sub-02 md:typo-body-03 text-sub-01">
+              <div
+                key={label}
+                className="h-5 px-1 py-2 rounded-lg border border-sub-01 flex justify-center items-center typo-sub-02 md:typo-body-03 text-sub-01"
+              >
                 {label}
               </div>
             ))}
@@ -65,8 +84,16 @@ export default function Review({ isDetail = false, canManage = false, onEdit, st
         </button>
         {isDetail && canManage && (
           <>
-            <button type="button" onClick={onEdit} className="ml-5 text-black-02 typo-body-03 underline">리뷰 수정</button>
-            <button className="ml-3 text-black-02 typo-body-03 underline">리뷰 삭제</button>
+            <button
+              type="button"
+              onClick={onEdit}
+              className="ml-5 text-black-02 typo-body-03 underline"
+            >
+              리뷰 수정
+            </button>
+            <button className="ml-3 text-black-02 typo-body-03 underline">
+              리뷰 삭제
+            </button>
           </>
         )}
       </div>
