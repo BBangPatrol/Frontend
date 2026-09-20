@@ -12,7 +12,7 @@ import { useDeleteUser } from "../../hooks/api/useDeleteUser";
 // contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // assets
-import logo from "../../assets/icon/logo.svg";
+import logo from "../../assets/icon/logo.webp";
 import right from "../../assets/icon/right.svg";
 // constants
 import Button from "../Button";
@@ -244,9 +244,7 @@ export default function MobileNavigation() {
           ease-[cubic-bezier(0.22,1,0.36,1)]
 
           ${
-            isOpen
-              ? "visible translate-y-0 opacity-100"
-              : "invisible -translate-y-[120%] opacity-0"
+            isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-[120%] opacity-0"
           }
         `}
       >
@@ -283,11 +281,7 @@ export default function MobileNavigation() {
           {isLoggedIn ? (
             <div className="flex w-full justify-between py-3">
               <div className="flex items-center gap-2">
-                <img
-                  src={profileImageUrl}
-                  alt="Profile"
-                  className="h-6 w-6 rounded-full"
-                />
+                <img src={profileImageUrl} alt="Profile" className="h-6 w-6 rounded-full" />
                 <p className="typo-body-03">{me?.userNickname}님 환영합니다</p>
               </div>
               <button

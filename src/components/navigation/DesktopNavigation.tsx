@@ -13,7 +13,8 @@ import { useDeleteUser } from "../../hooks/api/useDeleteUser";
 // utils
 import { startKakaoLogin } from "../../utils/kakao";
 // assets
-import logo from "../../assets/icon/logo.svg";
+import logo from "../../assets/icon/logo.webp";
+import defaultProfile from "../../assets/icon/default-profile.webp";
 // components
 import ProfileModal from "../modal/ProfileModal";
 import LoginModal from "../modal/LoginModal";
@@ -57,14 +58,11 @@ export default function DesktopNavigation() {
 
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const profileImageUrl = me?.imageUrl || logo;
+  const profileImageUrl = me?.imageUrl || defaultProfile;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(event.target as Node)
-      ) {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
         setIsProfileOpen(false);
       }
     };
@@ -104,7 +102,7 @@ export default function DesktopNavigation() {
           to="/"
           className="flex items-center gap-2 typo-head-03 font-bold text-[#191919] no-underline"
         >
-          <img src={logo} alt="LOGO" className="h-7 w-7" />
+          <img src={logo} alt="LOGO" className="size-10" />
           <p>빵범대</p>
         </NavLink>
 
