@@ -1,5 +1,5 @@
 import cameraImage from "@/assets/images/dashboardPage/camera.svg";
-import logoImage from "@/assets/icon/d.png";
+import logoImage from "@/assets/icon/default-profile.webp";
 import { Link } from "react-router-dom";
 
 type DashboardHeaderProps = {

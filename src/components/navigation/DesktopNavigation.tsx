@@ -14,7 +14,7 @@ import { useDeleteUser } from "../../hooks/api/useDeleteUser";
 import { startKakaoLogin } from "../../utils/kakao";
 // assets
 import logo from "../../assets/icon/logo.webp";
-import defaultProfile from "../../assets/icon/d.png";
+import defaultProfile from "../../assets/icon/default-profile.webp";
 // components
 import ProfileModal from "../modal/ProfileModal";
 import LoginModal from "../modal/LoginModal";
