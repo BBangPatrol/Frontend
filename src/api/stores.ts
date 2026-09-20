@@ -146,7 +146,7 @@ type ApiResponse<T> = {
 
 export type StoreDetailErrorResponse = ApiResponse<null>;
 
-export async function getStoreSearch({ sort, name, cursor }: StoreSearchParams) {
+export async function getStoreSearch({ sort, name, lat, lon, cursor }: StoreSearchParams) {
   const response = await api.get<ApiResponse<StoreSearch>>("/stores/search", {
     params: {
       sort,
@@ -231,4 +231,8 @@ export async function updateReview({ storeId, reviewId, rating, content, deleteK
   });
 
   return response.data.data;
+}
+
+export async function deleteReview({ storeId, reviewId }: { storeId: number; reviewId: number }) {
+  await authApi.delete<ApiResponse<null>>(`/stores/${storeId}/reviews/${reviewId}`);
 }

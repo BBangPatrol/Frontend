@@ -4,10 +4,14 @@ import { useResponsive } from "../../../contexts/ResponsiveContext";
 
 interface SearchInputProps {
   onSearch?: (keyword: string) => void;
+  searchQuery?: string;
 }
 
-export default function SearchInput({ onSearch }: SearchInputProps) {
-  const [keyword, setKeyword] = useState("");
+export default function SearchInput({
+  onSearch,
+  searchQuery,
+}: SearchInputProps) {
+  const [keyword, setKeyword] = useState(searchQuery || "");
 
   const { isMobile } = useResponsive();
 

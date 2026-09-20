@@ -1,21 +1,28 @@
 import { authApi } from "./client";
 
-export type Collection = {
+export interface Collection {
   visits: Visit[];
-};
+}
 
-export type Visit = {
+export interface Visit {
   storeId: number;
   storeName: string;
   storeImageUrl: string;
   visitDate: string;
   state: "none" | "reviewed" | "expired";
-  reviewId: number | null;
-  rating: number | null;
-  reviewContent: string | null;
+  visitDetailId: number;
+  review: Review | null;
   reviewDeadline: string | null;
   remainingDays?: number | null;
-};
+}
+export interface Review {
+  id: number;
+  rating: number;
+  content: string;
+  keywords: number[];
+  images: string[];
+  thumbnails: string[];
+}
 
 type ApiResponse<T> = {
   isSuccess: boolean;
@@ -27,9 +34,10 @@ type ApiResponse<T> = {
 {
   /* 콜렉션 조회 */
 }
-export async function getCollection() {
+export async function getCollection(query?: string) {
   const response = await authApi.get<ApiResponse<Collection>>(
     "/users/me/bread-collections",
+    { params: { query } },
   );
 
   return response.data.data;
