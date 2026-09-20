@@ -6,7 +6,6 @@ import ConfirmModal from "../../components/receipt/ConfirmModal";
 import ReceiptResult from "../../components/receipt/ReceiptResult";
 import ReceiptResultButtons from "../../components/receipt/ReceiptResultButtons";
 import ReceiptResultExplain from "../../components/receipt/ReceiptResultExplain";
-import ReceiptFailureGuide from "../../components/receipt/ReceiptFailureGuide";
 import { useCreateVisit } from "../../hooks/api/useCreateVisit";
 import type { ReceiptAnalysisResult, ReceiptMatchResult, StoreApiErrorResponse } from "../../api/stores";
 import checkIcon from "@/assets/images/receiptResultPage/check.svg";
@@ -51,10 +50,7 @@ export default function ReceiptResultPage() {
       <ReceiptResult result={result} />
       <ReceiptResultButtons isPending={createVisitMutation.isPending} onConfirm={handleConfirm} onRetry={() => navigate("storeId" in result ? "/receipt/verify" : `/receipt/verify/${storeId}`, { replace: true })} />
       {errorMessage && (
-        <div className="flex flex-col gap-3">
-          <p className="text-center text-red typo-body-04">{errorMessage}</p>
-          <ReceiptFailureGuide />
-        </div>
+        <p className="text-center text-red typo-body-04">{errorMessage}</p>
       )}
       <ReceiptResultExplain />
       {isConfirmOpen && createVisitMutation.data && <ConfirmModal point={createVisitMutation.data.point} storeId={storeId} visitDetailId={createVisitMutation.data.visitDetailId} onClose={() => setIsConfirmOpen(false)} />}
