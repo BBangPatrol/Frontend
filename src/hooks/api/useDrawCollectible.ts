@@ -9,6 +9,7 @@ export function useDrawCollectible() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["collectibles", "me"] });
       void queryClient.invalidateQueries({ queryKey: ["users", "me"] });
+      void queryClient.invalidateQueries({ queryKey: ["users", "me", "points"] });
     },
   });
 }
