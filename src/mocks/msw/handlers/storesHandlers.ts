@@ -5,6 +5,7 @@ import { getMockAuthState } from "../utils/auth";
 import { unauthorized } from "../data/common";
 import {
     hotStoresResponse,
+    receiptMatchResultResponse,
     receiptVerificationResultResponse,
     searchResultResponse,
     storeReviews,
@@ -36,6 +37,49 @@ async function readJsonBody<T>(request: Request): Promise<T | null> {
     }
 }
 
+async function validateReceipt(request: Request) {
+    const formData = await request.formData().catch(() => null);
+    const receiptImage = formData?.get("receipt");
+
+    if (!(receiptImage instanceof File) || receiptImage.size === 0) {
+        return HttpResponse.json(
+            {
+                isSuccess: false,
+                code: "OCR400",
+                message: "유효하지 않은 요청입니다.",
+            },
+            { status: 400 },
+        );
+    }
+
+    if (receiptImage.size > MAX_RECEIPT_IMAGE_SIZE) {
+        return HttpResponse.json(
+            {
+                isSuccess: false,
+                code: "OCR413",
+                message: "이미지가 너무 큽니다(최대 10MB).",
+            },
+            { status: 413 },
+        );
+    }
+
+    const receiptImageName = receiptImage.name.toLowerCase();
+    const hasSupportedType = RECEIPT_IMAGE_TYPES.includes(receiptImage.type.toLowerCase());
+    const hasSupportedExtension = RECEIPT_IMAGE_EXTENSIONS.some((extension) => receiptImageName.endsWith(extension));
+    if (!hasSupportedType && !hasSupportedExtension) {
+        return HttpResponse.json(
+            {
+                isSuccess: false,
+                code: "OCR415",
+                message: "지원하지 않는 이미지 형식입니다.",
+            },
+            { status: 415 },
+        );
+    }
+
+    return null;
+}
+
 export const storesHandlers = [
     // [get] 지도 검색
     http.get(apiUrl("stores/search"), ({ request }) => {
@@ -56,7 +100,14 @@ export const storesHandlers = [
         }
 
         const name = url.searchParams.get("name")?.trim().toLowerCase();
-        const result = name ? searchResultResponse.data.result.filter(({ bakery }) => bakery.name.toLowerCase().includes(name)) : searchResultResponse.data.result;
+        const favoriteOnly = url.searchParams.get("favoriteOnly") === "true";
+        if (favoriteOnly && getMockAuthState(request) !== "valid") {
+            return HttpResponse.json(unauthorized, { status: 401 });
+        }
+
+        const stores = searchResultResponse.data.result.map((result) => ({ ...result, likes: favoriteStoreIds.has(result.bakery.id) }));
+        const favoriteStores = favoriteOnly ? stores.filter(({ likes }) => likes) : stores;
+        const result = name ? favoriteStores.filter(({ bakery }) => bakery.name.toLowerCase().includes(name)) : favoriteStores;
         return HttpResponse.json({
             ...searchResultResponse,
             message: "요청이 성공적입니다.",
@@ -190,6 +241,17 @@ export const storesHandlers = [
 
     // [POST] 영수증 OCR 분석
     // storeId = 999 로 존재하지 않는 가게(404) 테스트
+    http.post(apiUrl("visit-verifications"), async ({ request }) => {
+        if (getMockAuthState(request) !== "valid") {
+            return HttpResponse.json(unauthorized, { status: 401 });
+        }
+
+        const receiptError = await validateReceipt(request);
+        if (receiptError) return receiptError;
+
+        return HttpResponse.json(receiptMatchResultResponse);
+    }),
+
     http.post(apiUrl("stores/:storeId/visit-verifications"), async ({ params, request }) => {
         if (getMockAuthState(request) !== "valid") {
             return HttpResponse.json(unauthorized, { status: 401 });
@@ -387,12 +449,15 @@ export const storesHandlers = [
         }
 
         const formData = await request.formData().catch(() => null);
+        const visitDetailId = Number(formData?.get("visitDetailId"));
         const rating = Number(formData?.get("rating"));
         const content = formData?.get("content");
         const keywordIds = formData?.getAll("keywordIds") ?? [];
         const reviewImages = formData?.getAll("reviewImages") ?? [];
 
         const hasValidRequiredFields =
+            Number.isInteger(visitDetailId) &&
+            visitDetailId > 0 &&
             Number.isInteger(rating) &&
             rating >= 1 &&
             rating <= 5 &&

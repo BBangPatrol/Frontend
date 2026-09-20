@@ -96,6 +96,7 @@ export type StoreSearchParams = {
   sort: StoreSearchSort;
   name?: string;
   cursor?: number;
+  favoriteOnly?: boolean;
 };
 
 export type ReceiptAnalysisResult = {
@@ -106,8 +107,14 @@ export type ReceiptAnalysisResult = {
   verificationToken: string;
 };
 
+export type ReceiptMatchResult = ReceiptAnalysisResult & {
+  storeId: number;
+  storeName: string;
+};
+
 export type VisitResult = {
   visitId: number;
+  visitDetailId: number;
   point: number;
 };
 
@@ -116,6 +123,10 @@ export type CreateReviewResult = {
 };
 
 export type ReviewLikeResult = {
+  likes: boolean;
+};
+
+export type StoreFavoriteResult = {
   likes: boolean;
 };
 
@@ -146,14 +157,22 @@ type ApiResponse<T> = {
 
 export type StoreDetailErrorResponse = ApiResponse<null>;
 
-export async function getStoreSearch({ sort, name, cursor }: StoreSearchParams) {
-  const response = await api.get<ApiResponse<StoreSearch>>("/stores/search", {
+export async function getStoreSearch({ sort, name, cursor, favoriteOnly }: StoreSearchParams, withAuth = false) {
+  const client = withAuth ? authApi : api;
+  const response = await client.get<ApiResponse<StoreSearch>>("/stores/search", {
     params: {
       sort,
       name,
       cursor,
+      favoriteOnly,
     },
   });
+
+  return response.data.data;
+}
+
+export async function toggleStoreFavorite({ storeId }: { storeId: number }) {
+  const response = await authApi.post<ApiResponse<StoreFavoriteResult>>(`/stores/${storeId}/favorites`, {});
 
   return response.data.data;
 }
@@ -197,14 +216,27 @@ export async function analyzeReceipt({ storeId, receipt }: { storeId: string; re
   return response.data.data;
 }
 
+export async function analyzeReceiptWithoutStore({ receipt }: { receipt: File }) {
+  const formData = new FormData();
+  formData.append("receipt", receipt);
+
+  const response = await authApi.post<ApiResponse<ReceiptMatchResult>>("/visit-verifications", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+    timeout: 0,
+  });
+
+  return response.data.data;
+}
+
 export async function createVisit({ storeId, totalAmount, date, verificationToken }: { storeId: string; totalAmount: number; date: string; verificationToken: string }) {
   const response = await authApi.post<ApiResponse<VisitResult>>(`/stores/${storeId}/visits`, { totalAmount, date, verificationToken });
 
   return response.data.data;
 }
 
-export async function createReview({ storeId, rating, content, keywordIds, reviewImages }: { storeId: string; rating: number; content: string; keywordIds: number[]; reviewImages: File[] }) {
+export async function createReview({ storeId, visitDetailId, rating, content, keywordIds, reviewImages }: { storeId: string; visitDetailId: number; rating: number; content: string; keywordIds: number[]; reviewImages: File[] }) {
   const formData = new FormData();
+  formData.append("visitDetailId", String(visitDetailId));
   formData.append("rating", String(rating));
   formData.append("content", content);
   keywordIds.forEach((keywordId) => formData.append("keywordIds", String(keywordId)));

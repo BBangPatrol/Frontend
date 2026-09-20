@@ -254,7 +254,7 @@ export default function MainCollectionPage() {
         {!isMobile && (
           <Button
             onClick={() => {
-              navigate("/map");
+              navigate("/receipt/verify");
             }}
             className="flex items-center gap-2 rounded-[10px] bg-primary py-2 px-4 text-white"
           >
@@ -304,7 +304,9 @@ export default function MainCollectionPage() {
                 key={`${visit.visitDetailId}`}
                 {...visit}
                 onWriteReview={() =>
-                  navigate(`/detail/review/new/${visit.storeId}`)
+                  navigate(`/detail/review/new/${visit.storeId}`, {
+                    state: { visitDetailId: visit.visitDetailId },
+                  })
                 }
                 onEditReview={() =>
                   navigate(
