@@ -146,7 +146,7 @@ type ApiResponse<T> = {
 
 export type StoreDetailErrorResponse = ApiResponse<null>;
 
-export async function getStoreSearch({ sort, name, lat, lon, cursor }: StoreSearchParams) {
+export async function getStoreSearch({ sort, name, cursor }: StoreSearchParams) {
   const response = await api.get<ApiResponse<StoreSearch>>("/stores/search", {
     params: {
       sort,
