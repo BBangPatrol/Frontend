@@ -5,6 +5,7 @@ import star from "../../../assets/icon/star.svg";
 import emptyStar from "../../../assets/icon/empty_star.svg";
 // contexts
 import { useResponsive } from "../../../contexts/ResponsiveContext";
+import { formatRelativeDate } from "../../../utils/date";
 
 interface ReviewCardProps {
   storeName: string;
@@ -47,7 +48,7 @@ export default function ReviewCard({
           <time
             className={`text-gray-02 ${isMobile ? "typo-sub-02" : "typo-sub-01"}`}
           >
-            {visitDate}
+            {formatRelativeDate(visitDate)}
           </time>
         </div>
 

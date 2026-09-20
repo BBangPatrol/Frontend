@@ -33,7 +33,6 @@ export default function MobileMapPage({ sheetPosition, onSheetPositionChange }: 
     sort,
     name: searchName || undefined,
     cursor,
-    ...(sort === "distance" ? { lat: DEFAULT_MAP_CENTER.lat, lon: DEFAULT_MAP_CENTER.lng } : {}),
   });
   const bakeries = searchQuery.data?.result ?? [];
   const selectedBakery = bakeries.find(({ bakery }) => bakery.id === selectedBakeryId) ?? null;
@@ -275,7 +274,6 @@ function SortSelect({ value, onChange }: { value: StoreSearchSort; onChange: (ev
       >
         <option value="visit">방문자순</option>
         <option value="rating">평점순</option>
-        <option value="distance">거리순</option>
       </select>
       <svg viewBox="0 0 12 12" className="pointer-events-none absolute top-1/2 right-2.5 size-3 -translate-y-1/2 text-gray-02" fill="none">
         <path d="m3.5 4.75 2.5 2.5 2.5-2.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
