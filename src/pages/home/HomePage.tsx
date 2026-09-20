@@ -10,9 +10,7 @@ import locarion from "../../assets/icon/location.svg";
 import book from "../../assets/icon/book.svg";
 import right from "../../assets/icon/right.svg";
 import lock from "../../assets/icon/lock.svg";
-import bannerImage1 from "../../assets/images/mainPage/1.webp";
-import bannerImage2 from "../../assets/images/mainPage/2.webp";
-import bannerImage3 from "../../assets/images/mainPage/3.webp";
+import bannerImage from "../../assets/images/mainPage/3.webp";
 // components
 import Bakery from "./components/Bakery";
 import Mission from "./components/Mission";
@@ -23,7 +21,8 @@ import { useHotStores } from "../../hooks/api/useGetHotStore";
 import { useMissions } from "../../hooks/api/useGetMissionAtHome";
 import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 
-const BANNER_IMAGES = [bannerImage1, bannerImage2, bannerImage3];
+// 배너 사진은 팀이 직접 촬영한 것만 쓴다 (대전찰칵 사진은 사용하지 않기로 확정)
+const BANNER_IMAGES = [bannerImage];
 
 export default function HomePage() {
   const navigate = useNavigate();
