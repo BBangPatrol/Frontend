@@ -18,7 +18,9 @@ import { REVIEW_KEYWORDS } from "../../constants/reviews";
 export default function AddReviewPage() {
   const { storeId = "", reviewId } = useParams<{ storeId: string; reviewId?: string }>();
   const location = useLocation();
-  const reviewFromState = (location.state as { review?: StoreReview } | null)?.review;
+  const reviewState = location.state as { review?: StoreReview; visitDetailId?: number } | null;
+  const reviewFromState = reviewState?.review;
+  const visitDetailId = reviewState?.visitDetailId;
   const isEdit = Boolean(reviewId);
   const review = isEdit && reviewFromState?.id === Number(reviewId) ? reviewFromState : null;
   const existingImages = review?.thumbnails.length ? review.thumbnails : (review?.images ?? []);
@@ -65,8 +67,9 @@ export default function AddReviewPage() {
       return;
     }
 
+    if (!visitDetailId) return;
     createReviewMutation.mutate(
-      { storeId, rating: score, content: content.trim(), keywordIds: selectedKeywordIds, reviewImages: images },
+      { storeId, visitDetailId, rating: score, content: content.trim(), keywordIds: selectedKeywordIds, reviewImages: images },
       {
         onError: (error) => {
           if (isAxiosError(error) && error.response?.status === 401) navigate("/", { replace: true });
@@ -84,6 +87,7 @@ export default function AddReviewPage() {
       ? errorMessage
       : null;
 
+  if (!isEdit && !visitDetailId) return <PageStatus message="방문 정보를 찾을 수 없습니다." showBackButton />;
   if (isEdit && !review) return <PageStatus message="수정할 리뷰 정보를 찾을 수 없습니다." showBackButton />;
   if (storeDetailQuery.isPending) return <PageStatus message="가게 정보를 불러오는 중입니다." isLoading />;
   if (storeDetailQuery.isError || !storeDetailQuery.data) return <PageStatus message="가게 정보를 불러오지 못했습니다." showBackButton={storeDetailQuery.isError} />;

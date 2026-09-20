@@ -236,6 +236,7 @@ export const visitVerificationResponse = {
     message: "요청이 성공적입니다.",
     data: {
         visitId: 1,
+        visitDetailId: 1,
         point: 1200,
     },
 };
@@ -295,5 +296,14 @@ export const receiptVerificationResultResponse = {
         amount: 12100,
         menu: "소금빵, 튀김소보로...",
         verificationToken: "334775f4097d799a5a7793944c6d2c8ccd0d6e2696f85962c02719b9ea298af0",
+    },
+};
+
+export const receiptMatchResultResponse = {
+    ...receiptVerificationResultResponse,
+    data: {
+        storeId: 2,
+        storeName: "성심당 본점",
+        ...receiptVerificationResultResponse.data,
     },
 };

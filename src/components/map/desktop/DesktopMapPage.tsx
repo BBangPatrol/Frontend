@@ -8,21 +8,31 @@ import type { StoreSearchResult, StoreSearchSort } from "../../../api/stores";
 import { DEFAULT_MAP_CENTER, KAKAO_MAP_API_KEY } from "../../../constants/map";
 import Pagination from "../../common/Pagination";
 import { useStoreSearch } from "../../../hooks/api/useStoreSearch";
+import { useToggleStoreFavorite } from "../../../hooks/api/useToggleStoreFavorite";
+import useIsLoggedIn from "../../../hooks/useIsLoggedIn";
+import { startKakaoLogin } from "../../../utils/kakao";
 import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { CustomOverlayMap, Map, useKakaoLoader } from "react-kakao-maps-sdk";
+import LoginModal from "../../modal/LoginModal";
 import MapBakeryPopup from "../MapBakeryPopup";
 
 export default function DesktopMapPage() {
   const [searchInput, setSearchInput] = useState("");
   const [searchName, setSearchName] = useState("");
   const [sort, setSort] = useState<StoreSearchSort>("visit");
+  const [favoriteOnly, setFavoriteOnly] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [cursorHistory, setCursorHistory] = useState<Array<number | undefined>>([undefined]);
   const [selectedBakeryId, setSelectedBakeryId] = useState<number | null>(null);
+  const isLoggedIn = useIsLoggedIn();
+  const favoriteMutation = useToggleStoreFavorite();
+  const isFavoriteFilterActive = isLoggedIn && favoriteOnly;
   const cursor = cursorHistory.at(-1);
   const searchQuery = useStoreSearch({
     sort,
     name: searchName || undefined,
     cursor,
+    favoriteOnly: isFavoriteFilterActive || undefined,
   });
   const bakeries = searchQuery.data?.result ?? [];
   const selectedBakery = bakeries.find(({ bakery }) => bakery.id === selectedBakeryId) ?? null;
@@ -44,6 +54,26 @@ export default function DesktopMapPage() {
     setSelectedBakeryId(null);
   };
 
+  const handleFavoriteFilter = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+
+    setFavoriteOnly((value) => !value);
+    setCursorHistory([undefined]);
+    setSelectedBakeryId(null);
+  };
+
+  const handleFavoriteToggle = (storeId: number) => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+
+    favoriteMutation.mutate({ storeId });
+  };
+
   const handlePageChange = (page: number) => {
     if (page <= cursorHistory.length) setCursorHistory((history) => history.slice(0, page));
     else {
@@ -60,6 +90,7 @@ export default function DesktopMapPage() {
           searchInput={searchInput}
           bakeries={bakeries}
           sort={sort}
+          favoriteOnly={isFavoriteFilterActive}
           selectedBakeryId={selectedBakeryId}
           page={cursorHistory.length}
           hasNext={searchQuery.data?.cursorPageInfo.hasNext ?? false}
@@ -68,6 +99,9 @@ export default function DesktopMapPage() {
           onSearchInputChange={setSearchInput}
           onSearch={handleSearch}
           onSortChange={handleSortChange}
+          onFavoriteFilter={handleFavoriteFilter}
+          onFavoriteToggle={handleFavoriteToggle}
+          favoritePendingId={favoriteMutation.isPending ? favoriteMutation.variables.storeId : null}
           onBakerySelect={(bakery) => setSelectedBakeryId(bakery.bakery.id)}
           onPageChange={handlePageChange}
         />
@@ -76,6 +110,7 @@ export default function DesktopMapPage() {
           <MapZoom />
         </div>
       </div>
+      {isLoginModalOpen && <LoginModal onClick={startKakaoLogin} onClose={() => setIsLoginModalOpen(false)} />}
     </main>
   );
 }
@@ -127,6 +162,7 @@ type SearchPanelProps = {
   searchInput: string;
   bakeries: StoreSearchResult[];
   sort: StoreSearchSort;
+  favoriteOnly: boolean;
   selectedBakeryId: number | null;
   page: number;
   hasNext: boolean;
@@ -135,6 +171,9 @@ type SearchPanelProps = {
   onSearchInputChange: (value: string) => void;
   onSearch: (event: FormEvent<HTMLFormElement>) => void;
   onSortChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  onFavoriteFilter: () => void;
+  onFavoriteToggle: (storeId: number) => void;
+  favoritePendingId: number | null;
   onBakerySelect: (bakery: StoreSearchResult) => void;
   onPageChange: (page: number) => void;
 };
@@ -143,6 +182,7 @@ function SearchPanel({
   searchInput,
   bakeries,
   sort,
+  favoriteOnly,
   selectedBakeryId,
   page,
   hasNext,
@@ -151,6 +191,9 @@ function SearchPanel({
   onSearchInputChange,
   onSearch,
   onSortChange,
+  onFavoriteFilter,
+  onFavoriteToggle,
+  favoritePendingId,
   onBakerySelect,
   onPageChange,
 }: SearchPanelProps) {
@@ -195,7 +238,7 @@ function SearchPanel({
           />
         </form>
         <div className="flex items-center">
-          <button className="typo-body-04 rounded-2xl bg-sub-01 px-3 py-2 text-white">저장됨 ♥️</button>
+          <button type="button" onClick={onFavoriteFilter} className={`typo-body-04 rounded-2xl border px-3 py-2 ${favoriteOnly ? "border-sub-01 bg-sub-01 text-white" : "border-gray-03 bg-white text-gray-02"}`}>저장됨 ♥️</button>
           <SortSelect value={sort} onChange={onSortChange} />
         </div>
       </div>
@@ -208,6 +251,8 @@ function SearchPanel({
             hasNext={hasNext}
             isLoading={isLoading}
             isError={isError}
+            onFavoriteToggle={onFavoriteToggle}
+            favoritePendingId={favoritePendingId}
             onBakerySelect={onBakerySelect}
             onPageChange={onPageChange}
           />
@@ -248,11 +293,13 @@ type SearchResultContentProps = {
   hasNext: boolean;
   isLoading: boolean;
   isError: boolean;
+  onFavoriteToggle: (storeId: number) => void;
+  favoritePendingId: number | null;
   onBakerySelect: (bakery: StoreSearchResult) => void;
   onPageChange: (page: number) => void;
 };
 
-function SearchResultContent({ bakeries, selectedBakeryId, page, hasNext, isLoading, isError, onBakerySelect, onPageChange }: SearchResultContentProps) {
+function SearchResultContent({ bakeries, selectedBakeryId, page, hasNext, isLoading, isError, onFavoriteToggle, favoritePendingId, onBakerySelect, onPageChange }: SearchResultContentProps) {
   if (isLoading) return <SearchFallback message="검색 결과를 불러오는 중이에요" />;
   if (isError) return <SearchFallback message="검색 결과를 불러오지 못했어요" />;
   if (bakeries.length === 0) return <SearchFallback message="검색 결과가 없어요" />;
@@ -260,7 +307,7 @@ function SearchResultContent({ bakeries, selectedBakeryId, page, hasNext, isLoad
   return (
     <>
       {bakeries.map((bakery) => (
-        <BakeryCard key={bakery.bakery.id} bakery={bakery} selected={bakery.bakery.id === selectedBakeryId} onClick={() => onBakerySelect(bakery)} />
+        <BakeryCard key={bakery.bakery.id} bakery={bakery} selected={bakery.bakery.id === selectedBakeryId} isFavoritePending={favoritePendingId === bakery.bakery.id} onClick={() => onBakerySelect(bakery)} onFavoriteToggle={() => onFavoriteToggle(bakery.bakery.id)} />
       ))}
       <Pagination page={page} hasNext={hasNext} onPageChange={onPageChange} />
     </>
@@ -271,7 +318,7 @@ function SearchFallback({ message }: { message: string }) {
   return <div className="typo-body-03 flex min-h-32 flex-1 items-center justify-center text-gray-02">{message}</div>;
 }
 
-function BakeryCard({ bakery: result, selected, onClick }: { bakery: StoreSearchResult; selected: boolean; onClick: () => void }) {
+function BakeryCard({ bakery: result, selected, isFavoritePending, onClick, onFavoriteToggle }: { bakery: StoreSearchResult; selected: boolean; isFavoritePending: boolean; onClick: () => void; onFavoriteToggle: () => void }) {
   const { bakery, likes, visitCnt } = result;
   const menus = bakery.signatureMenu
     .split(",")
@@ -279,36 +326,40 @@ function BakeryCard({ bakery: result, selected, onClick }: { bakery: StoreSearch
     .filter(Boolean);
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`flex w-full shrink-0 gap-2 rounded-2xl border border-sub-01 p-4 text-left shadow-[0px_1px_3px_0px_rgba(0,0,0,0.10)] ${selected ? "bg-yellow-02" : "bg-white"} ${selected ? "border-sub-01" : "border-gray-04"}`}
-    >
-      <img src={bakery.image || bakeryImage} alt="" className="h-21 w-22 rounded-xl object-cover" />
-      <div className="flex w-full min-w-0 flex-col justify-center gap-2">
-        <div className="flex items-center">
-          <h3 className="typo-head-04 text-black-01 truncate">{bakery.name}</h3>
-          <img src={likes ? fullHeartIcon : emptyHeartIcon} alt={likes ? "저장됨" : "저장 안 됨"} className="ml-auto size-5" />
-        </div>
-        <div className="typo-body-04 flex items-center gap-2">
-          <span className="flex items-center gap-0.5">
-            <img src={starIcon} alt="평점" className="size-3" />
-            {bakery.avgRating ?? "-"}
-          </span>
-          <span>·</span>
-          <div className="typo-body-05 flex gap-0.5 rounded-md bg-main-05 px-1 py-1 text-sub-01">
-            <img src={visitIcon} alt="" />
-            <span>{visitCnt}회 방문</span>
+    <div className="relative w-full shrink-0">
+      <button
+        type="button"
+        onClick={onClick}
+        className={`flex w-full gap-2 rounded-2xl border border-sub-01 p-4 text-left shadow-[0px_1px_3px_0px_rgba(0,0,0,0.10)] ${selected ? "bg-yellow-02" : "bg-white"} ${selected ? "border-sub-01" : "border-gray-04"}`}
+      >
+        <img src={bakery.image || bakeryImage} alt="" className="h-21 w-22 rounded-xl object-cover" />
+        <div className="flex w-full min-w-0 flex-col justify-center gap-2">
+          <div className="flex items-center">
+            <h3 className="typo-head-04 text-black-01 truncate pr-7">{bakery.name}</h3>
+          </div>
+          <div className="typo-body-04 flex items-center gap-2">
+            <span className="flex items-center gap-0.5">
+              <img src={starIcon} alt="평점" className="size-3" />
+              {bakery.avgRating ?? "-"}
+            </span>
+            <span>·</span>
+            <div className="typo-body-05 flex gap-0.5 rounded-md bg-main-05 px-1 py-1 text-sub-01">
+              <img src={visitIcon} alt="" />
+              <span>{visitCnt}회 방문</span>
+            </div>
+          </div>
+          <div className="flex gap-1.5 overflow-hidden">
+            {menus.map((menu) => (
+              <span key={menu} className="typo-sub-03 shrink-0 rounded-md bg-gray-04 p-1 text-gray-01">
+                #{menu}
+              </span>
+            ))}
           </div>
         </div>
-        <div className="flex gap-1.5 overflow-hidden">
-          {menus.map((menu) => (
-            <span key={menu} className="typo-sub-03 shrink-0 rounded-md bg-gray-04 p-1 text-gray-01">
-              #{menu}
-            </span>
-          ))}
-        </div>
-      </div>
-    </button>
+      </button>
+      <button type="button" onClick={onFavoriteToggle} disabled={isFavoritePending} className="absolute right-6 top-6 disabled:opacity-50">
+        <img src={likes ? fullHeartIcon : emptyHeartIcon} alt={likes ? "저장됨" : "저장 안 됨"} className="size-5" />
+      </button>
+    </div>
   );
 }

@@ -8,12 +8,12 @@ import ReceiptResultButtons from "../../components/receipt/ReceiptResultButtons"
 import ReceiptResultExplain from "../../components/receipt/ReceiptResultExplain";
 import ReceiptFailureGuide from "../../components/receipt/ReceiptFailureGuide";
 import { useCreateVisit } from "../../hooks/api/useCreateVisit";
-import type { ReceiptAnalysisResult, StoreApiErrorResponse } from "../../api/stores";
+import type { ReceiptAnalysisResult, ReceiptMatchResult, StoreApiErrorResponse } from "../../api/stores";
 import checkIcon from "@/assets/images/receiptResultPage/check.svg";
 
 type ReceiptResultLocationState = {
   storeId: string;
-  result: ReceiptAnalysisResult;
+  result: ReceiptAnalysisResult | ReceiptMatchResult;
 };
 
 export default function ReceiptResultPage() {
@@ -49,7 +49,7 @@ export default function ReceiptResultPage() {
     <main className="p-4 flex flex-col gap-10 md:max-w-200 md:mx-auto md:p-6 md:gap-8">
       <PageHeader title="영수증 분석 완료" icon={checkIcon} subTitle="아래 인식된 정보를 확인해주세요. 결과는 임의로 수정할 수 없습니다." />
       <ReceiptResult result={result} />
-      <ReceiptResultButtons isPending={createVisitMutation.isPending} onConfirm={handleConfirm} onRetry={() => navigate(`/receipt/verify/${storeId}`, { replace: true })} />
+      <ReceiptResultButtons isPending={createVisitMutation.isPending} onConfirm={handleConfirm} onRetry={() => navigate("storeId" in result ? "/receipt/verify" : `/receipt/verify/${storeId}`, { replace: true })} />
       {errorMessage && (
         <div className="flex flex-col gap-3">
           <p className="text-center text-red typo-body-04">{errorMessage}</p>
@@ -57,7 +57,7 @@ export default function ReceiptResultPage() {
         </div>
       )}
       <ReceiptResultExplain />
-      {isConfirmOpen && createVisitMutation.data && <ConfirmModal point={createVisitMutation.data.point} storeId={storeId} onClose={() => setIsConfirmOpen(false)} />}
+      {isConfirmOpen && createVisitMutation.data && <ConfirmModal point={createVisitMutation.data.point} storeId={storeId} visitDetailId={createVisitMutation.data.visitDetailId} onClose={() => setIsConfirmOpen(false)} />}
     </main>
   );
 }
