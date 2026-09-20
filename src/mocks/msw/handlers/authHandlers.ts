@@ -5,8 +5,8 @@ import { MOCK_ACCESS_TOKEN, MOCK_REFRESH_TOKEN, reissue, userInfo } from "../dat
 import { apiUrl } from "../../../api/config";
 
 const REFRESH_TOKEN_MAX_AGE = 60 * 60 * 24 * 7;
-const REFRESH_TOKEN_COOKIE = `refreshToken=${MOCK_REFRESH_TOKEN}; Path=/; Max-Age=${REFRESH_TOKEN_MAX_AGE}; HttpOnly; SameSite=Lax`;
-const EXPIRED_REFRESH_TOKEN_COOKIE = "refreshToken=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax";
+const REFRESH_TOKEN_COOKIE = `refreshToken=${MOCK_REFRESH_TOKEN}; Path=/api/v1/auth; Max-Age=${REFRESH_TOKEN_MAX_AGE}; HttpOnly; Secure; SameSite=None`;
+const EXPIRED_REFRESH_TOKEN_COOKIE = "refreshToken=; Path=/api/v1/auth; Max-Age=0; HttpOnly; Secure; SameSite=None";
 
 type LoginRequestBody = {
     code?: string | null;
@@ -92,25 +92,13 @@ export const authHandlers = [
     // [POST] 로그아웃
     http.post(apiUrl("auth/logout"), ({ request }) => {
         if (getMockAuthState(request) !== "valid") {
-            return HttpResponse.json(
-                {
-                    isSuccess: false,
-                    code: "401",
-                    message: "로그아웃에 실패했습니다.",
-                    data: null,
-                    errors: {
-                        field: "Authorization",
-                        message: "인증 정보가 유효하지 않습니다.",
-                    },
-                },
-                { status: 401 },
-            );
+            return HttpResponse.json(unauthorized, { status: 401 });
         }
 
         return HttpResponse.json(
             {
                 isSuccess: true,
-                code: "LOGOUT_SUCCESS",
+                code: "200",
                 message: "로그아웃에 성공했습니다.",
                 data: null,
                 errors: null,
@@ -140,15 +128,11 @@ export const authHandlers = [
             return HttpResponse.json(
                 {
                     isSuccess: false,
-                    code: "400",
-                    message: "토큰 재발급 요청이 올바르지 않습니다.",
+                    code: "AUTH401",
+                    message: "리프레시 토큰이 유효하지 않거나 만료되었습니다.",
                     data: null,
-                    errors: {
-                        field: "refreshToken",
-                        message: "Refresh Token이 필요합니다.",
-                    },
                 },
-                { status: 400 },
+                { status: 401 },
             );
         }
 
@@ -156,13 +140,9 @@ export const authHandlers = [
             return HttpResponse.json(
                 {
                     isSuccess: false,
-                    code: "401",
-                    message: "토큰 재발급에 실패했습니다.",
+                    code: "AUTH401",
+                    message: "리프레시 토큰이 유효하지 않거나 만료되었습니다.",
                     data: null,
-                    errors: {
-                        field: "refreshToken",
-                        message: "Refresh Token이 유효하지 않거나 만료되었습니다.",
-                    },
                 },
                 { status: 401 },
             );

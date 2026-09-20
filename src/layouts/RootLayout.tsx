@@ -1,4 +1,6 @@
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { motion } from "motion/react";
 
 import {
   ResponsiveProvider,
@@ -8,24 +10,29 @@ import {
 import DesktopNavigation from "../components/navigation/DesktopNavigation";
 import MobileNavigation from "../components/navigation/MobileNavigation";
 
-function LayoutContent() {
-  const { isMobile } = useResponsive();
-
-  return (
-    <div className="min-h-screen w-full">
-      {isMobile ? <MobileNavigation /> : <DesktopNavigation />}
-
-      <main className="w-full">
-        <Outlet />
-      </main>
-    </div>
-  );
-}
-
 export default function RootLayout() {
   return (
     <ResponsiveProvider>
       <LayoutContent />
     </ResponsiveProvider>
+  );
+}
+
+function LayoutContent() {
+  const { isMobile } = useResponsive();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return (
+    <div className="min-h-dvh flex flex-col">
+      {isMobile ? <MobileNavigation /> : <DesktopNavigation />}
+
+      <motion.div key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex min-w-0 flex-1 flex-col">
+        <Outlet />
+      </motion.div>
+    </div>
   );
 }

@@ -92,6 +92,18 @@
   --shadow-dropdown: 0px 25px 50px -12px rgba(0, 0, 0, 0.25); /* 모달 기본 그림자 */
 
   --shadow-btn: 0px 4px 6px -2px rgba(198, 139, 89, 0.2); /* 버튼 기본 그림자 */
+
+  --shadow-card: 0px 1px 3px -1px rgba(0, 0, 0, 0.1); /* 카드 기본 그림자 */
+}
+
+@layer base {
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
 }
 
 /* Figma Typography: Head, Body, Sub */
@@ -176,11 +188,91 @@
 .typo-sub-04 {
   font-size: 7px;
   font-weight: 400;
-  line-height: 11px;
+  line-height: 9px;
+}
+
+.typo-sub-01-des {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.8px;
+}
+
+.typo-sub-02-des {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 19.2px;
+}
+
+.typo-body-03-des {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.typo-body-05-des {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 15px;
+}
+
+@keyframes dashboard-mission-fade {
+  0% {
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.dashboard-mission-fade {
+  animation: dashboard-mission-fade 5s ease-in-out;
+}
+
+@keyframes mission-reward-received {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mission-reward-received {
+  animation: mission-reward-received 280ms ease-out;
+}
+
+@keyframes map-popup-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.map-popup-enter {
+  transform-origin: bottom center;
+  animation: map-popup-enter 220ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-popup-enter,
+  .mission-reward-received {
+    animation: none;
+  }
 }
 
 /* 가로 스크롤 영역의 스크롤바 숨김 (칩·카드 행이 위아래 선처럼 보이는 것 방지) */
 .no-scrollbar {
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 

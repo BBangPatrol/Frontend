@@ -7,13 +7,11 @@ import DetailSummary from "../../components/detail/DetailSummary";
 import Recommendation from "../../components/detail/Recommendation";
 import ReviewSummary from "../../components/detail/ReviewSummary";
 import { useResponsive } from "../../contexts/ResponsiveContext";
-import { useStoreAttractions } from "../../hooks/useStoreAttractions";
-import { useStoreDetail } from "../../hooks/useStoreDetail";
-import { useStoreReviews } from "../../hooks/useStoreReviews";
+import { useStoreAttractions } from "../../hooks/api/useStoreAttractions";
+import { useStoreDetail } from "../../hooks/api/useStoreDetail";
+import { useStoreReviews } from "../../hooks/api/useStoreReviews";
 import type { StoreDetailErrorResponse } from "../../api/stores";
 import mainImage from "@/assets/images/detailPage/temp_1.jpeg";
-
-const reviewPercentages = [0, 25, 50, 75, 100];
 
 export default function DetailPage() {
   const { isMobile } = useResponsive();
@@ -29,18 +27,17 @@ export default function DetailPage() {
 
   if (queryError) {
     const message = isAxiosError<StoreDetailErrorResponse>(queryError) ? queryError.response?.data.message : undefined;
-    return <PageStatus message={message ?? "가게 정보를 불러오지 못했습니다."} />;
+    return <PageStatus message={message ?? "가게 정보를 불러오지 못했습니다."} showBackButton />;
   }
 
-  if (storeDetailQuery.isPending || storeReviewsQuery.isPending || storeAttractionsQuery.isPending) return <PageStatus message="가게 정보를 불러오는 중입니다." />;
+  if (storeDetailQuery.isPending || storeReviewsQuery.isPending || storeAttractionsQuery.isPending) return <PageStatus message="가게 정보를 불러오는 중입니다." isLoading />;
   if (!storeDetailQuery.data || !storeReviewsQuery.data || !storeAttractionsQuery.data) return null;
 
   const { bakery } = storeDetailQuery.data;
-  const { reviews } = storeReviewsQuery.data;
+  const { reviews, count } = storeReviewsQuery.data;
   const { attractions } = storeAttractionsQuery.data;
 
-  // 시그니처 메뉴 이미지를 우선 사용하고 나머지 fallback
-  const bakeryImage = bakery.signatureImages[0] ?? bakery.images[0] ?? mainImage;
+  const bakeryImage = bakery.image ?? mainImage;
 
   return (
     <main className="p-4 gap-8 flex flex-col md:mx-auto md:w-274.75 md:p-6 md:flex-row">
@@ -50,15 +47,15 @@ export default function DetailPage() {
             <img src={bakeryImage} alt={`${bakery.signatureMenu} 시그니처 메뉴`} className="w-full h-full object-cover" />
           </div>
           <DetailSummary bakery={bakery} />
-          {isMobile && <DetailFunctionButtons />}
+          {isMobile && <DetailFunctionButtons storeId={storeId} />}
         </div>
-        {isMobile ? <DetailReviews reviews={reviews} reviewPercentages={reviewPercentages} /> : <ReviewSummary reviewPercentages={reviewPercentages} />}
+        {isMobile ? <DetailReviews storeId={storeId} reviews={reviews} reviewCount={count} summary={bakery.summary} /> : bakery.summary ? <ReviewSummary key={bakery.id} summary={bakery.summary} storeId={storeId} /> : null}
         <Recommendation attractions={attractions} />
       </div>
       {!isMobile && (
         <div className="w-100 shrink-0 flex flex-col gap-6">
-          <DetailFunctionButtons />
-          <DetailReviews reviews={reviews} />
+          <DetailFunctionButtons storeId={storeId} />
+          <DetailReviews storeId={storeId} reviews={reviews} reviewCount={count} />
         </div>
       )}
     </main>

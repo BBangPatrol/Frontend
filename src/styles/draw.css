@@ -1,0 +1,505 @@
+@keyframes draw-result-overlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes draw-card-normal {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes draw-card-rare {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.9);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.03);
+  }
+  to { transform: translateY(0) scale(1); }
+}
+
+@keyframes draw-card-epic {
+  from {
+    opacity: 0;
+    filter: brightness(1.5);
+    transform: translateY(28px) rotate(-3deg) scale(0.84);
+  }
+  68% {
+    opacity: 1;
+    filter: brightness(1.1);
+    transform: translateY(-5px) rotate(1deg) scale(1.05);
+  }
+  to {
+    filter: brightness(1);
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes draw-card-legendary {
+  from {
+    opacity: 0;
+    filter: brightness(2.2);
+    transform: scale(0.58);
+  }
+  58% {
+    opacity: 1;
+    filter: brightness(1.35);
+    transform: scale(1.09);
+  }
+  78% { transform: scale(0.97); }
+  to {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes draw-item-normal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes draw-item-rare {
+  from { opacity: 0; transform: translateY(12px) scale(0.82); }
+  75% { opacity: 1; transform: translateY(-2px) scale(1.04); }
+  to { transform: translateY(0) scale(1); }
+}
+
+@keyframes draw-item-epic {
+  from { opacity: 0; transform: rotate(-12deg) scale(0.68); }
+  70% { opacity: 1; transform: rotate(3deg) scale(1.08); }
+  to { transform: rotate(0) scale(1); }
+}
+
+@keyframes draw-item-legendary {
+  from {
+    opacity: 0;
+    filter: brightness(2) blur(6px);
+    transform: rotate(-24deg) scale(0.35);
+  }
+  64% {
+    opacity: 1;
+    filter: brightness(1.4) blur(0);
+    transform: rotate(6deg) scale(1.18);
+  }
+  82% { transform: rotate(-3deg) scale(0.95); }
+  to {
+    filter: brightness(1) blur(0);
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes draw-item-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes draw-card-shine {
+  0% { transform: translateX(-180%) skewX(-22deg); }
+  35%, 100% { transform: translateX(300%) skewX(-22deg); }
+}
+
+@keyframes draw-card-sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: rotate(0) scale(0.2);
+  }
+  45% {
+    opacity: var(--draw-sparkle-opacity);
+    transform: rotate(135deg) scale(1);
+  }
+}
+
+@keyframes draw-card-glow {
+  0%, 100% { opacity: 0.5; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes draw-item-halo {
+  0%, 100% { opacity: 0.42; transform: translate(-50%, -50%) scale(0.94); }
+  50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.06); }
+}
+
+@keyframes draw-title-glow {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 14px color-mix(in srgb, var(--draw-primary) 46%, transparent); }
+}
+
+@keyframes draw-flashy-backdrop {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes draw-flashy-flash {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes draw-flashy-aurora {
+  0%, 100% { transform: translate3d(-8%, -5%, 0) scale(1); }
+  50% { transform: translate3d(8%, 5%, 0) scale(1.2); }
+}
+
+@keyframes draw-flashy-rays {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes draw-flashy-burst {
+  0%, 100% { opacity: 0.25; transform: translate(-50%, -50%) rotate(0) scale(0.88); }
+  50% { opacity: 0.62; transform: translate(-50%, -50%) rotate(45deg) scale(1.16); }
+}
+
+@keyframes draw-flashy-ring {
+  from {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.8);
+  }
+}
+
+@keyframes draw-flashy-confetti {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -12vh, 0) rotate(0) scale(0.4);
+  }
+  10% { opacity: 1; }
+  100% {
+    opacity: 0.9;
+    transform: translate3d(var(--draw-flashy-x), 112vh, 0) rotate(var(--draw-flashy-rotate)) scale(1);
+  }
+}
+
+@keyframes draw-flashy-star {
+  0%, 100% {
+    opacity: 0;
+    filter: brightness(1);
+    transform: translate(-50%, -50%) rotate(0) scale(0.2);
+  }
+  45% {
+    opacity: 1;
+    filter: brightness(1.8) drop-shadow(0 0 10px currentColor);
+    transform: translate(-50%, -50%) rotate(135deg) scale(1.25);
+  }
+}
+
+.draw-result-overlay {
+  --draw-primary: #6a7282;
+  --draw-secondary: #9ca3af;
+  --draw-light: #e5e7eb;
+  --draw-sparkle-opacity: 0.55;
+  --draw-sparkle-duration: 2.8s;
+  --draw-shine-opacity: 0.4;
+  --draw-shine-duration: 5.2s;
+  overflow: hidden;
+  background: rgb(255 255 255 / 85%);
+  animation: draw-result-overlay 180ms ease-out both;
+}
+
+.draw-result-overlay[data-rank="RARE"] {
+  --draw-primary: #338cff;
+  --draw-secondary: #45d9ff;
+  --draw-light: #b9efff;
+  --draw-sparkle-opacity: 0.72;
+  --draw-sparkle-duration: 2.2s;
+  --draw-shine-opacity: 0.58;
+  --draw-shine-duration: 4.2s;
+}
+
+.draw-result-overlay[data-rank="EPIC"] {
+  --draw-primary: #8b4dff;
+  --draw-secondary: #ff5ed7;
+  --draw-light: #e4c8ff;
+  --draw-sparkle-opacity: 0.88;
+  --draw-sparkle-duration: 1.7s;
+  --draw-shine-opacity: 0.75;
+  --draw-shine-duration: 3.2s;
+}
+
+.draw-result-overlay[data-rank="LEGENDARY"] {
+  --draw-primary: #ff8a00;
+  --draw-secondary: #ffdf45;
+  --draw-light: #fff0a3;
+  --draw-sparkle-opacity: 1;
+  --draw-sparkle-duration: 1.25s;
+  --draw-shine-opacity: 0.92;
+  --draw-shine-duration: 2.35s;
+}
+
+.draw-result-overlay .draw-result-card {
+  isolation: isolate;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box, linear-gradient(135deg, var(--draw-primary), var(--draw-secondary), var(--draw-light)) border-box;
+  box-shadow: 0 22px 55px color-mix(in srgb, var(--draw-primary) 20%, transparent), 0 0 24px color-mix(in srgb, var(--draw-secondary) 18%, transparent);
+}
+
+.draw-result-overlay[data-rank="NORMAL"] .draw-result-card {
+  animation: draw-card-normal 420ms ease-out both;
+}
+
+.draw-result-overlay[data-rank="RARE"] .draw-result-card {
+  box-shadow: 0 24px 62px rgb(51 140 255 / 24%), 0 0 32px rgb(69 217 255 / 22%);
+  animation: draw-card-rare 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.draw-result-overlay[data-rank="EPIC"] .draw-result-card {
+  box-shadow: 0 26px 68px rgb(139 77 255 / 30%), 0 0 42px rgb(255 94 215 / 26%);
+  animation: draw-card-epic 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.draw-result-overlay[data-rank="LEGENDARY"] .draw-result-card {
+  border-width: 3px;
+  box-shadow: 0 30px 78px rgb(255 138 0 / 34%), 0 0 52px rgb(255 223 69 / 38%);
+  animation: draw-card-legendary 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.draw-result-overlay[data-rank="EPIC"] .draw-result-card::after,
+.draw-result-overlay[data-rank="LEGENDARY"] .draw-result-card::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  z-index: 0;
+  border: 1px solid color-mix(in srgb, var(--draw-secondary) 55%, white);
+  border-radius: 1.75rem;
+  box-shadow: inset 0 0 24px color-mix(in srgb, var(--draw-primary) 20%, transparent);
+  pointer-events: none;
+  animation: draw-card-glow 2.2s ease-in-out infinite;
+}
+
+.draw-result-card-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.draw-result-card-shine::before,
+.draw-result-card-shine::after {
+  content: "";
+  position: absolute;
+  inset: -25% auto -25% 0;
+  width: 32%;
+  opacity: var(--draw-shine-opacity);
+  background: linear-gradient(90deg, transparent, white 46%, transparent);
+  filter: blur(5px);
+  animation: draw-card-shine var(--draw-shine-duration) ease-in-out 650ms infinite;
+}
+
+.draw-result-card-shine::before {
+  width: 15%;
+  opacity: var(--draw-shine-opacity);
+  animation-delay: 1.2s;
+}
+
+.draw-result-card-sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.draw-result-card-sparkles i {
+  position: absolute;
+  background: linear-gradient(135deg, white 8%, var(--draw-secondary) 52%, var(--draw-primary));
+  clip-path: polygon(50% 0, 62% 37%, 100% 50%, 62% 63%, 50% 100%, 38% 63%, 0 50%, 38% 37%);
+  filter: drop-shadow(0 0 4px var(--draw-secondary));
+  animation: draw-card-sparkle var(--draw-sparkle-duration) ease-in-out infinite;
+}
+
+.draw-result-overlay[data-rank="NORMAL"] .draw-result-card-sparkles i:nth-child(n + 7),
+.draw-result-overlay[data-rank="RARE"] .draw-result-card-sparkles i:nth-child(n + 11),
+.draw-result-overlay[data-rank="EPIC"] .draw-result-card-sparkles i:nth-child(n + 16) {
+  display: none;
+}
+
+.draw-result-image-stage {
+  z-index: 1;
+  min-height: 176px;
+}
+
+.draw-result-item-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 178px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, white 0 12%, var(--draw-light) 35%, color-mix(in srgb, var(--draw-primary) 24%, transparent) 54%, transparent 72%);
+  filter: blur(10px);
+  animation: draw-item-halo 2.6s ease-in-out infinite;
+}
+
+.draw-result-overlay[data-rank="NORMAL"] .draw-result-item {
+  animation: draw-item-normal 420ms ease-out 80ms both;
+}
+
+.draw-result-overlay[data-rank="RARE"] .draw-result-item {
+  animation: draw-item-rare 560ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both, draw-item-float 3.2s ease-in-out 700ms infinite;
+}
+
+.draw-result-overlay[data-rank="EPIC"] .draw-result-item {
+  animation: draw-item-epic 680ms cubic-bezier(0.16, 1, 0.3, 1) 100ms both, draw-item-float 2.8s ease-in-out 800ms infinite;
+}
+
+.draw-result-overlay[data-rank="LEGENDARY"] .draw-result-item {
+  filter: drop-shadow(0 12px 14px rgb(255 138 0 / 30%));
+  animation: draw-item-legendary 820ms cubic-bezier(0.16, 1, 0.3, 1) 100ms both, draw-item-float 2.4s ease-in-out 950ms infinite;
+}
+
+.draw-result-details,
+.draw-result-buttons {
+  position: relative;
+  z-index: 6;
+  animation: draw-result-overlay 350ms ease-out 360ms both;
+}
+
+.draw-result-buttons { animation-delay: 460ms; }
+
+.draw-result-rank { box-shadow: 0 0 12px color-mix(in srgb, var(--draw-primary) 22%, transparent); }
+
+.draw-result-overlay[data-rank="EPIC"] .draw-result-title,
+.draw-result-overlay[data-rank="LEGENDARY"] .draw-result-title {
+  animation: draw-title-glow 2s ease-in-out 700ms infinite;
+}
+
+.draw-result-buttons a,
+.draw-result-buttons button {
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.draw-result-buttons a:hover,
+.draw-result-buttons button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--draw-primary) 18%, transparent);
+}
+
+.draw-result-overlay--flashy {
+  background:
+    radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--draw-secondary) 42%, transparent), transparent 34%),
+    radial-gradient(circle at 82% 74%, color-mix(in srgb, var(--draw-primary) 48%, transparent), transparent 38%),
+    linear-gradient(125deg, #fff8df, #f8eaff, #e8f8ff, #fff0f4);
+  background-size: 160% 160%;
+  animation: draw-result-overlay 240ms ease-out both, draw-flashy-backdrop 5s ease-in-out infinite;
+}
+
+.draw-flashy-effects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.draw-flashy-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  background: white;
+  animation: draw-flashy-flash 700ms ease-out both;
+}
+
+.draw-flashy-aurora {
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(circle at 30% 35%, color-mix(in srgb, var(--draw-secondary) 55%, transparent), transparent 28%),
+    radial-gradient(circle at 70% 60%, color-mix(in srgb, var(--draw-primary) 58%, transparent), transparent 30%);
+  filter: blur(48px);
+  animation: draw-flashy-aurora 3.5s ease-in-out infinite;
+}
+
+.draw-flashy-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(110vw, 110vh);
+  aspect-ratio: 1;
+  opacity: 0.42;
+  background: repeating-conic-gradient(from 0deg, transparent 0deg 10deg, color-mix(in srgb, var(--draw-light) 88%, transparent) 10deg 18deg, transparent 18deg 31deg);
+  mask-image: radial-gradient(circle, black 0 12%, transparent 68%);
+  animation: draw-flashy-rays 12s linear infinite;
+}
+
+.draw-flashy-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(118vw, 920px);
+  aspect-ratio: 1;
+  background: repeating-conic-gradient(from 0deg, transparent 0deg 7deg, white 7deg 9deg, transparent 9deg 19deg, color-mix(in srgb, var(--draw-secondary) 75%, transparent) 19deg 21deg, transparent 21deg 32deg);
+  mask-image: radial-gradient(circle, transparent 0 18%, black 32%, transparent 68%);
+  filter: drop-shadow(0 0 14px var(--draw-secondary));
+  animation: draw-flashy-burst 2.4s ease-in-out infinite;
+}
+
+.draw-flashy-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(72vw, 580px);
+  aspect-ratio: 1;
+  border: 8px solid color-mix(in srgb, var(--draw-secondary) 75%, white);
+  border-radius: 50%;
+  box-shadow: 0 0 50px var(--draw-secondary), inset 0 0 50px var(--draw-primary);
+  animation: draw-flashy-ring 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.draw-flashy-ring-second { animation-delay: 0.65s; }
+
+.draw-flashy-ring-third {
+  border-style: dashed;
+  animation-delay: 1.3s;
+}
+
+.draw-flashy-star {
+  position: absolute;
+  color: var(--draw-secondary);
+  background: linear-gradient(135deg, white 8%, var(--draw-secondary) 48%, var(--draw-primary));
+  clip-path: polygon(50% 0, 62% 37%, 100% 50%, 62% 63%, 50% 100%, 38% 63%, 0 50%, 38% 37%);
+  animation: draw-flashy-star 1.5s ease-in-out infinite;
+}
+
+.draw-flashy-confetti {
+  position: absolute;
+  top: -24px;
+  width: 10px;
+  height: 18px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px currentColor;
+  animation: draw-flashy-confetti 2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-result-overlay,
+  .draw-result-overlay .draw-result-card,
+  .draw-result-overlay .draw-result-item,
+  .draw-result-details,
+  .draw-result-buttons,
+  .draw-result-title,
+  .draw-result-item-halo,
+  .draw-result-card-shine::before,
+  .draw-result-card-shine::after,
+  .draw-result-card-sparkles i,
+  .draw-result-overlay .draw-result-card::after {
+    animation: none;
+  }
+
+  .draw-result-card-shine,
+  .draw-result-card-sparkles,
+  .draw-flashy-effects {
+    display: none;
+  }
+
+  .draw-result-item-halo { transform: translate(-50%, -50%); }
+}

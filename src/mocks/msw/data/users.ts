@@ -1,29 +1,24 @@
 export const breadCollectionResponse = {
     isSuccess: true,
     code: "200",
-    message: "요청이 성공적입니다.",
+    message: "OK",
     data: {
         visits: [
             {
-                bakery: {
-                    id: 1,
-                    name: "성심당 본점",
-                    region: "중구",
-                    date: "2026.06.06",
-                },
+                storeId: 1,
+                storeName: "성심당 본점",
+                visitDate: "2026-06-06",
+                reviewId: null,
+                rating: null,
                 review: null,
             },
             {
-                bakery: {
-                    id: 2,
-                    name: "하레하레",
-                    region: "서구",
-                    date: "2026.06.05",
-                },
-                review: {
-                    content: "리뷰 내용",
-                    date: "2026.06.06",
-                },
+                storeId: 2,
+                storeName: "하레하레",
+                visitDate: "2026-06-05",
+                reviewId: 2,
+                rating: 5,
+                review: "빵이 맛있고 직원분들이 친절해요.",
             },
         ],
     },
@@ -34,31 +29,25 @@ export const myPageResponse = {
     code: "200",
     message: "요청이 성공적입니다.",
     data: {
-        nickname: "testNickname",
+        nickname: "테스트유저",
         collectionBooks: {
             collected: 14,
             total: 50,
             items: [
                 {
-                    id: 2,
-                    name: "성심당",
+                    collectibleId: 87,
+                    name: "93 꿈돌이",
+                    rank: "LEGENDARY",
+                    image: "https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/87.png",
                 },
                 {
-                    id: 3,
-                    name: "하레하레",
+                    collectibleId: 11,
+                    name: "꿈돌이 프레첼",
+                    rank: "EPIC",
+                    image: "https://pub-f43009aca02b490292930e08c3c58153.r2.dev/items/11.png",
                 },
             ],
         },
-        map: [
-            {
-                lat: 21.2521561,
-                lon: 37.5564153,
-            },
-            {
-                lat: 21.2521561,
-                lon: 37.5564153,
-            },
-        ],
         point: 1250,
         reviews: {
             reviewCount: 7,
@@ -70,12 +59,14 @@ export const myPageResponse = {
                 title: "중구 5개 클리어",
                 count: 3,
                 targetCount: 5,
+                status: "in_progress",
             },
             {
                 missionId: 2,
                 title: "미션 2",
                 count: 2,
                 targetCount: 10,
+                status: "not_received",
             },
         ],
     },
@@ -84,26 +75,18 @@ export const myPageResponse = {
 export const myPointFirstResponse = {
     isSuccess: true,
     code: "200",
-    message: "요청이 성공적입니다.",
+    message: "OK",
     data: {
         point_history: [
-            {
-                type: "earn",
-                content: "내용",
-                amount: 100,
-                date: "2026-06-25 08:00:00",
-            },
-            {
-                type: "spend",
-                content: "내용",
-                amount: 100,
-                date: "2026-06-26 07:50:00",
-            },
+            { type: "earn", content: "방문 인증", amount: 1200, date: "2026-06-25T08:00:00" },
+            { type: "spend", content: "수집품 뽑기", amount: 100, date: "2026-06-24T07:50:00" },
         ],
         pageInfo: {
-            size: 20,
+            page: 0,
+            size: 5,
+            totalElements: 7,
+            totalPages: 2,
             hasNext: true,
-            nextCursor: 2,
         },
     },
 };
@@ -111,26 +94,18 @@ export const myPointFirstResponse = {
 export const myPointSecondResponse = {
     isSuccess: true,
     code: "200",
-    message: "요청이 성공적입니다.",
+    message: "OK",
     data: {
         point_history: [
-            {
-                type: "spend",
-                content: "내용",
-                amount: 300,
-                date: "2026-06-25 08:00:00",
-            },
-            {
-                type: "spend",
-                content: "내용",
-                amount: 500,
-                date: "2026-06-26 07:50:00",
-            },
+            { type: "earn", content: "회원가입 축하 포인트", amount: 300, date: "2026-06-20T08:00:00" },
+            { type: "spend", content: "수집품 뽑기", amount: 100, date: "2026-06-19T07:50:00" },
         ],
         pageInfo: {
-            size: 20,
-            hasNext: true,
-            nextCursor: 1,
+            page: 1,
+            size: 5,
+            totalElements: 7,
+            totalPages: 2,
+            hasNext: false,
         },
     },
 };
@@ -138,30 +113,20 @@ export const myPointSecondResponse = {
 export const myReviewsFirstResponse = {
     isSuccess: true,
     code: "200",
-    message: "요청이 성공적입니다.",
+    message: "OK",
     data: {
         reviews: [
-            {
-                bakeryId: 1,
-                bakeryName: "성심당 본점",
-                rating: 5,
-                content: "튀소는 언제 먹어도 맛있어요. 사람 많지만 회전율 굿!",
-                likeCount: 12,
-                date: "2026-05-20 00:00:00",
-            },
-            {
-                bakeryId: 2,
-                bakeryName: "하레하레",
-                rating: 5,
-                content: "소금빵 겉바속촉 제대로입니다. 인생 소금빵 등극!",
-                likeCount: 25,
-                date: "2026-05-18 00:00:00",
-            },
+            { bakeryId: 1, bakeryName: "성심당 본점", rating: 5, content: "튀김소보로는 언제 먹어도 맛있어요.", likeCount: 12, date: "2026-05-20T00:00:00" },
+            { bakeryId: 2, bakeryName: "하레하레", rating: 5, content: "소금빵 겉바속촉 제대로입니다.", likeCount: 25, date: "2026-05-18T00:00:00" },
         ],
+        reviewCount: 7,
+        reviewLikes: 111,
         pageInfo: {
-            size: 20,
+            page: 0,
+            size: 5,
+            totalElements: 7,
+            totalPages: 2,
             hasNext: true,
-            nextCursor: 2,
         },
     },
 };
@@ -169,30 +134,20 @@ export const myReviewsFirstResponse = {
 export const myReviewsSecondResponse = {
     isSuccess: true,
     code: "200",
-    message: "요청이 성공적입니다.",
+    message: "OK",
     data: {
         reviews: [
-            {
-                bakeryId: 3,
-                bakeryName: "몽심",
-                rating: 5,
-                content: "디저트들이 너무 맛있고 특히 마들렌이 너무 맛있어요!!",
-                likeCount: 57,
-                date: "2026-04-19 00:00:00",
-            },
-            {
-                bakeryId: 4,
-                bakeryName: "시오네 베이크샵",
-                rating: 5,
-                content: "밑부분이 바삭한 소금빵이 대표적인 빵집이에요. 독특해서 맛있어요.",
-                likeCount: 17,
-                date: "2026-07-02 00:00:00",
-            },
+            { bakeryId: 3, bakeryName: "몽심", rating: 5, content: "디저트가 다양하고 맛있어요.", likeCount: 57, date: "2026-04-19T00:00:00" },
+            { bakeryId: 4, bakeryName: "시오네 베이커리", rating: 4, content: "바삭한 바게트와 소금빵이 맛있어요.", likeCount: 17, date: "2026-04-02T00:00:00" },
         ],
+        reviewCount: 7,
+        reviewLikes: 111,
         pageInfo: {
-            size: 20,
-            hasNext: true,
-            nextCursor: 1,
+            page: 1,
+            size: 5,
+            totalElements: 7,
+            totalPages: 2,
+            hasNext: false,
         },
     },
 };
@@ -200,8 +155,8 @@ export const myReviewsSecondResponse = {
 export const userProfileImage = {
     isSuccess: true,
     code: "200",
-    message: "조회에 성공했습니다.",
+    message: "OK",
     data: {
-        imageUrl: "url",
+        imageUrl: "https://example.com/images/profile/test-user.jpg",
     },
 };

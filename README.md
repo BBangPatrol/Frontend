@@ -1,5 +1,24 @@
 # Frontend
 
+### 로컬 카카오 로그인
+
+`.env`에 아래 값을 설정하고 `npm run dev`로 실행합니다. 키는 사용 중인 카카오 앱의 REST API 키를 넣습니다.
+
+```dotenv
+VITE_ENABLE_MSW=false
+VITE_API_BASE_URL=https://bbangpatrol.duckdns.org
+VITE_KAKAO_REST_API_KEY=카카오_REST_API_키
+VITE_KAKAO_REDIRECT_URI=http://localhost:5173/auth/kakao/callback
+```
+
+- 카카오에 등록한 리다이렉트 URI와 백엔드 `KAKAO_REDIRECT_URI`도 위 주소와 같아야 합니다.
+- 프론트와 백엔드는 동일한 REST API 키를 사용합니다. Client Secret은 백엔드에만 설정합니다.
+- 메인의 로그인 모달에서 카카오 로그인을 시작합니다.
+- 콜백에서 `POST /auth/login` → AT 저장 → `GET /auth/me` → 사용자 정보 저장 → 메인 이동 순서로 처리합니다.
+- Redux Persist가 AT와 사용자 정보를 localStorage의 `persist:auth`에 저장합니다. 새로고침 후에도 닉네임이 표시되는지 확인합니다.
+- 토큰 자동 재발급은 없습니다. 인증 API가 401을 반환하면 저장된 로그인 상태를 지우므로 다시 로그인합니다.
+- 로그아웃 시 서버 로그아웃 API를 호출하고 저장된 로그인 상태를 지웁니다.
+
 ### 코드 컨벤션
 
 ---

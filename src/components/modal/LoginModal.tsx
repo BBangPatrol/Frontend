@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { motion } from "motion/react";
 // assets
 import X from "../../assets/icon/X-gray-02.svg";
 import kakao from "../../assets/kakao-login.svg";
@@ -17,10 +18,16 @@ export default function LoginModal({
   onClose,
 }: LoginModalProps) {
   return createPortal(
-    <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
-      <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50"
+    >
+      <motion.div
+        initial={{ y: 6, scale: 0.98 }}
+        animate={{ y: 0, scale: 1 }}
         className={`relative flex flex-col items-center justify-center rounded-[20px] bg-white shadow-dropdown  ${
-          isMobile ? "w-78 gap-7 p-9" : "w-118 gap-8 p-12"
+          isMobile ? "w-78 gap-3 p-9" : "w-118 gap-5 p-12"
         }`}
       >
         <button
@@ -41,14 +48,15 @@ export default function LoginModal({
           </h2>
           {description && (
             <p
-              className={`text-gray-02 ${isMobile ? "typo-body-04" : "typo-body-03"}`}
+              className={`text-gray-02 text-center ${isMobile ? "typo-body-04" : "typo-body-03"}`}
+              style={{ whiteSpace: "pre-line" }}
             >
               {description}
             </p>
           )}
         </div>
 
-        <div className={`flex flex-col gap-2`}>
+        <div className={`flex flex-col gap-4`}>
           <button
             type="button"
             className={`flex w-full items-center justify-center shadow-btn`}
@@ -65,11 +73,11 @@ export default function LoginModal({
             className={`flex w-full items-center justify-center text-gray-02 underline underline-offset-3 underline-gray-02 ${isMobile ? "typo-sub-03" : "typo-sub-01 "}`}
             onClick={onClose}
           >
-            개스트로 둘러보기
+            게스트로 둘러보기
           </button>
         </div>
-      </div>
-    </div>,
+      </motion.div>
+    </motion.div>,
     document.body,
   );
 }

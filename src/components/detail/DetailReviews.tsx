@@ -5,25 +5,27 @@ import rightArrowIcon from "@/assets/images/detailPage/right-arrow.svg";
 import type { StoreReview } from "../../api/stores";
 
 type DetailReviewsProps = {
+  storeId: string;
   reviews: StoreReview[];
-  reviewPercentages?: number[];
+  reviewCount: number;
+  summary?: string | null;
 };
 
-export default function DetailReviews({ reviews, reviewPercentages }: DetailReviewsProps) {
+export default function DetailReviews({ storeId, reviews, reviewCount, summary }: DetailReviewsProps) {
   return (
     <section className="flex flex-col gap-3 md:gap-4">
       <h3>
         <span className="text-black-01 typo-body-01 md:text-lg! md:font-bold! md:leading-7!">리뷰</span>{" "}
-        <span className="text-[#99A1AF] typo-body-01 md:text-lg! md:font-normal! md:leading-7!">1,234</span>
+        <span className="text-[#99A1AF] typo-body-01 md:text-lg! md:font-normal! md:leading-7!">{reviewCount.toLocaleString()}</span>
       </h3>
-      {reviewPercentages && <ReviewSummary reviewPercentages={reviewPercentages} />}
+      {summary && <ReviewSummary key={storeId} summary={summary} storeId={storeId} />}
       <div className="flex flex-col gap-2 md:gap-4">
         {reviews.length > 0 ? (
           <>
-            {reviews.map((review) => (
-              <Review key={review.id} starRating={review.rating} userName={review.writerName} content={review.content} date={review.date} likeCount={review.likeCount} />
+            {reviews.slice(0, 3).map((review) => (
+              <Review key={review.id} storeId={storeId} reviewId={review.id} starRating={review.rating} userName={review.writerName} content={review.content} date={review.date} likeCount={review.likeCount} isLike={review.isLike} keywords={review.keywords} images={review.images} thumbnails={review.thumbnails} />
             ))}
-            <Link to="/detail/review" className="flex py-3 rounded-xl justify-center items-center gap-1">
+            <Link to={`/detail/review/${storeId}`} className="flex py-3 rounded-xl justify-center items-center gap-1">
               <p className="text-gray-500 typo-sub-01 md:text-inherit">더보기</p>
               <img src={rightArrowIcon} />
             </Link>
