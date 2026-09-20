@@ -123,3 +123,8 @@ export async function getMyReviews(page: number) {
   );
   return response.data.data;
 }
+
+export async function deleteUser() {
+  const response = await authApi.delete("/users/me");
+  return response.status;
+}

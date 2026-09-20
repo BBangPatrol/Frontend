@@ -13,6 +13,7 @@ interface ProfileModalProps {
   onChangeNickname?: (value: string) => void;
   onSubmit: (nickname: string, profileImage?: File) => void;
   onLogout?: () => void;
+  onDeleteAccount?: () => void;
 }
 
 export default function ProfileModal({
@@ -23,6 +24,7 @@ export default function ProfileModal({
   onChangeNickname,
   onSubmit,
   onLogout,
+  onDeleteAccount,
 }: ProfileModalProps) {
   // 닉네임
   const [editedNickname, setEditedNickname] = useState(nickname);
@@ -190,6 +192,15 @@ export default function ProfileModal({
             }`}
           >
             로그아웃
+          </button>
+          <button
+            type="button"
+            onClick={onDeleteAccount}
+            className={` text-gray-02 underline ${
+              isMobile ? "typo-sub-02" : "typo-body-02"
+            }`}
+          >
+            회원 탈퇴
           </button>
         </div>
       </div>

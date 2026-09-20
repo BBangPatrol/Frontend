@@ -1,3 +1,5 @@
+import { createPortal } from "react-dom";
+
 type Props = {
   isMobile: boolean;
   title: string;
@@ -16,12 +18,12 @@ export default function ConfirmModal({
   onClose,
   onConfirm,
 }: Props) {
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
       <div
         role="dialog"
         aria-modal="true"
-        className={` flex flex-col items-center rounded-4xl bg-white p-8 shadow-dropdown ${isMobile ? "w-78 gap-6" : "w-96 gap-8"} `}
+        className={` flex flex-col items-center rounded-4xl bg-white p-8 shadow-dropdown ${isMobile ? "w-78 gap-3" : "w-96 gap-6"} `}
       >
         {/* 안내 문구 */}
         <div
@@ -34,7 +36,7 @@ export default function ConfirmModal({
           </p>
           {description && (
             <p
-              className={` whitespace-pre-line text-gray-60 ${isMobile ? "typo-body-03" : "typo-body-02"} `}
+              className={` whitespace-pre-line text-gray-60 ${isMobile ? "typo-body-03" : "typo-sub-01"} `}
             >
               {description}
             </p>
@@ -60,6 +62,7 @@ export default function ConfirmModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

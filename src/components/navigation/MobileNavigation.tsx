@@ -8,6 +8,7 @@ import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { useEditProfile } from "../../hooks/api/useEditProfile";
 import { useEditProfileImage } from "../../hooks/api/useEditProfileImage";
 import { useMe } from "../../hooks/api/useMe";
+import { useDeleteUser } from "../../hooks/api/useDeleteUser";
 // contexts
 import { useResponsive } from "../../contexts/ResponsiveContext";
 // assets
@@ -17,6 +18,7 @@ import right from "../../assets/icon/right.svg";
 import Button from "../Button";
 import ProfileModal from "../modal/ProfileModal";
 import LoginModal from "../modal/LoginModal";
+import ConfirmModal from "../modal/ConfirmModal";
 
 const navigationItems = [
   {
@@ -46,11 +48,13 @@ export default function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const { data: me } = useMe();
   const { mutate: requestLogout } = useLogout();
   const { mutate: requestEditProfile } = useEditProfile();
   const { mutate: requestEditProfileImage } = useEditProfileImage();
+  const { mutate: requestDeleteUser } = useDeleteUser();
 
   const location = useLocation();
 
@@ -319,6 +323,10 @@ export default function MobileNavigation() {
               requestLogout();
               setIsProfileModalOpen(false);
             }}
+            onDeleteAccount={() => {
+              setIsConfirmModalOpen(true);
+              setIsProfileModalOpen(false);
+            }}
           />
         )}
         {isLoginModalOpen && (
@@ -326,6 +334,20 @@ export default function MobileNavigation() {
             isMobile={isMobile}
             onClick={startKakaoLogin}
             onClose={() => setIsLoginModalOpen(false)}
+          />
+        )}
+        {isConfirmModalOpen && (
+          <ConfirmModal
+            isMobile={isMobile}
+            title="회원 탈퇴"
+            description="정말로 탈퇴하시겠습니까?"
+            confirmText="탈퇴"
+            cancelText="취소"
+            onClose={() => setIsConfirmModalOpen(false)}
+            onConfirm={() => {
+              requestDeleteUser();
+              setIsConfirmModalOpen(false);
+            }}
           />
         )}
       </div>
