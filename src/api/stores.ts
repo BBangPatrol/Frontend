@@ -65,7 +65,7 @@ export type StoreAttractions = {
   attractions: StoreAttraction[];
 };
 
-export type StoreSearchSort = "visit" | "rating" | "distance";
+export type StoreSearchSort = "visit" | "rating";
 
 export type StoreSearchBakery = {
   id: number;
@@ -95,8 +95,6 @@ export type StoreSearch = {
 export type StoreSearchParams = {
   sort: StoreSearchSort;
   name?: string;
-  lat?: number;
-  lon?: number;
   cursor?: number;
 };
 
@@ -148,13 +146,12 @@ type ApiResponse<T> = {
 
 export type StoreDetailErrorResponse = ApiResponse<null>;
 
-export async function getStoreSearch({ sort, name, lat, lon, cursor }: StoreSearchParams) {
+export async function getStoreSearch({ sort, name, cursor }: StoreSearchParams) {
   const response = await api.get<ApiResponse<StoreSearch>>("/stores/search", {
     params: {
       sort,
       name,
       cursor,
-      ...(sort === "distance" ? { lat, lon } : {}),
     },
   });
 
@@ -167,8 +164,9 @@ export async function getStoreDetail(storeId: string) {
   return response.data.data;
 }
 
-export async function getStoreReviews(storeId: string, page = 0) {
-  const response = await api.get<ApiResponse<StoreReviews>>(`/stores/${storeId}/reviews`, {
+export async function getStoreReviews(storeId: string, page = 0, withAuth = false) {
+  const client = withAuth ? authApi : api;
+  const response = await client.get<ApiResponse<StoreReviews>>(`/stores/${storeId}/reviews`, {
     params: { page },
   });
 
@@ -233,4 +231,8 @@ export async function updateReview({ storeId, reviewId, rating, content, deleteK
   });
 
   return response.data.data;
+}
+
+export async function deleteReview({ storeId, reviewId }: { storeId: number; reviewId: number }) {
+  await authApi.delete<ApiResponse<null>>(`/stores/${storeId}/reviews/${reviewId}`);
 }

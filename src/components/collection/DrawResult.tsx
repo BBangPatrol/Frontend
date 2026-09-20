@@ -141,7 +141,7 @@ function DrawResultExplain({ result }: { result: DrawCollectibleResult }) {
         희귀도: {rankStyle.label}
       </p>
       <h3 className="draw-result-title typo-head-03 md:text-2xl!">
-        <span className="text-label-text-02">{result.name}</span> 획득!
+        <span className={rankStyle.text}>{result.name}</span> 획득!
       </h3>
       <div className="text-center text-gray-02 typo-sub-02 md:text-sm!">
         {result.duplicated ? (

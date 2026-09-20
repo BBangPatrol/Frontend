@@ -69,6 +69,8 @@ export default function ReviewDetailList({ storeId, reviews, sort, page, totalPa
               likeCount={review.likeCount}
               isLike={review.isLike}
               keywords={review.keywords}
+              images={review.images}
+              thumbnails={review.thumbnails}
             />
           ))
         ) : (
