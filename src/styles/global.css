@@ -1,28 +1,5 @@
 @import "tailwindcss";
-
-@font-face {
-  font-family: "NanumSquare Neo";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/NanumSquareNeoTTF-bRg.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "NanumSquare Neo";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("/fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "NanumSquare Neo";
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: url("/fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");
-}
+@import "./fonts.css";
 
 /* Figma 디자인 시스템 (node 2370:1227) 기준 Color·Typography 토큰 */
 @theme {
