@@ -8,7 +8,7 @@ export default function DesktopCollectionHeader() {
   return (
     <section className="flex flex-col gap-4">
       <button onClick={() => navigate(-1)} className="flex gap-1">
-        <img src={leftArrowIcon} />
+        <img src={leftArrowIcon} alt="" />
         <p className="text-gray-02 typo-body-03">돌아가기</p>
       </button>
       <div className="flex">

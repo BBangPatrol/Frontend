@@ -7,7 +7,7 @@ export default function MobileDrawHeader() {
   return (
     <section className="flex flex-col gap-3">
       <Link to="/collection" className="flex gap-1">
-        <img src={leftArrowIcon} />
+        <img src={leftArrowIcon} alt="" />
         <p className="text-gray-02 typo-body-03">돌아가기</p>
       </Link>
       <div className="flex flex-col gap-2">

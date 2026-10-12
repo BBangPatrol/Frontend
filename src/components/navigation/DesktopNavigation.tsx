@@ -102,7 +102,7 @@ export default function DesktopNavigation() {
           to="/"
           className="flex items-center gap-2 typo-head-03 font-bold text-[#191919] no-underline"
         >
-          <img src={logo} alt="LOGO" className="size-10" />
+          <img src={logo} alt="" className="size-10" />
           <p>빵범대</p>
         </NavLink>
 
@@ -136,7 +136,7 @@ export default function DesktopNavigation() {
             >
               <img
                 src={profileImageUrl}
-                alt="Profile"
+                alt="프로필 메뉴"
                 className="h-8 w-8 rounded-full object-cover"
               />
 

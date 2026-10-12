@@ -32,7 +32,7 @@ export default function DashboardHeader({
           to="/receipt/verify"
           className="flex gap-2 ml-auto px-8 py-4 bg-sub-01 text-white rounded-2xl typo-head-03"
         >
-          <img src={cameraImage} />
+          <img src={cameraImage} alt="" />
           <p>영수증으로 방문 인증</p>
         </Link>
       )}

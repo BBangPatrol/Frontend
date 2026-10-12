@@ -47,7 +47,7 @@ export default function DetailPage() {
       <div className="flex flex-col gap-8 md:flex-1 md:min-w-0">
         <div className="flex flex-col gap-5 md:gap-8">
           <div className="h-48 rounded-3xl overflow-hidden md:h-66.25">
-            <img src={bakeryImage} alt={`${bakery.signatureMenu} 시그니처 메뉴`} className="w-full h-full object-cover" />
+            <img src={bakeryImage} alt={`${bakery.name} 대표 사진`} className="w-full h-full object-cover" />
           </div>
           <DetailSummary bakery={bakery} />
           {isMobile && <DetailFunctionButtons storeId={storeId} />}

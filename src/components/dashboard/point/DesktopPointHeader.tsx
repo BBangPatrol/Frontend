@@ -8,7 +8,7 @@ export default function DesktopPointHeader() {
   return (
     <section className="flex flex-col gap-4">
       <button onClick={() => navigate(-1)} className="flex gap-1">
-        <img src={leftArrowIcon} />
+        <img src={leftArrowIcon} alt="" />
         <p className="text-gray-02 typo-body-03">돌아가기</p>
       </button>
       <div className="flex">
@@ -23,7 +23,7 @@ export default function DesktopPointHeader() {
           to="/collection/draw"
           className="flex items-center gap-1 px-3 py-2 bg-sub-01 rounded-xl shadow-[0px_4px_6px_-1px_rgba(198,139,89,0.20)] md:ml-auto md:gap-2 md:px-8 md:py-4 md:self-center md:rounded-2xl"
         >
-          <img src={giftIcon} className="size-4 md:size-5" />
+          <img src={giftIcon} alt="" className="size-4 md:size-5" />
           <p className="text-white typo-head-05 md:text-lg! md:leading-5!">뽑기 하러가기</p>
         </Link>
       </div>

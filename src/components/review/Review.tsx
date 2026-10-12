@@ -69,12 +69,12 @@ export default function Review({
         {isDetail && !isMobile ? (
           <p className="flex gap-0.5 items-center">
             {Array.from({ length: starRating }).map((_, index) => (
-              <img key={index} src={fullStarIcon} />
+              <img key={index} src={fullStarIcon} alt={index === 0 ? `평점 ${starRating}점` : ""} />
             ))}
           </p>
         ) : (
           <p className="flex gap-0.5 items-center">
-            <img src={starIcon} />
+            <img src={starIcon} alt="평점" />
             <span className="text-KUMDORI-01 typo-sub-02 md:text-sm!">
               {starRating}
             </span>

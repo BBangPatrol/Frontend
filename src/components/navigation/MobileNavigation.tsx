@@ -128,7 +128,7 @@ export default function MobileNavigation() {
           to="/"
           className="flex items-center gap-2 typo-head-04 font-bold text-[#191919] no-underline"
         >
-          <img src={logo} alt="LOGO" className="h-6 w-6" />
+          <img src={logo} alt="" className="h-6 w-6" />
           <p>빵범대</p>
         </NavLink>
 
@@ -281,7 +281,7 @@ export default function MobileNavigation() {
           {isLoggedIn ? (
             <div className="flex w-full justify-between py-3">
               <div className="flex items-center gap-2">
-                <img src={profileImageUrl} alt="Profile" className="h-6 w-6 rounded-full" />
+                <img src={profileImageUrl} alt="프로필 사진" className="h-6 w-6 rounded-full" />
                 <p className="typo-body-03">{me?.userNickname}님 환영합니다</p>
               </div>
               <button
@@ -291,7 +291,7 @@ export default function MobileNavigation() {
                 }}
                 className="typo-sub-02 text-gray-02"
               >
-                <img src={right} alt="right" className="h-6 w-6" />
+                <img src={right} alt="프로필 수정" className="h-6 w-6" />
               </button>
             </div>
           ) : (

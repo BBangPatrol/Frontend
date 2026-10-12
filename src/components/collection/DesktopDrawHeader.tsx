@@ -6,7 +6,7 @@ export default function DesktopDrawHeader() {
   return (
     <section className="flex items-center">
       <Link to="/dashboard/collection" className="flex gap-1 items-center">
-        <img src={leftArrowIcon} />
+        <img src={leftArrowIcon} alt="" />
         <p className="text-gray-02 typo-body-03">돌아가기</p>
       </Link>
       <div className="ml-auto">

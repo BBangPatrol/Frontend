@@ -156,7 +156,7 @@ function DesktopReviewCard({
                   <img
                     key={index}
                     src={index < review?.rating! ? star : emptyStar}
-                    alt={index < review?.rating! ? "채워진 별" : "빈 별"}
+                    alt={index === 0 ? `평점 ${review?.rating ?? 0}점` : ""}
                     className="w-4 h-4"
                   />
                 ))}
@@ -299,7 +299,7 @@ function MobileReviewCard({
             }}
           >
             <div className="flex items-center gap-0.5 text-orange-02">
-              <img src={star} alt="별" className="w-2 h-2" />
+              <img src={star} alt="평점" className="w-2 h-2" />
               <span className="typo-sub-02 text-KUMDORI-01">
                 {review?.rating ?? 0}
               </span>

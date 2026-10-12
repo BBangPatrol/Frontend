@@ -91,7 +91,7 @@ export default function ReviewCard({
             <img
               key={index}
               src={index < rating ? star : emptyStar}
-              alt={index < rating ? "채워진 별" : "빈 별"}
+              alt={index === 0 ? `평점 ${rating}점` : ""}
               className={`${isMobile ? "w-4 h-4" : "w-5 h-5"}`}
             />
           ))}

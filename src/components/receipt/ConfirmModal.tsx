@@ -13,7 +13,7 @@ export default function ConfirmModal({ point, storeId, visitDetailId, onClose }:
     <section className="fixed inset-0 bg-white/85 md:bg-black/50 flex justify-center items-center">
       <div className="w-80 md:w-96 p-8 bg-white rounded-4xl shadow-2xl flex flex-col items-center gap-4 md:gap-5">
         <div className="size-20 bg-main-05 rounded-full shadow-[inset_0px_2px_4px_0px_rgba(0,0,0,0.05)] flex justify-center items-center">
-          <img src={confirmModalCheckIcon} />
+          <img src={confirmModalCheckIcon} alt="" />
         </div>
         <div className="flex flex-col gap-2 md:gap-3 items-center">
           <h3 className="text-black-01 typo-head-01">영수증 인증 완료!</h3>

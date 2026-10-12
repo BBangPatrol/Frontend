@@ -27,7 +27,7 @@ export default function DetailReviews({ storeId, reviews, reviewCount, summary }
             ))}
             <Link to={`/detail/review/${storeId}`} className="flex py-3 rounded-xl justify-center items-center gap-1">
               <p className="text-gray-500 typo-sub-01 md:text-inherit">더보기</p>
-              <img src={rightArrowIcon} />
+              <img src={rightArrowIcon} alt="" />
             </Link>
           </>
         ) : (

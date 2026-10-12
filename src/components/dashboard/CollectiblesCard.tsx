@@ -18,11 +18,11 @@ export default function CollectiblesCard({ isMobile, collectionBooks }: Collecti
       <section className="flex flex-col gap-4 p-5 bg-yellow-02 border border-main-05 rounded-xl md:rounded-4xl md:p-7 md:gap-5">
         <div className="flex gap-1.5 items-center">
           <div>
-            <img className="md:size-7" src={giftImage} />
+            <img className="md:size-7" src={giftImage} alt="" />
           </div>
           <h3 className={`${isMobile ? "typo-head-04" : "typo-head-02"}`}>수집품 도감</h3>
           <div className={`flex text-sub-02 ml-auto ${isMobile ? "typo-sub-02" : "typo-body-04"}`}>
-            전체보기 <img src={rightBrownArrow} />
+            전체보기 <img src={rightBrownArrow} alt="" />
           </div>
         </div>
         <div className="flex flex-col gap-3 md:gap-4">

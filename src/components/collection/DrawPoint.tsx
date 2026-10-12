@@ -7,7 +7,7 @@ export default function DrawPoint() {
   return (
     <div className="flex gap-2 items-center">
       <div>
-        <img src={pointIcon} />
+        <img src={pointIcon} alt="" />
       </div>
       <p className="text-sub-01 typo-head-04">{meQuery.data ? meQuery.data.point.toLocaleString("ko-KR") : "-"} P</p>
     </div>

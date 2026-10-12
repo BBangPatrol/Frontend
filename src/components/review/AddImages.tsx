@@ -52,7 +52,7 @@ function ImagePreview({ image, onRemove }: { image: File; onRemove: () => void }
 
   return (
     <div className="relative size-24 overflow-hidden rounded-xl border border-gray-03 md:size-28">
-      {previewUrl && <img src={previewUrl} alt={image.name} className="size-full object-cover" />}
+      {previewUrl && <img src={previewUrl} alt="첨부한 리뷰 사진" className="size-full object-cover" />}
       <button type="button" aria-label={`${image.name} 삭제`} onClick={onRemove} className="absolute top-1 right-1 flex size-6 items-center justify-center rounded-full bg-black/60 text-white">
         ×
       </button>

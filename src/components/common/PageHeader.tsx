@@ -35,7 +35,7 @@ function MobilePageHeader({
           onClick={() => navigate(-1)}
           className="flex gap-1 items-center"
         >
-          <img src={leftArrowIcon} className="size-3" />
+          <img src={leftArrowIcon} alt="" className="size-3" />
           <p className=" text-gray-02 typo-body-04">돌아가기</p>
         </button>
       )}
@@ -61,7 +61,7 @@ function DesktopPageHeader({
     <section className="flex flex-col gap-4">
       {!noBackButton && (
         <button onClick={() => navigate(-1)} className="flex gap-1">
-          <img src={leftArrowIcon} />
+          <img src={leftArrowIcon} alt="" />
           <p className=" text-gray-02 typo-body-03">돌아가기</p>
         </button>
       )}

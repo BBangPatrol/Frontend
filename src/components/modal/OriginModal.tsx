@@ -217,7 +217,7 @@ export default function OriginModal({
           >
             <img
               src={type === "receipt" ? check : trash}
-              alt={type === "receipt" ? "영수증 인증 완료" : "리뷰 삭제"}
+              alt=""
               className={isMobile ? "h-full w-full p-2" : "h-full w-full p-4"}
             />
           </div>

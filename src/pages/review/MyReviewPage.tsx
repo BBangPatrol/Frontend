@@ -150,7 +150,7 @@ export default function MyReviewPage() {
           >
             <img
               src={like}
-              alt="like"
+              alt=""
               className={`${isMobile ? "w-3 h-3" : "w-5 h-5"}`}
             />
             받은 도움이 돼요 수

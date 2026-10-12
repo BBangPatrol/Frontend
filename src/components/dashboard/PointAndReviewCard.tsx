@@ -16,9 +16,9 @@ export default function PointAndReviewCard({ isMobile, point, reviews }: PointAn
     <section className="flex gap-4 md:gap-3 lg:gap-4">
       <Link to="/dashboard/point" className="flex min-w-0 flex-col gap-4 p-5 flex-1 bg-white border border-main-05 rounded-xl md:rounded-4xl md:p-4 lg:gap-6 lg:p-7">
         <div className="flex gap-1.5 items-center">
-          <img src={coinImage} className="size-5 shrink-0 lg:size-7" />
+          <img src={coinImage} alt="" className="size-5 shrink-0 lg:size-7" />
           <h3 className={`${isMobile ? "typo-head-04" : "text-base font-extrabold leading-5 lg:text-xl lg:leading-5.5"} whitespace-nowrap`}>포인트</h3>
-          <img src={rightBlackArrow} className="ml-auto size-4 shrink-0" />
+          <img src={rightBlackArrow} alt="" className="ml-auto size-4 shrink-0" />
         </div>
         <div className="flex flex-col gap-3">
           <p>
@@ -26,7 +26,7 @@ export default function PointAndReviewCard({ isMobile, point, reviews }: PointAn
             <span className="typo-head-04 text-gray-02 font-extrabold ml-0.5">P</span>
           </p>
           <div className="flex gap-1 items-center whitespace-nowrap">
-            <img src={grayGiftImage} className="shrink-0" />
+            <img src={grayGiftImage} alt="" className="shrink-0" />
             <p className="text-sm font-bold text-gray-01 md:text-xs lg:text-sm">
               뽑기 <span className="text-sub-01">{Math.floor(point / 100)}</span>회 가능
             </p>
@@ -35,9 +35,9 @@ export default function PointAndReviewCard({ isMobile, point, reviews }: PointAn
       </Link>
       <Link to="/dashboard/reviews" className="flex min-w-0 flex-col gap-4 p-5 flex-1 bg-white border border-main-05 rounded-xl md:rounded-4xl md:p-4 lg:gap-6 lg:p-7">
         <div className="flex gap-1.5 items-center">
-          <img src={reviewImage} className="size-5 shrink-0 lg:size-7" />
+          <img src={reviewImage} alt="" className="size-5 shrink-0 lg:size-7" />
           <h3 className={`${isMobile ? "typo-head-04" : "text-base font-extrabold leading-5 lg:text-xl lg:leading-5.5"} whitespace-nowrap`}>나의 리뷰</h3>
-          <img src={rightBlackArrow} className="ml-auto size-4 shrink-0" />
+          <img src={rightBlackArrow} alt="" className="ml-auto size-4 shrink-0" />
         </div>
         <div className="flex flex-col gap-3">
           <p>
