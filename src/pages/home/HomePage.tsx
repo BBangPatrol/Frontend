@@ -171,7 +171,7 @@ export default function HomePage() {
             className={`flex w-full flex-1 items-center justify-start ${isMobile ? "gap-1" : "gap-2"}`}
           >
             <div className={` ${isMobile ? "w-5 h-5" : "w-6 h-6"}`}>
-              <img src={locarion} alt="location" />
+              <img src={locarion} alt="" />
             </div>
             <p
               className={`text-black-01 ${isMobile ? "typo-head-04" : "typo-head-01"}`}
@@ -192,7 +192,7 @@ export default function HomePage() {
               전체보기
             </p>
             <div className={` ${isMobile ? "w-3 h-3" : "w-4 h-4"}`}>
-              <img src={right} alt="right" />
+              <img src={right} alt="" />
             </div>
           </button>
         </div>
@@ -226,7 +226,7 @@ export default function HomePage() {
             className={`flex w-full flex-1 items-center justify-start ${isMobile ? "gap-1" : "gap-2"}`}
           >
             <div className={` ${isMobile ? "w-5 h-5" : "w-6 h-6"}`}>
-              <img src={book} alt="book" />
+              <img src={book} alt="" />
             </div>
             <p
               className={`text-black-01 ${isMobile ? "typo-head-04" : "typo-head-01"}`}
@@ -248,7 +248,7 @@ export default function HomePage() {
                 전체보기
               </p>
               <div className={` ${isMobile ? "w-3 h-3" : "w-4 h-4"}`}>
-                <img src={right} alt="right" />
+                <img src={right} alt="" />
               </div>
             </button>
           )}
@@ -307,7 +307,7 @@ export default function HomePage() {
                 }}
               >
                 <div className={` ${isMobile ? "w-6 h-6" : "w-8 h-8"}`}>
-                  <img src={lock} alt="lock" />
+                  <img src={lock} alt="" />
                 </div>
 
                 <span

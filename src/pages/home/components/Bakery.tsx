@@ -40,7 +40,7 @@ export default function Bakery({
         <div
           className={`flex items-center ${isMobile ? "typo-sub-02 gap-0.5" : "typo-body-03 gap-1"}`}
         >
-          <img src={star} alt="star" className="w-3.5 h-3.5" />
+          <img src={star} alt="평점" className="w-3.5 h-3.5" />
           <div
             className={`text-gray-01 ${isMobile ? "typo-sub-02" : "typo-body-03"}`}
           >

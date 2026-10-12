@@ -244,7 +244,7 @@ export default function MainCollectionPage() {
             navigate("/map");
           }}
         >
-          <img src={plus} alt="플러스" className="w-6 h-6" />{" "}
+          <img src={plus} alt="빵집 찾기" className="w-6 h-6" />{" "}
         </button>
       ) : null}
       <div className="flex items-center justify-between w-full">
@@ -263,7 +263,7 @@ export default function MainCollectionPage() {
           >
             <img
               src={camera}
-              alt="카메라"
+              alt=""
               className={` ${isMobile ? "typo-head-03" : "w-5 h-5"}`}
             />
             <p className={` ${isMobile ? "typo-head-03" : "text-base"}`}>

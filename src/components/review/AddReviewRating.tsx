@@ -18,7 +18,7 @@ export default function AddReviewRating({ score, onScoreChange }: AddReviewRatin
             className="relative flex size-7 touch-manipulation items-center justify-center transition-transform duration-150 hover:scale-110 active:scale-90 md:size-10"
             onClick={() => onScoreChange(value)}
           >
-            <img src={emptyStarIcon} alt="" draggable={false} />
+            <img src={emptyStarIcon} alt={`${value}점`} draggable={false} />
             <img
               src={fullStarIcon}
               alt=""

@@ -101,7 +101,7 @@ export default function ProfileModal({
           >
             <img
               src={X}
-              alt="Close"
+              alt="닫기"
               className={isMobile ? "h-3 w-3" : "h-5 w-5"}
             />
           </button>
@@ -127,7 +127,7 @@ export default function ProfileModal({
             {previewImage || profileImageUrl ? (
               <img
                 src={previewImage ?? profileImageUrl}
-                alt="Profile"
+                alt="프로필 사진"
                 className="h-full w-full rounded-full object-cover"
               />
             ) : (
@@ -144,7 +144,7 @@ export default function ProfileModal({
             >
               <img
                 src={Camera}
-                alt="Camera"
+                alt="프로필 사진 변경"
                 className={isMobile ? "h-3 w-3" : "h-4 w-4"}
               />
             </button>

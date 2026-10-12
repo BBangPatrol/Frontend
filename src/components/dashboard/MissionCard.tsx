@@ -28,10 +28,10 @@ export default function MissionCard({ isMobile, missions }: MissionCardProps) {
       <section className="flex flex-col p-5 gap-4 rounded-xl bg-white border border-main-05 md:rounded-4xl md:gap-5 md:p-7">
         <div className="flex gap-1.5 items-center">
           <div>
-            <img src={medalImage} />
+            <img src={medalImage} alt="" />
           </div>
           <h3 className={isMobile ? "typo-head-04" : "typo-head-02"}>진행 중 미션</h3>
-          <img src={rightBlackArrow} className="ml-auto" />
+          <img src={rightBlackArrow} alt="" className="ml-auto" />
         </div>
         {currentMission ? (
           <MissionProgress isMobile={isMobile} mission={currentMission} hasMultipleMissions={missions.length > 1} />

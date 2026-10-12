@@ -35,7 +35,7 @@ export default function LoginModal({
           onClick={onClose}
           className={`absolute flex ${isMobile ? " top-4 right-4  h-5 w-5" : " top-5 right-5  h-8 w-8"}`}
         >
-          <img src={X} alt="Close" className="w-5 h-5" />
+          <img src={X} alt="닫기" className="w-5 h-5" />
         </button>
         {/* Header */}
         <div
@@ -64,7 +64,7 @@ export default function LoginModal({
           >
             <img
               src={kakao}
-              alt="Kakao Login"
+              alt="카카오 로그인"
               className={isMobile ? "h-9" : "h-12"}
             />
           </button>

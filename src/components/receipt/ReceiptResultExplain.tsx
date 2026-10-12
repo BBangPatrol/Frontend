@@ -6,7 +6,7 @@ export default function ReceiptResultExplain() {
   return (
     <section className="flex flex-col gap-3">
       <div className="p-3 flex gap-3 bg-red-50 rounded-2xl border border-red-100 md:p-5">
-        <img src={alertIcon} className="self-start" />
+        <img src={alertIcon} alt="" className="self-start" />
         <div>
           <p className="text-red-800 typo-head-05 md:text-base!">내용을 다르게 인식했나요?</p>
           <p className="mt-1 text-gray-01 typo-sub-02">
@@ -15,7 +15,7 @@ export default function ReceiptResultExplain() {
             <br className="md:hidden" /> 다시 찍어 업로드해주세요.
           </p>
           <div className="mt-3 flex gap-1.5 md:mt-5">
-            <img src={faqIcon} />
+            <img src={faqIcon} alt="" />
             <p className="text-gray-02 typo-body-05 underline md:text-xs! md:leading-4!">계속해서 오류가 발생한다면? 관리자 문의</p>
           </div>
         </div>

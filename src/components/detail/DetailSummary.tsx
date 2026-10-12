@@ -13,19 +13,19 @@ export default function DetailSummary({ bakery }: { bakery: StoreBakery }) {
       <ul className="flex flex-col gap-1.5 text-gray-01 typo-sub-02 md:gap-2 md:text-sm!">
         <li>
           <div className="flex gap-1 md:gap-2">
-            <img src={locationIcon} />
+            <img src={locationIcon} alt="주소" />
             {bakery.address}
           </div>
         </li>
         <li>
           <div className="flex gap-1 md:gap-2">
-            <img src={timeIcon} />
+            <img src={timeIcon} alt="영업시간" />
             {bakery.hours}
           </div>
         </li>
         <li>
           <div className="flex gap-1 md:gap-2">
-            <img src={phoneIcon} />
+            <img src={phoneIcon} alt="전화번호" />
             {bakery.phone}
           </div>
         </li>
