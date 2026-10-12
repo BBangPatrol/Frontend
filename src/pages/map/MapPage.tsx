@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { useState } from "react";
 import MobileMapPage from "../../components/map/mobile/MobileMapPage";
 import { useResponsive } from "../../contexts/ResponsiveContext";
@@ -5,6 +6,8 @@ import DesktopMapPage from "../../components/map/desktop/DesktopMapPage";
 import type { SheetPosition } from "../../types/map";
 
 export default function MapPage() {
+  usePageTitle("빵집 지도");
+
   const [sheetPosition, setSheetPosition] = useState<SheetPosition>("closed");
   const { isMobile } = useResponsive();
 

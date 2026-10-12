@@ -22,6 +22,7 @@ import Mission from "./components/Mission";
 
 import LoginModal from "../../components/modal/LoginModal";
 // hooks
+import usePageTitle from "../../hooks/usePageTitle";
 import { useHotStores } from "../../hooks/api/useGetHotStore";
 import { useMissions } from "../../hooks/api/useGetMissionAtHome";
 import useIsLoggedIn from "../../hooks/useIsLoggedIn";
@@ -37,6 +38,8 @@ const BANNER_IMAGES = [
 ];
 
 export default function HomePage() {
+  usePageTitle("대전을 굽다");
+
   const navigate = useNavigate();
 
   const { isMobile } = useResponsive();

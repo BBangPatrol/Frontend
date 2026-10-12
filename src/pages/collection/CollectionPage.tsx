@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { useState } from "react";
 import PageHeader from "../../components/common/PageHeader";
 import PageStatus from "../../components/common/PageStatus";
@@ -10,6 +11,8 @@ import type { Collectible } from "../../api/collectibles";
 import collectibleHeaderIcon from "@/assets/images/collectiblePage/gift.svg";
 
 export default function CollectionPage() {
+  usePageTitle("수집품 도감");
+
   const [selectedCollectible, setSelectedCollectible] = useState<Collectible | null>(null);
   const { isMobile } = useResponsive();
   const collectiblesQuery = useCollectibles();

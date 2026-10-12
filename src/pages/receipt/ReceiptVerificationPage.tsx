@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { isAxiosError } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../../components/common/PageHeader";
@@ -10,6 +11,8 @@ import type { StoreApiErrorResponse } from "../../api/stores";
 import receiptIcon from "@/assets/images/receiptVerificationPage/receipt.svg";
 
 export default function ReceiptVerificationPage() {
+  usePageTitle("영수증 인증");
+
   const { isMobile } = useResponsive();
   const { storeId } = useParams<{ storeId?: string }>();
   const analyzeMutation = useAnalyzeReceipt(storeId);

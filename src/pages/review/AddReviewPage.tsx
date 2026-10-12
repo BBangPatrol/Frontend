@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { isAxiosError } from "axios";
 import { useState, type FormEvent } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -22,6 +23,7 @@ export default function AddReviewPage() {
   const reviewFromState = reviewState?.review;
   const visitDetailId = reviewState?.visitDetailId;
   const isEdit = Boolean(reviewId);
+  usePageTitle(isEdit ? "리뷰 수정" : "리뷰 작성");
   const review = isEdit && reviewFromState?.id === Number(reviewId) ? reviewFromState : null;
   const existingImages = review?.thumbnails.length ? review.thumbnails : (review?.images ?? []);
   const [score, setScore] = useState(review?.rating ?? 0);

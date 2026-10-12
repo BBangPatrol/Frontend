@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { useState } from "react";
 import PageHeader from "../../components/common/PageHeader";
 import Pagination from "../../components/common/Pagination";
@@ -8,6 +9,8 @@ import { useMissions } from "../../hooks/api/useMissions";
 import medalIcon from "@/assets/images/missionPage/medal.svg";
 
 export default function MissionPage() {
+  usePageTitle("미션");
+
   const [cursorHistory, setCursorHistory] = useState<Array<number | undefined>>([undefined]);
   const cursor = cursorHistory.at(-1);
   const missionsQuery = useMissions(cursor);

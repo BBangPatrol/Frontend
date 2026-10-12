@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import PageHeader from "../../components/common/PageHeader";
@@ -8,6 +9,8 @@ type InfoPageProps = {
 };
 
 export default function InfoPage({ title, content }: InfoPageProps) {
+  usePageTitle(title);
+
   const contentWithoutTitle = content.replace(/^#\s+.*(?:\r?\n)+/, "");
 
   return (

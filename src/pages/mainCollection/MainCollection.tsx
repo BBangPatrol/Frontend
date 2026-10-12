@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // hooks
+import usePageTitle from "../../hooks/usePageTitle";
 import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { useCollection } from "../../hooks/api/useGetCollection";
 import { useDeleteReview } from "../../hooks/api/useDeleteReviews";
@@ -26,6 +27,8 @@ import { useResponsive } from "../../contexts/ResponsiveContext";
 import type { Visit } from "../../api/collection";
 
 export default function MainCollectionPage() {
+  usePageTitle("나의 빵 컬렉션");
+
   const isLoggedIn = useIsLoggedIn();
   const navigate = useNavigate();
 
