@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { DashboardData } from "../../api/users";
@@ -38,6 +39,8 @@ const guestDashboardData: DashboardData = {
 };
 
 export default function DashboardPage() {
+  usePageTitle("마이페이지");
+
   const isLoggedIn = useIsLoggedIn();
   const navigate = useNavigate();
   const { isMobile } = useResponsive();

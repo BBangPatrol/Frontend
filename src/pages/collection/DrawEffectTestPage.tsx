@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { useState } from "react";
 import type { DrawCollectibleResult } from "../../api/collectibles";
 import DrawResult from "../../components/collection/DrawResult";
@@ -25,6 +26,8 @@ function createPreviewResult(rank: CollectibleRank): DrawCollectibleResult {
 }
 
 export default function DrawEffectTestPage() {
+  usePageTitle("수집품 뽑기");
+
   const [preview, setPreview] = useState<Preview | null>(null);
   const [imageStatus, setImageStatus] = useState<"loading" | "loaded" | "error">("loading");
 

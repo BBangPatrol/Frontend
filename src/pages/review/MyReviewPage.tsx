@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // hooks
+import usePageTitle from "../../hooks/usePageTitle";
 // import useIsLoggedIn from "../../hooks/useIsLoggedIn";
 import { useReviews } from "../../hooks/api/useGetRevies";
 import { useDeleteReview } from "../../hooks/api/useDeleteReviews";
@@ -20,6 +21,8 @@ import like from "../../assets/icon/like-sub-01.svg";
 import type { review } from "../../api/users";
 
 export default function MyReviewPage() {
+  usePageTitle("나의 리뷰");
+
   // const isLoggedIn = useIsLoggedIn();
   const navigate = useNavigate();
 

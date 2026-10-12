@@ -1,3 +1,4 @@
+import usePageTitle from "../../../hooks/usePageTitle";
 import pointIcon from "@/assets/images/pointPage/coin.svg";
 import { useState } from "react";
 import PageHeader from "../../../components/common/PageHeader";
@@ -10,6 +11,8 @@ import { useMe } from "../../../hooks/api/useMe";
 import { usePointHistory } from "../../../hooks/api/usePointHistory";
 
 export default function PointPage() {
+  usePageTitle("포인트 내역");
+
   const { isMobile } = useResponsive();
   const [page, setPage] = useState(0);
   const meQuery = useMe();

@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { isAxiosError } from "axios";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,6 +11,8 @@ import { useStoreReviews } from "../../hooks/api/useStoreReviews";
 import type { StoreApiErrorResponse } from "../../api/stores";
 
 export default function ReviewDetailPage() {
+  usePageTitle("빵집 리뷰");
+
   const [sort, setSort] = useState("latest");
   const [page, setPage] = useState(0);
   const { storeId = "" } = useParams<{ storeId: string }>();

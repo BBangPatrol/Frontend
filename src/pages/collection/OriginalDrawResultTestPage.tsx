@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { useState } from "react";
 import type { DrawCollectibleResult } from "../../api/collectibles";
 import collectibleImage from "../../assets/images/drawPage/temp-collectible.png";
@@ -20,6 +21,8 @@ function createPreviewResult(rank: CollectibleRank): DrawCollectibleResult {
 }
 
 export default function OriginalDrawResultTestPage() {
+  usePageTitle("수집품 뽑기");
+
   const [rank, setRank] = useState<CollectibleRank | null>(null);
   const [imageStatus, setImageStatus] = useState<"loading" | "loaded" | "error">("loading");
 

@@ -1,3 +1,4 @@
+import usePageTitle from "../hooks/usePageTitle";
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -5,6 +6,8 @@ import { getMe, login } from "../api/auth";
 import { clearAuth, setAccessToken, setUser } from "../store/authSlice";
 
 export default function KakaoCallbackPage() {
+  usePageTitle("로그인");
+
   const [searchParams] = useSearchParams();
   const requestedRef = useRef(false);
   const dispatch = useDispatch();

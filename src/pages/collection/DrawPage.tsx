@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { isAxiosError } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +12,8 @@ import { useDrawCollectible } from "../../hooks/api/useDrawCollectible";
 import type { DrawCollectibleErrorResponse } from "../../api/collectibles";
 
 export default function DrawPage() {
+  usePageTitle("수집품 뽑기");
+
   const { isMobile } = useResponsive();
   const drawMutation = useDrawCollectible();
   const navigate = useNavigate();

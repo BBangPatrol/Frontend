@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { useParams } from "react-router-dom";
 import { isAxiosError } from "axios";
 import PageStatus from "../../components/common/PageStatus";
@@ -14,6 +15,8 @@ import type { StoreDetailErrorResponse } from "../../api/stores";
 import mainImage from "@/assets/images/detailPage/temp_1.jpeg";
 
 export default function DetailPage() {
+  usePageTitle("빵집 상세");
+
   const { isMobile } = useResponsive();
   const { storeId = "" } = useParams<{ storeId: string }>();
 

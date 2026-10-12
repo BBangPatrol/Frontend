@@ -1,3 +1,4 @@
+import usePageTitle from "../../hooks/usePageTitle";
 import { isAxiosError } from "axios";
 import { useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -16,6 +17,8 @@ type ReceiptResultLocationState = {
 };
 
 export default function ReceiptResultPage() {
+  usePageTitle("영수증 인증");
+
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
