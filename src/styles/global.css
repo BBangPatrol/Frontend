@@ -5,8 +5,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff")
-    format("woff");
+  src: url("/fonts/NanumSquareNeoTTF-bRg.woff2") format("woff2");
 }
 
 @font-face {
@@ -14,8 +13,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff")
-    format("woff");
+  src: url("/fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");
 }
 
 @font-face {
@@ -23,8 +21,7 @@
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff")
-    format("woff");
+  src: url("/fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");
 }
 
 /* Figma 디자인 시스템 (node 2370:1227) 기준 Color·Typography 토큰 */
