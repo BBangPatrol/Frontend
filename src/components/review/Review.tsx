@@ -115,6 +115,9 @@ export default function Review({
               <img
                 src={image}
                 alt={`${userName} 리뷰 이미지 ${index + 1}`}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
                 className="size-full object-cover"
               />
             </button>

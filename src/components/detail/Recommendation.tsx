@@ -25,6 +25,9 @@ export default function Recommendation({ data, isPending }: { data?: StoreAttrac
                       className="h-full w-full object-cover"
                       src={attraction.imageUrl}
                       alt={attraction.name}
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
                     />
                   </div>
                   <p className="text-black-01 text-sm font-normal leading-6">{attraction.name}</p>
